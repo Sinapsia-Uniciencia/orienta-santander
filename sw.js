@@ -1,4 +1,4 @@
-const CACHE = 'orientasantander-v1';
+const CACHE = 'orientasantander-v2';
 const ASSETS = [
   './index.html',
   './manifest.json',
