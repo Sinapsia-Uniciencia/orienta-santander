@@ -1,0 +1,1602 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no"/>
+<meta name="theme-color" content="#07080f"/>
+<meta name="description" content="Estrategia Unificada 11 — Orientación Vocacional · Gobernación de Santander"/>
+<meta name="mobile-web-app-capable" content="yes"/>
+<meta name="apple-mobile-web-app-capable" content="yes"/>
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"/>
+<meta name="apple-mobile-web-app-title" content="OrientaSantander"/>
+<link rel="manifest" href="./manifest.json"/>
+<link rel="apple-touch-icon" href="./icons/icon-192.png"/>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link href="https://fonts.googleapis.com/css2?family=Clash+Display:wght@600;700&family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet"/>
+<title>OrientaSantander</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+html,body{height:100%;overflow:hidden}
+body{background:#07080f;font-family:'Nunito',sans-serif;color:#eef0f8;overscroll-behavior:none}
+::-webkit-scrollbar{width:3px}
+::-webkit-scrollbar-thumb{background:#1b1c2d;border-radius:2px}
+input,textarea,button{font-family:'Nunito',sans-serif}
+button{cursor:pointer;border:none;background:none;color:inherit}
+textarea{resize:vertical}
+@keyframes floatY{0%,100%{transform:translateY(0)}50%{transform:translateY(-8px)}}
+@keyframes popIn{0%{transform:scale(.4);opacity:0}100%{transform:scale(1);opacity:1}}
+@keyframes slideUp{0%{transform:translateY(20px);opacity:0}100%{transform:translateY(0);opacity:1}}
+@keyframes pulse{0%,100%{box-shadow:0 0 0 0 rgba(129,140,248,.4)}50%{box-shadow:0 0 0 8px rgba(129,140,248,0)}}
+@keyframes spin{to{transform:rotate(360deg)}}
+#app{max-width:480px;margin:0 auto;height:100vh;height:100dvh;display:flex;flex-direction:column;position:relative;overflow:hidden}
+#screen{flex:1;overflow-y:auto;overflow-x:hidden;padding-bottom:80px}
+#screen::-webkit-scrollbar{width:3px}
+.screen-enter{animation:slideUp .3s ease}
+/* Nav */
+#nav{position:fixed;bottom:0;left:50%;transform:translateX(-50%);width:100%;max-width:480px;
+  background:rgba(7,8,15,.97);backdrop-filter:blur(16px);border-top:1px solid #1b1c2d;
+  display:flex;z-index:200;padding-bottom:env(safe-area-inset-bottom)}
+.nav-btn{flex:1;border:none;background:transparent;padding:9px 2px 7px;
+  display:flex;flex-direction:column;align-items:center;gap:2px;
+  border-top:2px solid transparent;transition:all .2s;font-family:inherit}
+.nav-btn.active{border-top-color:#818cf8}
+.nav-btn .nav-icon{font-size:17px}
+.nav-btn .nav-label{font-size:9px;color:#565870;font-weight:400;transition:color .2s}
+.nav-btn.active .nav-label{color:#818cf8;font-weight:700}
+.nav-btn:disabled{opacity:.3;cursor:not-allowed}
+/* Cards */
+.card{background:#12131d;border:1px solid #1b1c2d;border-radius:14px;padding:16px}
+.card-glow{box-shadow:0 0 20px rgba(129,140,248,.1)}
+/* Buttons */
+.btn-primary{width:100%;padding:14px;border-radius:12px;font-weight:700;font-size:15px;
+  transition:all .2s;border:none}
+.btn-secondary{padding:10px 20px;border-radius:10px;font-weight:600;font-size:13px;
+  background:rgba(255,255,255,.05);border:1px solid #1b1c2d;color:#8e90a8;transition:all .2s}
+.btn-secondary:active{background:rgba(255,255,255,.1)}
+/* Progress bar */
+.pbar{height:5px;background:#1b1c2d;border-radius:3px;overflow:hidden}
+.pbar-fill{height:100%;border-radius:3px;transition:width 1s cubic-bezier(.16,1,.3,1)}
+/* Scale buttons */
+.scale-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:8px}
+.scale-btn{background:#12131d;border:1px solid #1b1c2d;border-radius:12px;
+  padding:12px 4px;display:flex;flex-direction:column;align-items:center;gap:4px;transition:all .15s}
+.scale-btn:active{transform:scale(.95)}
+.scale-btn .se{font-size:20px}
+.scale-btn .sl{font-size:10px;color:#565870}
+/* Tags */
+.tag{font-size:11px;font-weight:700;padding:3px 10px;border-radius:20px;white-space:nowrap;display:inline-block}
+/* Arcade */
+.neon-border{border-radius:16px}
+.arcade-btn{border-radius:12px;padding:14px 28px;font-weight:800;font-size:15px;
+  transition:all .2s;border:1px solid transparent}
+.arcade-btn:active{transform:scale(.96)}
+.score-badge{border-radius:10px;padding:6px 14px;font-size:13px;font-weight:800;
+  display:inline-flex;align-items:center;gap:6px}
+/* Splash */
+#splash{position:fixed;inset:0;background:#07080f;display:flex;flex-direction:column;
+  align-items:center;justify-content:center;gap:20px;z-index:1000;
+  transition:opacity .5s ease}
+#splash.hidden{opacity:0;pointer-events:none}
+.splash-logo{font-size:72px;animation:floatY 3s ease-in-out infinite;
+  filter:drop-shadow(0 0 30px rgba(129,140,248,.6))}
+.splash-title{font-family:'Clash Display',sans-serif;font-size:28px;font-weight:700;
+  background:linear-gradient(120deg,#818cf8,#34d399);
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;text-align:center}
+.splash-sub{color:#8e90a8;font-size:14px;text-align:center;line-height:1.5;max-width:280px}
+.splash-gov{color:#565870;font-size:12px;text-align:center;margin-top:8px;
+  border-top:1px solid #1b1c2d;padding-top:16px;width:260px;line-height:1.8}
+.splash-bar{width:200px;height:3px;background:#1b1c2d;border-radius:2px;overflow:hidden;margin-top:8px}
+.splash-bar-fill{height:100%;background:linear-gradient(90deg,#818cf8,#34d399);
+  border-radius:2px;animation:splashLoad 2s ease forwards}
+@keyframes splashLoad{0%{width:0%}100%{width:100%}}
+</style>
+</head>
+<body>
+
+<!-- SPLASH -->
+<div id="splash">
+  <div class="splash-logo">🧭</div>
+  <div class="splash-title">OrientaSantander</div>
+  <div class="splash-sub">Estrategia Unificada 11<br/>Orientación Vocacional Integral</div>
+  <div class="splash-bar"><div class="splash-bar-fill"></div></div>
+  <div class="splash-gov">
+    🏛️ Gobernación de Santander<br/>
+    Dirección de Juventudes
+  </div>
+</div>
+
+<!-- APP SHELL -->
+<div id="app">
+  <div id="screen"></div>
+  <nav id="nav">
+    <button class="nav-btn active" data-tab="0" onclick="goTab(0)">
+      <span class="nav-icon">🏠</span><span class="nav-label">Inicio</span>
+    </button>
+    <button class="nav-btn" data-tab="1" onclick="goTab(1)">
+      <span class="nav-icon">🧪</span><span class="nav-label">Tests</span>
+    </button>
+    <button class="nav-btn" data-tab="2" onclick="goTab(2)">
+      <span class="nav-icon">🪞</span><span class="nav-label">Yo</span>
+    </button>
+    <button class="nav-btn" data-tab="5" onclick="goTab(5)">
+      <span class="nav-icon">🧠</span><span class="nav-label">Aprendo</span>
+    </button>
+    <button class="nav-btn" data-tab="3" onclick="goTab(3)">
+      <span class="nav-icon">🌱</span><span class="nav-label">Futuro</span>
+    </button>
+    <button class="nav-btn" data-tab="6" onclick="goTab(6)">
+      <span class="nav-icon">🎮</span><span class="nav-label">Juegos</span>
+    </button>
+    <button class="nav-btn" data-tab="4" id="nav-perfil" onclick="goTab(4)" disabled>
+      <span class="nav-icon">🌟</span><span class="nav-label">Perfil</span>
+    </button>
+  </nav>
+</div>
+
+<script>
+/* ═══════════════════════════════════════════════════
+   STATE
+═══════════════════════════════════════════════════ */
+const STATE = {
+  tab: 0,
+  tests: null,      // {riasec, chaside}
+  self: null,       // {soft, cognitive, reflection}
+  future: null,     // {bienestar, proyecto}
+  neuro: null,      // {fe,re,ar,mi}
+  game: null,       // active game id
+  gameRecords: JSON.parse(localStorage.getItem('gc_records')||'{}'),
+  showCareers: false,
+};
+
+function saveRecords(){ localStorage.setItem('gc_records', JSON.stringify(STATE.gameRecords)); }
+
+/* ═══════════════════════════════════════════════════
+   ROUTER
+═══════════════════════════════════════════════════ */
+function goTab(t){
+  if(t===4 && !STATE.tests?.riasec) return;
+  STATE.tab = t;
+  STATE.showCareers = false;
+  updateNav();
+  render();
+}
+
+function updateNav(){
+  document.querySelectorAll('.nav-btn').forEach(b=>{
+    b.classList.toggle('active', +b.dataset.tab === STATE.tab);
+  });
+  const p = document.getElementById('nav-perfil');
+  if(p) p.disabled = !STATE.tests?.riasec;
+  // Hide nav in game mode
+  document.getElementById('nav').style.display = STATE.tab===6 ? 'none' : 'flex';
+}
+
+function render(){
+  const s = document.getElementById('screen');
+  s.scrollTop = 0;
+  if(STATE.showCareers){ s.innerHTML = renderCareers(); bindCareers(); return; }
+  const map = {0:renderHome,1:renderTests,2:renderSelf,3:renderFuture,4:renderProfile,5:renderNeuro,6:renderGym};
+  const fn = map[STATE.tab];
+  if(fn){ s.innerHTML = `<div class="screen-enter">${fn()}</div>`; bindScreen(STATE.tab); }
+}
+
+/* ═══════════════════════════════════════════════════
+   HELPERS
+═══════════════════════════════════════════════════ */
+const T={bg:"#07080f",card:"#12131d",border:"#1b1c2d",
+  p1:"#818cf8",p2:"#34d399",p3:"#fb923c",p4:"#f472b6",p5:"#facc15",
+  text:"#eef0f8",muted:"#565870",soft:"#8e90a8"};
+
+function pbar(val,color){
+  return `<div class="pbar"><div class="pbar-fill" style="width:${val}%;background:${color}"></div></div>`;
+}
+function tag(label,color){
+  return `<span class="tag" style="background:${color}22;color:${color};border:1px solid ${color}44">${label}</span>`;
+}
+function btn(label,color,onclick,extra=''){
+  return `<button class="btn-primary" style="background:linear-gradient(135deg,${color}cc,${color}88);
+    color:#fff;box-shadow:0 0 20px ${color}33" onclick="${onclick}" ${extra}>${label}</button>`;
+}
+function moduleCard(icon,color,title,desc,onclick,done=false,locked=false){
+  return `<button onclick="${locked?'':onclick}" style="background:${T.card};
+    border:1px solid ${done?color+'55':T.border};border-left:4px solid ${done?color:T.border};
+    border-radius:14px;padding:15px 18px;display:flex;align-items:center;gap:14px;
+    width:100%;text-align:left;opacity:${locked?.35:1};transition:transform .2s"
+    ${locked?'disabled':''}>
+    <div style="width:44px;height:44px;border-radius:12px;background:${color}18;
+      display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0">${icon}</div>
+    <div style="flex:1">
+      <div style="font-weight:700;font-size:14px;color:${T.text};margin-bottom:2px">${title}</div>
+      <div style="font-size:12px;color:${T.muted}">${desc}</div>
+    </div>
+    <span style="font-size:${done?13:16}px;color:${done?color:T.muted}">${done?'✓':locked?'🔒':'›'}</span>
+  </button>`;
+}
+function scaleButtons(onpick_fn){
+  const opts=[{v:1,e:'😐',l:'Nada'},{v:2,e:'🙂',l:'Poco'},{v:3,e:'😊',l:'Algo'},{v:4,e:'😄',l:'Bastante'},{v:5,e:'🤩',l:'Mucho'}];
+  return `<div class="scale-grid">${opts.map(o=>`
+    <button class="scale-btn" onclick="${onpick_fn}(${o.v})">
+      <span class="se">${o.e}</span><span class="sl">${o.l}</span>
+    </button>`).join('')}</div>`;
+}
+function questionCard(text){
+  return `<div style="background:${T.card};border:1px solid ${T.border};border-radius:18px;
+    padding:26px 20px;margin-bottom:20px;min-height:90px;display:flex;align-items:center">
+    <p style="font-size:16px;color:${T.text};line-height:1.65;margin:0;font-weight:600;
+      font-family:'Clash Display',sans-serif">${text}</p>
+  </div>`;
+}
+function backBtn(label='← Volver',onclick='goBack()'){
+  return `<button onclick="${onclick}" style="background:transparent;border:none;
+    color:${T.muted};font-size:13px;margin-bottom:16px;padding:4px 0;font-family:inherit">${label}</button>`;
+}
+function sectionHeader(title,sub=''){
+  return `<div style="margin-bottom:20px">
+    <h2 style="font-family:'Clash Display',sans-serif;font-size:20px;font-weight:700;
+      color:${T.text};margin:0 0 4px">${title}</h2>
+    ${sub?`<p style="color:${T.muted};font-size:13px;margin:0">${sub}</p>`:''}
+  </div>`;
+}
+
+/* ═══════════════════════════════════════════════════
+   DATA
+═══════════════════════════════════════════════════ */
+const RIASEC_Q=[
+  {id:1,text:"Me gusta construir, reparar o armar cosas con mis manos",type:"R"},
+  {id:2,text:"Disfruto resolver problemas complejos usando la lógica",type:"I"},
+  {id:3,text:"Me encanta expresarme creando: dibujo, música, escritura o diseño",type:"A"},
+  {id:4,text:"Me satisface ayudar a personas que están pasando por dificultades",type:"S"},
+  {id:5,text:"Me gusta tomar el liderazgo y dirigir proyectos o grupos",type:"E"},
+  {id:6,text:"Prefiero trabajar con sistemas organizados, datos o procedimientos claros",type:"C"},
+  {id:7,text:"Me atraen los trabajos al aire libre, con animales o en contacto con la naturaleza",type:"R"},
+  {id:8,text:"Me fascina investigar cómo y por qué funcionan las cosas",type:"I"},
+  {id:9,text:"Tengo facilidad para imaginar mundos, personajes o diseños originales",type:"A"},
+  {id:10,text:"Disfruto enseñar o explicar cosas a otros hasta que los entiendan",type:"S"},
+  {id:11,text:"Me emociona la idea de crear mi propio negocio o emprendimiento",type:"E"},
+  {id:12,text:"Me gusta trabajar con números, tablas y organizar información",type:"C"},
+  {id:13,text:"Me interesan la mecánica, la electrónica o las estructuras físicas",type:"R"},
+  {id:14,text:"Disfruto estudiar ciencias: biología, química, física o matemáticas",type:"I"},
+  {id:15,text:"Para mí el arte y la creatividad son formas válidas de cambiar el mundo",type:"A"},
+  {id:16,text:"Me importa profundamente el bienestar de mi comunidad y personas vulnerables",type:"S"},
+  {id:17,text:"Me siento cómodo tomando decisiones y asumiendo responsabilidades",type:"E"},
+  {id:18,text:"Prefiero entornos de trabajo donde normas y roles estén bien definidos",type:"C"},
+];
+const RI={
+  R:{name:"Realista",icon:"🔧",color:"#fb923c",desc:"Práctico, técnico, concreto. Aprendes haciendo."},
+  I:{name:"Investigador",icon:"🔬",color:"#818cf8",desc:"Analítico, curioso, científico. Buscas entender el mundo."},
+  A:{name:"Artístico",icon:"🎭",color:"#f472b6",desc:"Creativo, expresivo, original. Valoras la innovación."},
+  S:{name:"Social",icon:"🤝",color:"#34d399",desc:"Empático, colaborativo. Te mueve ayudar a los demás."},
+  E:{name:"Emprendedor",icon:"🚀",color:"#facc15",desc:"Líder, persuasivo, ambicioso. Buscas impactar."},
+  C:{name:"Convencional",icon:"📋",color:"#60a5fa",desc:"Organizado, preciso, sistemático."},
+};
+const CHASIDE_Q=[
+  {id:1,text:"Me gusta organizar procesos, llevar cuentas y coordinar equipos",area:"C"},
+  {id:2,text:"Tengo facilidad para calcular, presupuestar y analizar información numérica",area:"C"},
+  {id:3,text:"Me interesa estudiar historia, filosofía, derecho o las relaciones sociales",area:"H"},
+  {id:4,text:"Se me facilita expresar ideas de forma escrita o verbal con precisión",area:"H"},
+  {id:5,text:"Me apasiona crear obras visuales, musicales, literarias o escénicas",area:"A"},
+  {id:6,text:"Tengo sensibilidad especial para percibir la armonía, el color o el ritmo",area:"A"},
+  {id:7,text:"Me interesa profundamente la salud humana: prevenir, cuidar y curar a otros",area:"S"},
+  {id:8,text:"Tengo paciencia y vocación de servicio para acompañar personas en dificultad",area:"S"},
+  {id:9,text:"Me gustan las matemáticas avanzadas, la física, la programación o la ingeniería",area:"I"},
+  {id:10,text:"Disfruto diseñar, construir o programar sistemas y soluciones tecnológicas",area:"I"},
+  {id:11,text:"Me interesa el servicio público, la seguridad comunitaria o la gestión del riesgo",area:"D"},
+  {id:12,text:"Siento vocación por proteger a otros y trabajar en equipo bajo presión",area:"D"},
+  {id:13,text:"Me fascina la investigación científica: experimentos, laboratorios y descubrimientos",area:"E"},
+  {id:14,text:"Disfruto observar fenómenos naturales, clasificar datos y sacar conclusiones",area:"E"},
+];
+const CI={
+  C:{name:"Administrativa",icon:"🏢",color:"#60a5fa",desc:"Gestión, finanzas, organización empresarial",careers:["Administración","Contaduría","Economía"]},
+  H:{name:"Humanidades y Jurídica",icon:"⚖️",color:"#a78bfa",desc:"Derecho, ciencias sociales, educación",careers:["Derecho","Comunicación Social","Trabajo Social","Educación"]},
+  A:{name:"Artística",icon:"🎨",color:"#f472b6",desc:"Artes, diseño, música, arquitectura",careers:["Diseño Gráfico","Arquitectura","Artes Plásticas"]},
+  S:{name:"Ciencias de la Salud",icon:"🏥",color:"#34d399",desc:"Medicina, enfermería, psicología",careers:["Medicina","Enfermería","Psicología","Fisioterapia"]},
+  I:{name:"Enseñanzas Técnicas",icon:"⚙️",color:"#fb923c",desc:"Ingeniería, tecnología, sistemas",careers:["Ing. de Sistemas","Ing. Civil","Ing. Industrial","Ing. Electrónica"]},
+  D:{name:"Defensa y Seguridad",icon:"🛡️",color:"#94a3b8",desc:"Fuerzas militares, policía, gestión del riesgo",careers:["Ciencias Militares","Gestión del Riesgo","Criminalística"]},
+  E:{name:"CC Experimentales",icon:"🔭",color:"#818cf8",desc:"Biología, química, ciencias ambientales",careers:["Biología","Química","Ing. Ambiental","Ciencias Ambientales"]},
+};
+const CAREERS_DATA=[
+  {area:"Tecnología e Ingeniería",icon:"⚙️",color:"#60a5fa",types:["R","I"],careers:[
+    {name:"Ingeniería de Sistemas",demand:"Alta",salary:"$3.5M–$8M",unis:["UIS","UNAB","UDES","UNICIENCIA"]},
+    {name:"Ingeniería Civil",demand:"Alta",salary:"$3M–$7M",unis:["UIS","UNAB","UDES"]},
+    {name:"Ingeniería Industrial",demand:"Alta",salary:"$3M–$6M",unis:["UIS","UNAB","UNICIENCIA"]},
+    {name:"Ingeniería Ambiental",demand:"Alta",salary:"$2.8M–$5M",unis:["UNICIENCIA","UIS","UDES"]},
+  ]},
+  {area:"Ciencias de la Salud",icon:"🏥",color:"#34d399",types:["I","S"],careers:[
+    {name:"Medicina",demand:"Alta",salary:"$5M–$15M",unis:["UIS","UNAB","UDES"]},
+    {name:"Enfermería",demand:"Muy Alta",salary:"$2.5M–$5M",unis:["UIS","UNAB","UDES","UNICIENCIA"]},
+    {name:"Psicología",demand:"Alta",salary:"$2.5M–$6M",unis:["UIS","UNAB","UNICIENCIA","UDES"]},
+    {name:"Fisioterapia",demand:"Alta",salary:"$2.5M–$5M",unis:["UIS","UNAB","UDES"]},
+  ]},
+  {area:"Humanidades y Sociales",icon:"🌍",color:"#a78bfa",types:["S","A"],careers:[
+    {name:"Derecho",demand:"Media",salary:"$3M–$10M",unis:["UIS","UNAB","UDES","UNICIENCIA"]},
+    {name:"Trabajo Social",demand:"Alta",salary:"$2M–$4M",unis:["UIS","UNAB"]},
+    {name:"Comunicación Social",demand:"Media",salary:"$2.5M–$5M",unis:["UIS","UNAB","UDES"]},
+    {name:"Educación",demand:"Alta",salary:"$2.2M–$4.5M",unis:["UIS","UNAB","UNICIENCIA"]},
+  ]},
+  {area:"Negocios y Economía",icon:"📈",color:"#f472b6",types:["E","C"],careers:[
+    {name:"Administración de Empresas",demand:"Alta",salary:"$2.8M–$8M",unis:["UIS","UNAB","UDES","UNICIENCIA"]},
+    {name:"Contaduría Pública",demand:"Alta",salary:"$2.5M–$6M",unis:["UIS","UNAB","UDES","UNICIENCIA"]},
+    {name:"Mercadeo",demand:"Media",salary:"$2.5M–$5M",unis:["UNAB","UDES","UNICIENCIA"]},
+  ]},
+  {area:"Artes y Diseño",icon:"🎨",color:"#fb923c",types:["A","E"],careers:[
+    {name:"Diseño Gráfico",demand:"Media",salary:"$2M–$5M",unis:["UNAB","UNICIENCIA","UDES"]},
+    {name:"Arquitectura",demand:"Media",salary:"$2.8M–$7M",unis:["UIS","UNAB","UDES"]},
+  ]},
+  {area:"Ciencias Ambientales",icon:"🌿",color:"#818cf8",types:["I","R"],careers:[
+    {name:"Ingeniería Ambiental",demand:"Alta",salary:"$2.8M–$5M",unis:["UNICIENCIA","UIS","UDES"]},
+    {name:"Ciencias Ambientales",demand:"Alta",salary:"$2.5M–$5M",unis:["UNICIENCIA"]},
+    {name:"Biología",demand:"Media",salary:"$2.5M–$5M",unis:["UIS"]},
+  ]},
+];
+const SOFT_Q=[
+  {id:1,text:"Cuando hay conflicto en mi grupo, busco que todos se escuchen",skill:"comunicacion"},
+  {id:2,text:"Explico mis ideas con claridad y la gente me entiende fácilmente",skill:"comunicacion"},
+  {id:3,text:"Prefiero coordinar al grupo antes que dejar que cada uno haga lo suyo",skill:"liderazgo"},
+  {id:4,text:"Cuando hay un problema, soy el primero en proponer cómo resolverlo",skill:"liderazgo"},
+  {id:5,text:"Me adapto fácilmente cuando los planes cambian de repente",skill:"adaptabilidad"},
+  {id:6,text:"No me estreso si tengo que cambiar lo planeado a último momento",skill:"adaptabilidad"},
+  {id:7,text:"En equipo, el resultado me importa más que tener la razón",skill:"trabajo_equipo"},
+  {id:8,text:"Disfruto más los logros cuando los conseguimos juntos",skill:"trabajo_equipo"},
+  {id:9,text:"Aun bajo presión tomo decisiones con calma",skill:"comunicacion"},
+  {id:10,text:"Escucho activamente a los demás antes de dar mi opinión",skill:"comunicacion"},
+  {id:11,text:"Me siento cómodo motivando a otros cuando el grupo pierde el ánimo",skill:"liderazgo"},
+  {id:12,text:"Busco soluciones creativas cuando el método habitual no funciona",skill:"adaptabilidad"},
+];
+const SOFT_INFO={
+  comunicacion:{name:"Comunicación",icon:"💬",color:"#818cf8",desc:"Transmites ideas con claridad y escuchas activamente."},
+  liderazgo:{name:"Liderazgo",icon:"🦁",color:"#facc15",desc:"Inspiras, coordinas y guías a otros hacia metas."},
+  adaptabilidad:{name:"Adaptabilidad",icon:"🌊",color:"#34d399",desc:"Navegas cambios con fluidez y sin perder el norte."},
+  trabajo_equipo:{name:"Trabajo en equipo",icon:"🧩",color:"#f472b6",desc:"Colaboras y sumas para lograr metas compartidas."},
+};
+const COG_Q=[
+  {id:1,text:"Recuerdo con facilidad información que escuché o leí hace varios días",skill:"memoria"},
+  {id:2,text:"Puedo retener varios datos en mente mientras realizo una tarea",skill:"memoria"},
+  {id:3,text:"Se me ocurren soluciones o ideas que a otros no se les habían ocurrido",skill:"creatividad"},
+  {id:4,text:"Cuando creo algo siempre le doy un toque original e inesperado",skill:"creatividad"},
+  {id:5,text:"Antes de aceptar información busco evidencia que la respalde",skill:"critico"},
+  {id:6,text:"Identifico fácilmente cuando un argumento tiene fallas o contradicciones",skill:"critico"},
+  {id:7,text:"Cuando enfrento un problema difícil, lo descompongo en partes pequeñas",skill:"resolucion"},
+  {id:8,text:"Me gusta encontrar la causa raíz de los problemas, no solo el síntoma",skill:"resolucion"},
+  {id:9,text:"Aprendo de mis errores y ajusto lo que hago sin que nadie me lo diga",skill:"metacognicion"},
+  {id:10,text:"Soy consciente de cómo aprendo mejor (leyendo, escuchando, practicando…)",skill:"metacognicion"},
+  {id:11,text:"Puedo concentrarme profundamente en una tarea por tiempo prolongado",skill:"memoria"},
+  {id:12,text:"Cuando imagino un proyecto puedo visualizar cómo se vería terminado",skill:"creatividad"},
+];
+const COG_INFO={
+  memoria:{name:"Memoria de trabajo",icon:"🧠",color:"#818cf8",desc:"Retienes y manipulas información en tiempo real."},
+  creatividad:{name:"Creatividad",icon:"✨",color:"#f472b6",desc:"Generas ideas originales y soluciones inesperadas."},
+  critico:{name:"Pensamiento crítico",icon:"🔍",color:"#60a5fa",desc:"Analizas con rigor y cuestionas antes de concluir."},
+  resolucion:{name:"Resolución de problemas",icon:"🎯",color:"#34d399",desc:"Descompones retos complejos en pasos manejables."},
+  metacognicion:{name:"Metacognición",icon:"🪞",color:"#fb923c",desc:"Reflexionas sobre tu propio proceso de aprendizaje."},
+};
+const REFLECTIONS=[
+  {id:"valores",title:"Mis Valores",icon:"⭐",color:"#facc15",instruction:"Selecciona los 3 valores que más te definen",type:"select3",
+   options:["Honestidad","Libertad","Familia","Creatividad","Justicia","Aventura","Conocimiento","Servicio","Liderazgo","Paz","Éxito","Conexión","Autonomía","Impacto","Tradición"]},
+  {id:"motivaciones",title:"¿Qué me mueve?",icon:"🔥",color:"#fb923c",instruction:"Completa estas frases con honestidad",type:"phrases",
+   phrases:[{id:"a",prompt:"Me levanto con energía cuando…",ph:"ej: tengo un reto nuevo por resolver"},
+            {id:"b",prompt:"Pierdo la noción del tiempo cuando…",ph:"ej: estoy aprendiendo algo que me apasiona"},
+            {id:"c",prompt:"Me siento más yo mismo/a cuando…",ph:"ej: ayudo a alguien que lo necesita"}]},
+  {id:"fortalezas",title:"Mis Fortalezas",icon:"💪",color:"#34d399",instruction:"¿Qué haces mejor que los demás?",type:"cards",
+   options:[{label:"Resolver conflictos",icon:"🕊️"},{label:"Organizar ideas",icon:"🗂️"},{label:"Crear cosas nuevas",icon:"🛠️"},
+            {label:"Escuchar a otros",icon:"👂"},{label:"Aprender rápido",icon:"⚡"},{label:"Ver el panorama completo",icon:"🗺️"},
+            {label:"Cuidar los detalles",icon:"🔎"},{label:"Motivar al grupo",icon:"📣"},{label:"Persistir ante obstáculos",icon:"🧱"},
+            {label:"Analizar datos",icon:"📊"}]},
+  {id:"miedos",title:"Mis Miedos al Elegir",icon:"🌑",color:"#818cf8",instruction:"Reconocerlos es el primer paso para que no decidan por ti",type:"acknowledge",
+   fears:[{id:"f1",text:"Miedo a equivocarme de carrera y arrepentirme"},
+          {id:"f2",text:"Miedo a decepcionar a mis padres o familia"},
+          {id:"f3",text:"Miedo a no ser suficientemente bueno/a"},
+          {id:"f4",text:"Miedo a lo económico: no poder pagar la universidad"},
+          {id:"f5",text:"Miedo a lo desconocido: no saber cómo es la vida universitaria"},
+          {id:"f6",text:"Miedo a alejarme de mis amigos si escojo otra ciudad"}]},
+];
+const BIENESTAR=[
+  {id:"emocional",name:"Bienestar Emocional",icon:"💛",color:"#facc15",
+   q:["Me siento bien conmigo mismo/a la mayor parte del tiempo","Sé reconocer y manejar mis emociones bajo presión","Tengo momentos de alegría genuina durante la semana"]},
+  {id:"social",name:"Bienestar Social",icon:"🤗",color:"#34d399",
+   q:["Tengo al menos una persona de confianza con quien hablar","Me siento incluido/a y valorado/a en mis grupos","Mis relaciones cercanas me dan energía, no me agotan"]},
+  {id:"academico",name:"Bienestar Académico",icon:"📚",color:"#818cf8",
+   q:["Me siento capaz de afrontar los retos académicos","Encuentro sentido a lo que estudio aunque no siempre me guste","Tengo hábitos de estudio que me funcionan bien"]},
+  {id:"fisico",name:"Bienestar Físico",icon:"🏃",color:"#fb923c",
+   q:["Duermo suficientes horas y me despierto descansado/a","Me alimento de forma razonablemente saludable","Hago alguna actividad física durante la semana"]},
+  {id:"proposito",name:"Sentido y Propósito",icon:"🌟",color:"#f472b6",
+   q:["Tengo una idea de hacia dónde quiero ir en la vida","Siento que lo que hago hoy tiene conexión con mi futuro","Hay algo que me apasiona o me importa profundamente"]},
+];
+const PROYECTO_STEPS=[
+  {id:"mision",title:"Mi Misión",icon:"🎯",color:"#818cf8",instruction:"¿Para qué estás aquí? ¿Qué quieres aportar al mundo?",ph:"ej: Quiero usar mis habilidades en ciencias para mejorar la salud de comunidades rurales en Santander"},
+  {id:"vision",title:"Mi Visión a 5 años",icon:"🔭",color:"#34d399",instruction:"¿Cómo te ves en 5 años? Sé concreto/a y ambicioso/a.",ph:"ej: Estoy en tercer semestre de medicina en la UIS, trabajo medio tiempo y tengo un grupo de estudio"},
+  {id:"opcion_a",title:"Mi Opción A",icon:"⭐",color:"#facc15",instruction:"Tu primera opción: programa, institución y por qué",ph:"ej: Psicología en UNICIENCIA — me gusta la neurociencia y está cerca de casa"},
+  {id:"opcion_b",title:"Mi Plan B",icon:"🔄",color:"#fb923c",instruction:"Una alternativa valiosa si la opción A no es posible ahora",ph:"ej: Trabajo Social en UIS mientras ahorro para cambiar de programa"},
+  {id:"acciones",title:"Próximas Acciones",icon:"📋",color:"#f472b6",instruction:"3 cosas concretas que puedes hacer en los próximos 30 días",ph:"ej: 1) Visitar el campus de la UIS\n2) Hablar con un estudiante de psicología\n3) Revisar fechas de inscripción ICFES"},
+  {id:"carta",title:"Carta a mi Yo del Futuro",icon:"✉️",color:"#a78bfa",instruction:"Escríbele una carta al estudiante universitario que serás. Sin filtros.",ph:"Querido/a [tu nombre]:\n\nHoy, a punto de terminar el colegio, quiero decirte que..."},
+];
+const NEURO_Q=[
+  {id:1,text:"Cuando estudio puedo mantener la concentración aunque haya distracciones",dim:"fe"},
+  {id:2,text:"Puedo recordar instrucciones o datos mientras hago otra tarea al mismo tiempo",dim:"fe"},
+  {id:3,text:"Cuando me equivoco en algo, ajusto lo que hago sin que nadie me lo diga",dim:"fe"},
+  {id:4,text:"Soy capaz de planificar cómo voy a estudiar antes de empezar a hacerlo",dim:"fe"},
+  {id:5,text:"Cuando me pongo ansioso/a antes de un examen, encuentro formas de calmarme",dim:"re"},
+  {id:6,text:"Las emociones que siento influyen en cómo aprendo",dim:"re"},
+  {id:7,text:"Cuando algo me apasiona aprendo mucho más rápido que cuando me aburre",dim:"re"},
+  {id:8,text:"Me resulta fácil retomar el estudio después de un momento difícil emocionalmente",dim:"re"},
+  {id:9,text:"Me fijo metas concretas de estudio antes de comenzar una sesión",dim:"ar"},
+  {id:10,text:"Cuando no entiendo algo, busco otra forma de aprenderlo por mi cuenta",dim:"ar"},
+  {id:11,text:"Reviso lo que aprendí después de estudiar para ver si realmente lo entendí",dim:"ar"},
+  {id:12,text:"Distribuyo el estudio a lo largo de varios días en vez de dejarlo todo para el final",dim:"ar"},
+  {id:13,text:"Hay temas que estudio por puro placer, no solo porque los evalúan",dim:"mi"},
+  {id:14,text:"Cuando entiendo algo difícil siento una satisfacción genuina",dim:"mi"},
+  {id:15,text:"La curiosidad me lleva a buscar información más allá de lo que pide el profesor",dim:"mi"},
+  {id:16,text:"Aprendo mejor cuando encuentro sentido personal en lo que estudio",dim:"mi"},
+];
+const NEURO_DIMS={
+  fe:{name:"Funciones Ejecutivas",icon:"🧩",color:"#818cf8",alta:"Tu cerebro ejecutivo es fuerte. Carreras con alta carga cognitiva se alinean bien con tu perfil.",media:"Tus FE funcionan bien en contextos de interés. Estructurar rutinas de estudio potenciará tu rendimiento.",baja:"Técnicas como Pomodoro y estudio en bloques cortos pueden transformar tu rendimiento."},
+  re:{name:"Regulación Emocional",icon:"💛",color:"#facc15",alta:"Las emociones trabajan a tu favor — aprendizaje profundo (Immordino-Yang).",media:"Tu regulación es funcional pero variable. Identificar emociones que te bloquean te dará mucho control.",baja:"El estrés interrumpe tu aprendizaje. Practicar anclaje emocional antes de estudiar marca la diferencia."},
+  ar:{name:"Autorregulación",icon:"🎯",color:"#34d399",alta:"Eres un aprendiz autorregulado. Esto predice fuertemente el éxito universitario.",media:"Incorporar ciclos planificación-ejecución-revisión formalizará lo que ya haces intuitivamente.",baja:"Incorporar planificación semanal cambiará radicalmente tus resultados (Zimmerman)."},
+  mi:{name:"Motivación Intrínseca",icon:"🔥",color:"#fb923c",alta:"Tu curiosidad es tu mayor activo — el cuarto pilar del aprendizaje (Dehaene).",media:"Tu motivación depende del tema. El reto: elegir la carrera donde más porcentaje del contenido te active.",baja:"Esto puede cambiar radicalmente cuando el contenido conecte con tus valores y proyecto de vida."},
+};
+const MECANISMOS=[
+  {id:"curiosidad",icon:"🔍",color:"#818cf8",title:"Curiosidad y Novedad",autor:"Francisco Mora",
+   concepto:"El cerebro solo aprende aquello que le llama la atención. La curiosidad activa el sistema dopaminérgico liberando recursos atencionales que de otra forma estarían cerrados.",
+   enAula:"Antes de estudiar un tema, hazte una pregunta genuina sobre él. No '¿qué entra en el examen?' sino '¿por qué esto importa en el mundo real?'. Esa pregunta abre el cerebro.",
+   enVida:"Elige una carrera donde el 70% del contenido te genere curiosidad natural."},
+  {id:"emocion",icon:"💛",color:"#facc15",title:"Emoción como Base del Aprendizaje",autor:"Mary Helen Immordino-Yang",
+   concepto:"No existe aprendizaje sin emoción. Las neuronas del sistema límbico modulan directamente la consolidación de memoria. Lo que no te toca emocionalmente, no se queda.",
+   enAula:"Conecta cada tema con algo que te importe personalmente. Si estudias estadística, aplícala a algo que te apasione.",
+   enVida:"El bienestar emocional es una condición neurológica del aprendizaje. Cuidar tus emociones es cuidar tu rendimiento."},
+  {id:"atencion",icon:"🎯",color:"#34d399",title:"Atención Profunda",autor:"Stanislas Dehaene",
+   concepto:"El cerebro no puede aprender de forma profunda en modo multitarea. La atención focalizada activa redes corticales que generan cambios sinápticos duraderos.",
+   enAula:"Estudia en bloques de 25-45 minutos con una sola tarea, sin teléfono. Este ciclo (Pomodoro) replica el ritmo natural de atención sostenida del cerebro adolescente.",
+   enVida:"La capacidad de atención profunda es una ventaja competitiva enorme en cualquier carrera. Es un músculo: se entrena."},
+  {id:"recuperacion",icon:"🔄",color:"#fb923c",title:"Recuperación Activa",autor:"Roediger & Karpicke",
+   concepto:"Releer no consolida memoria. Intentar recordar sin mirar el material (retrieval practice) fortalece los circuitos neuronales mucho más que la exposición pasiva.",
+   enAula:"Después de estudiar un tema, cierra el libro y escribe todo lo que recuerdas. Luego verifica. Eso que faltó es exactamente lo que debes repasar.",
+   enVida:"Los profesionales que más aprenden son los que constantemente se auto-evalúan."},
+  {id:"espaciado",icon:"📅",color:"#f472b6",title:"Aprendizaje Espaciado",autor:"Ebbinghaus / Cepeda et al.",
+   concepto:"El cerebro consolida memoria durante el descanso y el sueño. Estudiar en sesiones separadas por días produce redes neurales más fuertes que el estudio masivo.",
+   enAula:"Repasa un tema: el día que lo viste, 3 días después y 1 semana después. Combate la curva del olvido.",
+   enVida:"Aprender una carrera de 5 años es un maratón espaciado, no un sprint."},
+  {id:"fe",icon:"🧩",color:"#a78bfa",title:"Funciones Ejecutivas",autor:"Adele Diamond",
+   concepto:"Memoria de trabajo, inhibición y flexibilidad cognitiva predicen el rendimiento académico más que el CI en muchos estudios.",
+   enAula:"Antes de estudiar: plan. Durante: monitoreo. Después: evaluación. Este ciclo entrena las FE.",
+   enVida:"Las FE se desarrollan hasta los 25 años. Grado 11 es un momento crucial para fortalecerlas."},
+  {id:"metacog",icon:"🪞",color:"#60a5fa",title:"Metacognición",autor:"Flavell / Zimmerman",
+   concepto:"Pensar sobre cómo uno piensa y aprende. Los metacognitivos ajustan sus estrategias según la tarea y detectan cuando no están entendiendo.",
+   enAula:"Hazte estas preguntas: ¿Esto lo entendí o solo lo memoricé? ¿Podría explicárselo a alguien? ¿Qué parte sigo sin entender?",
+   enVida:"La metacognición es la habilidad más transferible de la vida académica a la profesional."},
+  {id:"sueno",icon:"🌙",color:"#94a3b8",title:"Sueño y Consolidación",autor:"Matthew Walker",
+   concepto:"Durante el sueño REM el hipocampo transfiere información reciente a la corteza. Dormir mal la noche antes de un examen borra lo que estudiaste.",
+   enAula:"8 horas de sueño la noche antes de un examen vale más que 3 horas adicionales de estudio trasnochado.",
+   enVida:"Cuidar el sueño es una de las decisiones de alto impacto más subestimadas en la vida estudiantil."},
+];
+
+/* ═══════════════════════════════════════════════════
+   GENERIC TEST ENGINE
+═══════════════════════════════════════════════════ */
+let TEST_STATE={q:[],cur:0,ans:{},skillKey:'',onDone:null,color:'',title:'',icon:''};
+
+function startTest(questions,skillKey,color,title,icon,onDone){
+  TEST_STATE={q:questions,cur:0,ans:{},skillKey,onDone,color,title,icon};
+  renderTest();
+}
+
+function renderTest(){
+  const {q,cur,color,title,icon}=TEST_STATE;
+  const pct=Math.round((cur/q.length)*100);
+  document.getElementById('screen').innerHTML=`<div class="screen-enter" style="padding:24px 20px">
+    ${backBtn('← Volver','goBack()')}
+    <h3 style="font-family:'Clash Display',sans-serif;font-size:17px;font-weight:700;color:${T.text};margin:0 0 16px">${icon} ${title}</h3>
+    <div style="margin-bottom:20px">
+      <div style="display:flex;justify-content:space-between;margin-bottom:4px">
+        <span style="font-size:12px;color:${T.muted}">${cur+1}/${q.length}</span>
+        <span style="font-size:12px;color:${color};font-weight:700">${pct}%</span>
+      </div>
+      ${pbar(pct,color)}
+    </div>
+    ${questionCard(q[cur].text)}
+    <p style="font-size:12px;color:${T.muted};text-align:center;margin-bottom:12px">¿Qué tanto te describe?</p>
+    ${scaleButtons('pickTest')}
+    ${cur>0?`<button onclick="prevTest()" style="background:transparent;border:none;color:${T.muted};font-size:13px;margin-top:14px;font-family:inherit">← Anterior</button>`:''}
+  </div>`;
+}
+
+function pickTest(v){
+  const {q,cur,ans,skillKey}=TEST_STATE;
+  const qItem=q[cur];
+  TEST_STATE.ans={...ans,[qItem.id]:{[skillKey]:qItem[skillKey],v}};
+  if(cur<q.length-1){TEST_STATE.cur++;renderTest();}
+  else{
+    const scores={};
+    Object.values(TEST_STATE.ans).forEach(a=>{scores[a[skillKey]]=(scores[a[skillKey]]||0)+a.v;});
+    TEST_STATE.onDone(scores);
+  }
+}
+function prevTest(){if(TEST_STATE.cur>0){TEST_STATE.cur--;renderTest();}}
+
+function renderTestResult(scores,infoMap,title,onBack){
+  const sorted=Object.entries(scores).sort((a,b)=>b[1]-a[1]);
+  const max=sorted[0][1];
+  const topKey=sorted[0][0];
+  const topInfo=infoMap[topKey];
+  let html=`<div class="screen-enter" style="padding:24px 20px">
+    ${backBtn('← Volver',onBack)}
+    <div style="text-align:center;margin-bottom:20px">
+      <div style="font-size:38px;margin-bottom:8px">${topInfo.icon}</div>
+      <h3 style="font-family:'Clash Display',sans-serif;font-size:17px;font-weight:700;color:${T.text};margin:0 0 4px">Resultados: ${title}</h3>
+    </div>
+    <div style="background:${topInfo.color}18;border:1px solid ${topInfo.color}44;border-radius:14px;padding:18px;margin-bottom:18px;text-align:center">
+      <div style="font-size:30px;margin-bottom:6px">${topInfo.icon}</div>
+      <div style="font-weight:800;font-size:15px;color:${topInfo.color}">${topInfo.name}</div>
+      <div style="font-size:13px;color:${T.soft};margin-top:4px">${topInfo.desc}</div>
+      ${topInfo.careers?`<div style="margin-top:10px;display:flex;flex-wrap:wrap;gap:5px;justify-content:center">${topInfo.careers.map(c=>tag(c,topInfo.color)).join('')}</div>`:''}
+    </div>
+    <div style="display:flex;flex-direction:column;gap:10px">`;
+  sorted.forEach(([k,v])=>{
+    const info=infoMap[k];
+    const pct2=Math.round((v/max)*100);
+    html+=`<div>
+      <div style="display:flex;justify-content:space-between;margin-bottom:4px">
+        <span style="font-size:13px;color:${T.text};font-weight:600">${info.icon} ${info.name}</span>
+        <span style="font-size:12px;color:${T.muted}">${v}pts</span>
+      </div>
+      ${pbar(pct2,info.color)}
+      <div style="font-size:11px;color:${T.muted};margin-top:3px">${info.desc}</div>
+    </div>`;
+  });
+  html+=`</div></div>`;
+  return html;
+}
+
+/* ═══════════════════════════════════════════════════
+   HOME
+═══════════════════════════════════════════════════ */
+function renderHome(){
+  const done={
+    tests:!!STATE.tests?.riasec,
+    self:!!STATE.self?.soft&&!!STATE.self?.cognitive&&!!STATE.self?.reflection,
+    future:!!STATE.future?.bienestar&&!!STATE.future?.proyecto,
+    neuro:!!STATE.neuro,
+  };
+  const modules=[
+    {icon:"🧪",color:T.p1,title:"Tests Vocacionales",desc:"RIASEC + CHASIDE — conoce tus intereses y aptitudes",onclick:"goTab(1)",done:done.tests},
+    {icon:"🪞",color:T.p3,title:"Yo Me Conozco",desc:"Habilidades, capacidades y autoconocimiento",onclick:"goTab(2)",done:done.self},
+    {icon:"🧠",color:"#a78bfa",title:"Cómo Aprendo",desc:"Neuroeducación, funciones ejecutivas y estrategias",onclick:"goTab(5)",done:done.neuro},
+    {icon:"🌱",color:T.p2,title:"Mi Futuro",desc:"Bienestar, proyecto de vida y carta al yo del futuro",onclick:"goTab(3)",done:done.future},
+    {icon:"🎮",color:"#22d3ee",title:"Gimnasio Cognitivo",desc:"7 juegos de funciones ejecutivas — campeonato",onclick:"goTab(6)",done:false},
+    {icon:"🎓",color:"#a78bfa",title:"Explorar Carreras",desc:"Programas y universidades en Santander",onclick:"openCareers()",done:false},
+    {icon:"🌟",color:T.p5,title:"Mi Perfil Completo",desc:"Integra todo para ver tus carreras ideales",onclick:"goTab(4)",done:false,locked:!done.tests},
+  ];
+  return `<div style="padding:28px 20px 20px">
+    <div style="text-align:center;margin-bottom:28px">
+      <div style="font-size:52px;margin-bottom:10px;filter:drop-shadow(0 0 24px rgba(129,140,248,.4));animation:floatY 4s ease-in-out infinite">🧭</div>
+      <h1 style="font-family:'Clash Display',sans-serif;font-size:25px;font-weight:700;
+        background:linear-gradient(120deg,#818cf8,#34d399);-webkit-background-clip:text;-webkit-text-fill-color:transparent;margin:0 0 6px">OrientaSantander</h1>
+      <p style="color:${T.soft};font-size:13px;line-height:1.6;margin:0">Estrategia Unificada 11 · Gobernación de Santander</p>
+    </div>
+    <div style="display:flex;flex-direction:column;gap:10px">
+      ${modules.map(m=>moduleCard(m.icon,m.color,m.title,m.desc,m.onclick,m.done,m.locked)).join('')}
+    </div>
+    <div style="margin-top:20px;background:${T.card};border:1px solid ${T.border};border-radius:14px;padding:13px 16px">
+      <div style="font-size:11px;color:${T.muted};text-transform:uppercase;letter-spacing:1px;margin-bottom:8px">Universidades en Santander</div>
+      ${["UIS — Universidad Industrial de Santander","UNAB — Autónoma de Bucaramanga","UDES — Universidad de Santander","UNICIENCIA — Ciencias Aplicadas y Ambientales","UTS — Unidades Tecnológicas de Santander","SENA — Regional Santander"]
+        .map((u,i,arr)=>`<div style="font-size:12px;color:${T.soft};padding:4px 0;${i<arr.length-1?'border-bottom:1px solid '+T.border:''}">${u}</div>`).join('')}
+    </div>
+  </div>`;
+}
+function openCareers(){STATE.showCareers=true;render();}
+
+/* ═══════════════════════════════════════════════════
+   TESTS SCREEN
+═══════════════════════════════════════════════════ */
+let TESTS_VIEW='menu'; // menu | riasec | chaside | riasec_result | chaside_result
+
+function renderTests(){
+  TESTS_VIEW='menu';
+  return renderTestsMenu();
+}
+function renderTestsMenu(){
+  const r=STATE.tests?.riasec, c=STATE.tests?.chaside;
+  return `<div style="padding:24px 20px">
+    ${sectionHeader('🧪 Tests Vocacionales','Dos instrumentos complementarios para conocer tus intereses')}
+    <!-- RIASEC -->
+    <div style="background:${T.card};border:1px solid ${r?T.p1+'55':T.border};border-radius:16px;padding:18px;margin-bottom:12px">
+      <div style="display:flex;align-items:flex-start;gap:14px;margin-bottom:14px">
+        <div style="width:48px;height:48px;border-radius:12px;background:${T.p1}18;display:flex;align-items:center;justify-content:center;font-size:24px;flex-shrink:0">🔬</div>
+        <div style="flex:1">
+          <div style="font-weight:700;font-size:15px;color:${T.text};margin-bottom:2px">Test RIASEC</div>
+          <div style="font-size:12px;color:${T.muted};line-height:1.5">Basado en Holland. 6 tipos de personalidad vocacional. 18 preguntas · ~4 min</div>
+        </div>
+      </div>
+      ${r?`<div style="background:${T.bg};border-radius:10px;padding:10px 14px;margin-bottom:12px">
+        <div style="font-size:11px;color:${T.muted};margin-bottom:6px">Tu código RIASEC:</div>
+        <div style="display:flex;gap:6px;flex-wrap:wrap">${Object.entries(r).sort((a,b)=>b[1]-a[1]).slice(0,3).map(([t])=>`<span style="font-size:12px;font-weight:700;color:${RI[t].color};background:${RI[t].color}15;padding:3px 10px;border-radius:8px">${RI[t].icon} ${RI[t].name}</span>`).join('')}</div>
+      </div>`:''}
+      <button onclick="startRiasec()" style="width:100%;padding:12px;border-radius:10px;border:1px solid ${T.p1}44;background:${r?T.p1+'15':T.p1};color:${r?T.p1:'#fff'};font-weight:700;font-size:13px;font-family:inherit;transition:all .2s">${r?'Ver resultados / Repetir':'Comenzar test →'}</button>
+    </div>
+    <!-- CHASIDE -->
+    <div style="background:${T.card};border:1px solid ${c?'#a78bfa55':T.border};border-radius:16px;padding:18px;margin-bottom:20px">
+      <div style="display:flex;align-items:flex-start;gap:14px;margin-bottom:14px">
+        <div style="width:48px;height:48px;border-radius:12px;background:#a78bfa18;display:flex;align-items:center;justify-content:center;font-size:24px;flex-shrink:0">🗺️</div>
+        <div style="flex:1">
+          <div style="font-weight:700;font-size:15px;color:${T.text};margin-bottom:2px">Test CHASIDE</div>
+          <div style="font-size:12px;color:${T.muted};line-height:1.5">Instrumento oficial Estrategia Unificada 11 · 7 áreas vocacionales · 14 preguntas · ~3 min</div>
+        </div>
+      </div>
+      ${c?`<div style="background:${T.bg};border-radius:10px;padding:10px 14px;margin-bottom:12px">
+        <div style="font-size:11px;color:${T.muted};margin-bottom:6px">Tu área dominante:</div>
+        <div style="display:flex;gap:6px;flex-wrap:wrap">${Object.entries(c).sort((a,b)=>b[1]-a[1]).slice(0,2).map(([a])=>`<span style="font-size:12px;font-weight:700;color:${CI[a].color};background:${CI[a].color}15;padding:3px 10px;border-radius:8px">${CI[a].icon} ${CI[a].name}</span>`).join('')}</div>
+      </div>`:''}
+      <button onclick="startChaside()" style="width:100%;padding:12px;border-radius:10px;border:1px solid #a78bfa44;background:${c?'#a78bfa15':'#a78bfa'};color:${c?'#a78bfa':'#fff'};font-weight:700;font-size:13px;font-family:inherit;transition:all .2s">${c?'Ver resultados / Repetir':'Comenzar test →'}</button>
+    </div>
+    ${r&&c?`<div style="background:linear-gradient(135deg,${T.p1}15,${T.p2}10);border:1px solid ${T.p1}44;border-radius:14px;padding:16px">
+      <div style="font-size:13px;color:${T.p2};font-weight:700;margin-bottom:4px">✓ Ambos tests completados</div>
+      <p style="font-size:13px;color:${T.soft};margin:0">Visita <strong style="color:${T.text}">Mi Perfil</strong> para ver tus carreras recomendadas.</p>
+    </div>`:''}
+  </div>`;
+}
+function startRiasec(){
+  startTest(RIASEC_Q,'type',T.p1,'Test RIASEC','🔬',(scores)=>{
+    STATE.tests={...STATE.tests||{},riasec:scores};
+    updateNav();
+    document.getElementById('screen').innerHTML=renderTestResult(scores,RI,'Test RIASEC','renderTests_menu()');
+  });
+}
+function startChaside(){
+  startTest(CHASIDE_Q,'area','#a78bfa','Test CHASIDE','🗺️',(scores)=>{
+    STATE.tests={...STATE.tests||{},chaside:scores};
+    document.getElementById('screen').innerHTML=renderTestResult(scores,CI,'Test CHASIDE','renderTests_menu()');
+  });
+}
+function renderTests_menu(){
+  document.getElementById('screen').innerHTML=`<div class="screen-enter">${renderTestsMenu()}</div>`;
+}
+function goBack(){
+  render(); // re-render current tab
+}
+
+/* ═══════════════════════════════════════════════════
+   YO ME CONOZCO
+═══════════════════════════════════════════════════ */
+let SELF_MODULE=null;
+let SELF_RESULTS={};
+let REFL_STEP=0;
+let REFL_DATA={};
+let SEL_VALUES=[];
+let SEL_STRENGTHS=[];
+let SEL_FEARS={};
+let PHRASE_VALS={};
+
+function renderSelf(){
+  SELF_MODULE=null;
+  SELF_RESULTS=STATE.self||{};
+  return renderSelfMenu();
+}
+function renderSelfMenu(){
+  const mods=[
+    {key:"soft",icon:"💬",color:T.p1,title:"Habilidades Blandas",desc:"Comunicación, liderazgo, adaptabilidad, trabajo en equipo",done:!!SELF_RESULTS.soft},
+    {key:"cognitive",icon:"🧠",color:T.p4,title:"Capacidades Cognitivas",desc:"Memoria, creatividad, pensamiento crítico, resolución",done:!!SELF_RESULTS.cognitive},
+    {key:"reflection",icon:"🌱",color:T.p2,title:"Autoconocimiento",desc:"Valores, motivaciones, fortalezas y miedos al elegir",done:!!SELF_RESULTS.reflection},
+  ];
+  const all=mods.every(m=>m.done);
+  return `<div style="padding:24px 20px">
+    ${sectionHeader('🪞 Yo Me Conozco','Explórate antes de elegir. Completa los tres módulos.')}
+    <div style="display:flex;flex-direction:column;gap:11px">
+      ${mods.map(m=>`<button onclick="openSelfModule('${m.key}')" style="background:${T.card};border:1px solid ${m.done?m.color+'55':T.border};border-radius:14px;padding:18px 20px;display:flex;align-items:center;gap:14px;width:100%;text-align:left;font-family:inherit;transition:transform .2s">
+        <div style="width:48px;height:48px;border-radius:14px;background:${m.color}18;display:flex;align-items:center;justify-content:center;font-size:24px;flex-shrink:0">${m.icon}</div>
+        <div style="flex:1">
+          <div style="font-weight:700;font-size:14px;color:${T.text};margin-bottom:2px">${m.title}</div>
+          <div style="font-size:12px;color:${T.muted}">${m.desc}</div>
+        </div>
+        <span style="font-size:${m.done?16:18}px;color:${m.done?m.color:T.muted}">${m.done?'✓':'›'}</span>
+      </button>`).join('')}
+    </div>
+    ${all?`<div style="margin-top:16px;background:linear-gradient(135deg,${T.p1}15,${T.p2}10);border:1px solid ${T.p1}44;border-radius:14px;padding:16px">
+      <div style="font-size:13px;color:${T.p2};font-weight:700;margin-bottom:4px">¡Completaste los tres módulos! 🎉</div>
+      <p style="font-size:13px;color:${T.soft};margin:0">Ve a <strong style="color:${T.text}">Mi Futuro</strong> para construir tu proyecto de vida.</p>
+    </div>`:''}
+  </div>`;
+}
+function openSelfModule(key){
+  SELF_MODULE=key;
+  if(key==='soft') startTest(SOFT_Q,'skill',T.p1,'Habilidades Blandas','💬',(s)=>{SELF_RESULTS.soft=s;STATE.self={...STATE.self||{},...SELF_RESULTS};showSelfResult(s,SOFT_INFO,'Habilidades Blandas');});
+  else if(key==='cognitive') startTest(COG_Q,'skill',T.p4,'Capacidades Cognitivas','🧠',(s)=>{SELF_RESULTS.cognitive=s;STATE.self={...STATE.self||{},...SELF_RESULTS};showSelfResult(s,COG_INFO,'Capacidades Cognitivas');});
+  else if(key==='reflection') startReflection();
+}
+function showSelfResult(scores,infoMap,title){
+  document.getElementById('screen').innerHTML=renderTestResult(scores,infoMap,title,'renderSelfMenu_()');
+}
+function renderSelfMenu_(){
+  document.getElementById('screen').innerHTML=`<div class="screen-enter">${renderSelfMenu()}</div>`;
+}
+
+/* Reflection flow */
+function startReflection(){
+  REFL_STEP=0; REFL_DATA=STATE.self?.reflection||{};
+  SEL_VALUES=REFL_DATA.valores||[]; SEL_STRENGTHS=REFL_DATA.fortalezas||[];
+  SEL_FEARS=REFL_DATA.miedos||{}; PHRASE_VALS=REFL_DATA.motivaciones||{};
+  renderReflStep();
+}
+function renderReflStep(){
+  const r=REFLECTIONS[REFL_STEP];
+  const bars=REFLECTIONS.map((_,i)=>`<div style="flex:1;height:3px;border-radius:2px;background:${i<=REFL_STEP?r.color:T.border};transition:background .3s"></div>`).join('');
+  let content='';
+  if(r.type==='select3') content=renderSelect3(r);
+  else if(r.type==='phrases') content=renderPhrases(r);
+  else if(r.type==='cards') content=renderCards(r);
+  else if(r.type==='acknowledge') content=renderAcknowledge(r);
+  document.getElementById('screen').innerHTML=`<div class="screen-enter" style="padding:24px 20px">
+    ${backBtn('← Volver','renderSelfMenu_()')}
+    <div style="display:flex;gap:5px;margin-bottom:18px">${bars}</div>
+    <div style="display:flex;align-items:center;gap:10px;margin-bottom:18px">
+      <div style="width:42px;height:42px;border-radius:12px;background:${r.color}18;display:flex;align-items:center;justify-content:center;font-size:22px">${r.icon}</div>
+      <div>
+        <div style="font-weight:700;font-size:15px;color:${T.text}">${r.title}</div>
+        <div style="font-size:12px;color:${T.muted}">${r.instruction}</div>
+      </div>
+    </div>
+    ${content}
+  </div>`;
+}
+function renderSelect3(r){
+  return `<div style="display:flex;flex-wrap:wrap;gap:8px;margin-bottom:14px">${r.options.map(o=>`
+    <button onclick="toggleVal('${o}')" id="val_${o.replace(/\s/g,'_')}" style="padding:8px 14px;border-radius:20px;border:1px solid ${SEL_VALUES.includes(o)?r.color:T.border};background:${SEL_VALUES.includes(o)?r.color+'22':T.card};color:${SEL_VALUES.includes(o)?r.color:T.soft};font-size:13px;font-weight:${SEL_VALUES.includes(o)?700:400};font-family:inherit;transition:all .15s">${o}</button>`).join('')}
+  </div>
+  <div style="font-size:12px;color:${T.muted};margin-bottom:12px">Seleccionados: ${SEL_VALUES.length}/3</div>
+  <button onclick="saveReflStep()" style="width:100%;padding:13px;border-radius:12px;border:none;background:${SEL_VALUES.length>0?r.color:T.border};color:${SEL_VALUES.length>0?'#fff':T.muted};font-weight:700;font-size:14px;font-family:inherit">Continuar →</button>`;
+}
+function toggleVal(v){
+  if(SEL_VALUES.includes(v)) SEL_VALUES=SEL_VALUES.filter(x=>x!==v);
+  else if(SEL_VALUES.length<3) SEL_VALUES.push(v);
+  renderReflStep();
+}
+function renderPhrases(r){
+  return `${r.phrases.map(p=>`
+    <div style="margin-bottom:14px">
+      <label style="font-size:13px;color:${T.soft};display:block;margin-bottom:6px">${p.prompt}</label>
+      <input id="ph_${p.id}" value="${PHRASE_VALS[p.id]||''}" placeholder="${p.ph}" oninput="PHRASE_VALS['${p.id}']=this.value" style="width:100%;padding:12px 14px;border-radius:10px;background:${T.card};border:1px solid ${T.border};color:${T.text};font-size:13px;outline:none;font-family:inherit;box-sizing:border-box"/>
+    </div>`).join('')}
+  <button onclick="saveReflStep()" style="width:100%;padding:13px;border-radius:12px;border:none;background:${r.color};color:#fff;font-weight:700;font-size:14px;font-family:inherit;margin-top:4px">Continuar →</button>`;
+}
+function renderCards(r){
+  return `<div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:14px">${r.options.map(o=>{
+    const on=SEL_STRENGTHS.some(x=>x.label===o.label);
+    return `<button onclick="toggleStrength('${o.label}','${o.icon}')" style="padding:12px 10px;border-radius:12px;border:1px solid ${on?r.color:T.border};background:${on?r.color+'22':T.card};display:flex;align-items:center;gap:8px;font-family:inherit;transition:all .15s;text-align:left">
+      <span style="font-size:18px">${o.icon}</span>
+      <span style="font-size:12px;color:${on?r.color:T.soft};font-weight:${on?700:400}">${o.label}</span>
+    </button>`;
+  }).join('')}</div>
+  <button onclick="saveReflStep()" style="width:100%;padding:13px;border-radius:12px;border:none;background:${SEL_STRENGTHS.length>0?r.color:T.border};color:${SEL_STRENGTHS.length>0?'#fff':T.muted};font-weight:700;font-size:14px;font-family:inherit">Continuar →</button>`;
+}
+function toggleStrength(label,icon){
+  if(SEL_STRENGTHS.some(x=>x.label===label)) SEL_STRENGTHS=SEL_STRENGTHS.filter(x=>x.label!==label);
+  else SEL_STRENGTHS.push({label,icon});
+  renderReflStep();
+}
+function renderAcknowledge(r){
+  return `<p style="font-size:13px;color:${T.soft};line-height:1.6;margin-bottom:14px">Reconocer tus miedos no significa que te dominen — significa que los ves con claridad:</p>
+  ${r.fears.map(f=>`<button onclick="toggleFear('${f.id}')" style="width:100%;text-align:left;padding:12px 16px;border-radius:12px;margin-bottom:8px;border:1px solid ${SEL_FEARS[f.id]?r.color+'66':T.border};background:${SEL_FEARS[f.id]?r.color+'15':T.card};display:flex;align-items:center;gap:12px;font-family:inherit;transition:all .15s">
+    <div style="width:20px;height:20px;border-radius:6px;border:1px solid ${SEL_FEARS[f.id]?r.color:T.muted};background:${SEL_FEARS[f.id]?r.color:'transparent'};display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:12px;color:#fff">${SEL_FEARS[f.id]?'✓':''}</div>
+    <span style="font-size:13px;color:${SEL_FEARS[f.id]?T.text:T.soft}">${f.text}</span>
+  </button>`).join('')}
+  <button onclick="saveReflStep()" style="width:100%;padding:13px;border-radius:12px;border:none;background:${r.color};color:#fff;font-weight:700;font-size:14px;font-family:inherit;margin-top:8px">Finalizar módulo →</button>`;
+}
+function toggleFear(id){SEL_FEARS[id]=!SEL_FEARS[id];renderReflStep();}
+function saveReflStep(){
+  const r=REFLECTIONS[REFL_STEP];
+  if(r.type==='select3') REFL_DATA.valores=SEL_VALUES;
+  else if(r.type==='phrases') REFL_DATA.motivaciones={...PHRASE_VALS};
+  else if(r.type==='cards') REFL_DATA.fortalezas=SEL_STRENGTHS;
+  else if(r.type==='acknowledge') REFL_DATA.miedos={...SEL_FEARS};
+  if(REFL_STEP<REFLECTIONS.length-1){REFL_STEP++;renderReflStep();}
+  else{
+    SELF_RESULTS.reflection=REFL_DATA;
+    STATE.self={...STATE.self||{},...SELF_RESULTS};
+    document.getElementById('screen').innerHTML=`<div class="screen-enter" style="padding:24px 20px">
+      ${backBtn('← Volver','renderSelfMenu_()')}
+      <div style="text-align:center;margin-bottom:20px">
+        <div style="font-size:40px;margin-bottom:8px">🌱</div>
+        <h3 style="font-family:'Clash Display',sans-serif;font-size:17px;font-weight:700;color:${T.text};margin:0 0 4px">Autoconocimiento completado</h3>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:10px">
+        ${REFLECTIONS.map(r=>`<div style="background:${T.card};border:1px solid ${r.color}33;border-left:3px solid ${r.color};border-radius:12px;padding:13px 16px">
+          <div style="font-weight:700;font-size:13px;color:${r.color};margin-bottom:4px">${r.icon} ${r.title}</div>
+          <div style="font-size:12px;color:${T.soft};line-height:1.6">${
+            r.type==='select3'?(REFL_DATA.valores||[]).join(' · ')
+            :r.type==='phrases'?r.phrases.map(p=>`<div><span style="color:${T.muted}">${p.prompt} </span><span style="color:${T.text}">${(REFL_DATA.motivaciones||{})[p.id]||'—'}</span></div>`).join('')
+            :r.type==='cards'?(REFL_DATA.fortalezas||[]).map(f=>f.label).join(' · ')
+            :REFLECTIONS[3].fears.filter(f=>(REFL_DATA.miedos||{})[f.id]).map(f=>f.text).join(' | ')||'Ninguno seleccionado'
+          }</div>
+        </div>`).join('')}
+      </div>
+    </div>`;
+  }
+}
+
+/* ═══════════════════════════════════════════════════
+   MI FUTURO
+═══════════════════════════════════════════════════ */
+let FUTURO_VIEW='menu';
+let BIEN_DIM=0; let BIEN_Q=0; let BIEN_ANS={};
+let PROY_STEP=0; let PROY_DATA={};
+
+function renderFuture(){
+  FUTURO_VIEW='menu';
+  return renderFuturoMenu();
+}
+function renderFuturoMenu(){
+  const b=STATE.future?.bienestar, p=STATE.future?.proyecto;
+  const mods=[
+    {key:"bienestar",icon:"💛",color:"#facc15",title:"Mapa de Bienestar",desc:"¿Cómo estás en las 5 dimensiones que importan antes de decidir?",done:!!b},
+    {key:"proyecto",icon:"✉️",color:T.p2,title:"Mi Proyecto de Vida",desc:"Misión, visión, opciones, plan de acción y carta al yo del futuro",done:!!p},
+  ];
+  const all=b&&p;
+  return `<div style="padding:24px 20px">
+    ${sectionHeader('🌱 Mi Futuro','Primero mide tu bienestar, luego construye tu proyecto de vida.')}
+    <div style="display:flex;flex-direction:column;gap:12px">
+      ${mods.map(m=>`<button onclick="openFuturo('${m.key}')" style="background:${T.card};border:1px solid ${m.done?m.color+'55':T.border};border-radius:14px;padding:18px 20px;display:flex;align-items:center;gap:14px;width:100%;text-align:left;font-family:inherit;transition:transform .2s">
+        <div style="width:48px;height:48px;border-radius:14px;background:${m.color}18;display:flex;align-items:center;justify-content:center;font-size:24px;flex-shrink:0">${m.icon}</div>
+        <div style="flex:1">
+          <div style="font-weight:700;font-size:14px;color:${T.text};margin-bottom:2px">${m.title}</div>
+          <div style="font-size:12px;color:${T.muted}">${m.desc}</div>
+        </div>
+        <span style="font-size:${m.done?16:18}px;color:${m.done?m.color:T.muted}">${m.done?'✓':'›'}</span>
+      </button>`).join('')}
+    </div>
+    ${all?`<div style="margin-top:16px;background:linear-gradient(135deg,${T.p2}15,#facc1510);border:1px solid ${T.p2}44;border-radius:14px;padding:16px">
+      <div style="font-size:13px;color:${T.p2};font-weight:700;margin-bottom:4px">¡Sección completa! 🌟</div>
+      <p style="font-size:13px;color:${T.soft};margin:0">Ve a <strong style="color:${T.text}">Mi Perfil</strong> para ver el resumen completo.</p>
+    </div>`:''}
+  </div>`;
+}
+function openFuturo(key){
+  if(key==='bienestar') startBienestar();
+  else startProyecto();
+}
+function renderFuturoMenu_(){
+  document.getElementById('screen').innerHTML=`<div class="screen-enter">${renderFuturoMenu()}</div>`;
+}
+
+/* Bienestar */
+function startBienestar(){BIEN_DIM=0;BIEN_Q=0;BIEN_ANS={};renderBienestar();}
+function renderBienestar(){
+  const dim=BIENESTAR[BIEN_DIM];
+  const totalQ=BIENESTAR.reduce((s,d)=>s+d.q.length,0);
+  const doneQ=BIENESTAR.slice(0,BIEN_DIM).reduce((s,d)=>s+d.q.length,0)+BIEN_Q;
+  const pct=Math.round((doneQ/totalQ)*100);
+  document.getElementById('screen').innerHTML=`<div class="screen-enter" style="padding:24px 20px">
+    ${backBtn('← Volver','renderFuturoMenu_()')}
+    <h3 style="font-family:'Clash Display',sans-serif;font-size:16px;font-weight:700;color:${T.text};margin:0 0 14px">💛 Mapa de Bienestar</h3>
+    <div style="margin-bottom:20px">
+      <div style="display:flex;justify-content:space-between;margin-bottom:4px">
+        <span style="font-size:12px;color:${T.muted}">${dim.icon} ${dim.name} · ${BIEN_Q+1}/${dim.q.length}</span>
+        <span style="font-size:12px;color:#facc15;font-weight:700">${pct}%</span>
+      </div>
+      ${pbar(pct,'#facc15')}
+    </div>
+    ${questionCard(dim.q[BIEN_Q])}
+    <p style="font-size:12px;color:${T.muted};text-align:center;margin-bottom:12px">¿Qué tanto describes tu situación actual?</p>
+    ${scaleButtons('pickBienestar')}
+  </div>`;
+}
+function pickBienestar(v){
+  const dim=BIENESTAR[BIEN_DIM];
+  BIEN_ANS[`${dim.id}_${BIEN_Q}`]=v;
+  if(BIEN_Q<dim.q.length-1){BIEN_Q++;renderBienestar();}
+  else if(BIEN_DIM<BIENESTAR.length-1){BIEN_DIM++;BIEN_Q=0;renderBienestar();}
+  else{
+    const scores={};
+    BIENESTAR.forEach(d=>{
+      const total=d.q.reduce((acc,_,i)=>(BIEN_ANS[`${d.id}_${i}`]||0)+acc,0);
+      scores[d.id]=Math.round((total/(d.q.length*5))*100);
+    });
+    STATE.future={...STATE.future||{},bienestar:scores};
+    renderBienestarResult(scores);
+  }
+}
+function renderBienestarResult(scores){
+  const getCol=v=>v>=70?T.p2:v>=45?'#facc15':T.p3;
+  document.getElementById('screen').innerHTML=`<div class="screen-enter" style="padding:24px 20px">
+    ${backBtn('← Volver','renderFuturoMenu_()')}
+    <div style="text-align:center;margin-bottom:20px">
+      <div style="font-size:38px;margin-bottom:8px">💛</div>
+      <h3 style="font-family:'Clash Display',sans-serif;font-size:17px;font-weight:700;color:${T.text};margin:0 0 4px">Tu Mapa de Bienestar</h3>
+    </div>
+    <div style="display:flex;flex-direction:column;gap:12px;margin-bottom:16px">
+      ${BIENESTAR.map(d=>{
+        const v=scores[d.id]||0;const col=getCol(v);
+        return `<div style="background:${T.card};border:1px solid ${col}33;border-radius:14px;padding:14px 16px">
+          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px">
+            <span style="font-size:13px;font-weight:700;color:${T.text}">${d.icon} ${d.name}</span>
+            <span style="font-size:13px;font-weight:800;color:${col}">${v}%</span>
+          </div>
+          ${pbar(v,col)}
+          <div style="font-size:11px;color:${T.muted};margin-top:5px">${v>=70?'✓ Área fortalecida':v>=45?'⚡ Área en desarrollo':'⚠️ Área que merece atención'}</div>
+        </div>`;
+      }).join('')}
+    </div>
+    <div style="background:${T.card};border:1px solid ${T.border};border-radius:14px;padding:14px">
+      <div style="font-size:12px;color:${T.muted};margin-bottom:6px">💡 Recuerda</div>
+      <p style="font-size:13px;color:${T.soft};margin:0;line-height:1.6">Este mapa refleja tu momento actual, no tu destino. Las áreas en rojo no te limitan — te dicen dónde poner atención antes de tomar grandes decisiones.</p>
+    </div>
+  </div>`;
+}
+
+/* Proyecto de Vida */
+function startProyecto(){PROY_STEP=0;PROY_DATA={...STATE.future?.proyecto||{}};renderProyecto();}
+function renderProyecto(){
+  const s=PROYECTO_STEPS[PROY_STEP];
+  const bars=PROYECTO_STEPS.map((_,i)=>`<div style="flex:1;height:3px;border-radius:2px;background:${i<=PROY_STEP?s.color:T.border};transition:background .3s"></div>`).join('');
+  document.getElementById('screen').innerHTML=`<div class="screen-enter" style="padding:24px 20px">
+    ${backBtn('← Volver','renderFuturoMenu_()')}
+    <div style="display:flex;gap:5px;margin-bottom:18px">${bars}</div>
+    <div style="display:flex;align-items:center;gap:10px;margin-bottom:8px">
+      <div style="width:42px;height:42px;border-radius:12px;background:${s.color}18;display:flex;align-items:center;justify-content:center;font-size:22px">${s.icon}</div>
+      <div>
+        <div style="font-weight:700;font-size:15px;color:${T.text}">${s.title}</div>
+        <div style="font-size:12px;color:${T.muted}">${s.instruction}</div>
+      </div>
+    </div>
+    <div style="font-size:11px;color:${T.muted};text-align:right;margin-bottom:8px">${PROY_STEP+1}/${PROYECTO_STEPS.length}</div>
+    <textarea id="proy_input" rows="${s.id==='carta'?8:3}" placeholder="${s.ph}" oninput="PROY_DATA['${s.id}']=this.value"
+      style="width:100%;padding:14px;border-radius:12px;background:${T.card};border:1px solid ${T.border};color:${T.text};font-size:13px;outline:none;font-family:inherit;line-height:1.6;box-sizing:border-box"
+    >${PROY_DATA[s.id]||''}</textarea>
+    <div style="display:flex;gap:10px;margin-top:12px">
+      ${PROY_STEP>0?`<button onclick="prevProy()" style="flex:1;padding:13px;border-radius:12px;border:1px solid ${T.border};background:transparent;color:${T.muted};font-weight:600;font-size:13px;font-family:inherit">← Anterior</button>`:''}
+      <button onclick="nextProy()" style="flex:2;padding:13px;border-radius:12px;border:none;background:${s.color};color:#fff;font-weight:700;font-size:14px;font-family:inherit">${PROY_STEP===PROYECTO_STEPS.length-1?'Finalizar ✓':'Continuar →'}</button>
+    </div>
+  </div>`;
+  const ta=document.getElementById('proy_input');
+  if(ta){ta.addEventListener('focus',()=>ta.style.borderColor=s.color);ta.addEventListener('blur',()=>ta.style.borderColor=T.border);}
+}
+function nextProy(){
+  const s=PROYECTO_STEPS[PROY_STEP];
+  const ta=document.getElementById('proy_input');
+  if(ta) PROY_DATA[s.id]=ta.value;
+  if(PROY_STEP<PROYECTO_STEPS.length-1){PROY_STEP++;renderProyecto();}
+  else{
+    STATE.future={...STATE.future||{},proyecto:PROY_DATA};
+    renderFuturoMenu_();
+  }
+}
+function prevProy(){
+  const ta=document.getElementById('proy_input');
+  if(ta) PROY_DATA[PROYECTO_STEPS[PROY_STEP].id]=ta.value;
+  if(PROY_STEP>0){PROY_STEP--;renderProyecto();}
+}
+
+/* ═══════════════════════════════════════════════════
+   CÓMO APRENDO
+═══════════════════════════════════════════════════ */
+let NEURO_VIEW='menu';
+function renderNeuro(){NEURO_VIEW='menu';return renderNeuroMenu();}
+function renderNeuroMenu(){
+  const scores=STATE.neuro;
+  const mods=[
+    {icon:"🧪",color:"#a78bfa",title:"Test: Mi Perfil Neuroeducativo",desc:"16 preguntas — FE, regulación emocional, autorregulación, motivación",action:"startNeuroTest()",done:!!scores,locked:false},
+    {icon:"📚",color:"#60a5fa",title:"Mecanismos de Aprendizaje",desc:"8 tarjetas con base en Mora, Dehaene, Immordino-Yang, Diamond",action:"openMecanismos()",done:false,locked:false},
+    {icon:"🎯",color:"#34d399",title:"Mis Estrategias Personalizadas",desc:"Técnicas concretas según tu perfil neuroeducativo",action:"openEstrategias()",done:false,locked:!scores},
+  ];
+  return `<div style="padding:24px 20px">
+    ${sectionHeader('🧠 Cómo Aprendo','Conocer cómo funciona tu cerebro es tan importante como elegir tu carrera.')}
+    <div style="display:flex;flex-direction:column;gap:11px">
+      ${mods.map(m=>`<button onclick="${m.locked?'':m.action}" style="background:${T.card};border:1px solid ${m.done?m.color+'55':T.border};border-radius:14px;padding:18px 20px;display:flex;align-items:center;gap:14px;width:100%;text-align:left;font-family:inherit;opacity:${m.locked?.35:1};transition:transform .2s" ${m.locked?'disabled':''}>
+        <div style="width:48px;height:48px;border-radius:14px;background:${m.color}18;display:flex;align-items:center;justify-content:center;font-size:24px;flex-shrink:0">${m.icon}</div>
+        <div style="flex:1">
+          <div style="font-weight:700;font-size:14px;color:${T.text};margin-bottom:2px">${m.title}</div>
+          <div style="font-size:12px;color:${T.muted};line-height:1.4">${m.desc}</div>
+        </div>
+        <span style="font-size:${m.done?14:18}px;color:${m.done?m.color:m.locked?T.muted:T.muted}">${m.done?'✓':m.locked?'🔒':'›'}</span>
+      </button>`).join('')}
+    </div>
+    ${scores?`<div style="margin-top:16px;background:#a78bfa18;border:1px solid #a78bfa44;border-radius:14px;padding:16px">
+      <div style="font-size:12px;color:#a78bfa;font-weight:700;margin-bottom:8px">Tu perfil neuroeducativo</div>
+      <div style="display:flex;flex-wrap:wrap;gap:8px">
+        ${Object.entries(scores).map(([k,v])=>{const info=NEURO_DIMS[k];const col=v>=70?T.p2:v>=45?'#facc15':T.p3;return `<div style="background:${col}15;border:1px solid ${col}33;border-radius:10px;padding:6px 12px"><span style="font-size:12px;color:${col};font-weight:700">${info.icon} ${info.name}</span><span style="font-size:11px;color:${T.muted};margin-left:6px">${v}%</span></div>`;}).join('')}
+      </div>
+    </div>`:''}
+  </div>`;
+}
+function renderNeuroMenu_(){document.getElementById('screen').innerHTML=`<div class="screen-enter">${renderNeuroMenu()}</div>`;}
+function startNeuroTest(){
+  startTest(NEURO_Q,'dim','#a78bfa','Perfil Neuroeducativo','🧪',(ans)=>{
+    const raw={fe:0,re:0,ar:0,mi:0},cnt={fe:0,re:0,ar:0,mi:0};
+    Object.values(ans).forEach(a=>{raw[a.dim]+=a.v;cnt[a.dim]++;});
+    const pcts={};Object.keys(raw).forEach(k=>{pcts[k]=Math.round((raw[k]/(cnt[k]*5))*100);});
+    STATE.neuro=pcts;
+    openEstrategias();
+  });
+}
+function openMecanismos(){
+  let openIdx=null;
+  const renderM=()=>{
+    document.getElementById('screen').innerHTML=`<div class="screen-enter" style="padding:24px 20px">
+      ${backBtn('← Volver','renderNeuroMenu_()')}
+      <h3 style="font-family:'Clash Display',sans-serif;font-size:17px;font-weight:700;color:${T.text};margin:0 0 4px">📚 Mecanismos de Aprendizaje</h3>
+      <p style="color:${T.muted};font-size:13px;margin-bottom:18px">Toca cada tarjeta para conocer el mecanismo</p>
+      <div style="display:flex;flex-direction:column;gap:10px">
+        ${MECANISMOS.map((m,i)=>`<div style="background:${T.card};border:1px solid ${openIdx===i?m.color+'55':T.border};border-radius:14px;overflow:hidden;transition:border-color .2s">
+          <button onclick="toggleMec(${i})" style="width:100%;padding:14px 18px;display:flex;align-items:center;justify-content:space-between;border-left:4px solid ${m.color};background:transparent;font-family:inherit;text-align:left">
+            <div style="display:flex;align-items:center;gap:12px">
+              <span style="font-size:22px">${m.icon}</span>
+              <div>
+                <div style="font-weight:700;font-size:14px;color:${T.text}">${m.title}</div>
+                <div style="font-size:11px;color:${T.muted}">${m.autor}</div>
+              </div>
+            </div>
+            <span style="color:${T.muted};font-size:18px;transform:${openIdx===i?'rotate(90deg)':'none'};display:block;transition:transform .25s">›</span>
+          </button>
+          ${openIdx===i?`<div style="border-top:1px solid ${T.border};padding:16px 18px;display:flex;flex-direction:column;gap:14px">
+            <div><div style="font-size:11px;color:${m.color};font-weight:700;text-transform:uppercase;letter-spacing:1px;margin-bottom:5px">¿Qué es?</div><p style="font-size:13px;color:${T.soft};margin:0;line-height:1.65">${m.concepto}</p></div>
+            <div style="background:${m.color}10;border-radius:10px;padding:12px 14px"><div style="font-size:11px;color:${m.color};font-weight:700;margin-bottom:4px">📖 En el estudio</div><p style="font-size:13px;color:${T.text};margin:0;line-height:1.6">${m.enAula}</p></div>
+            <div style="background:rgba(255,255,255,.03);border-radius:10px;padding:12px 14px"><div style="font-size:11px;color:${T.p2};font-weight:700;margin-bottom:4px">🚀 En tu carrera</div><p style="font-size:13px;color:${T.soft};margin:0;line-height:1.6">${m.enVida}</p></div>
+          </div>`:''}
+        </div>`).join('')}
+      </div>
+    </div>`;
+  };
+  window.toggleMec=(i)=>{openIdx=openIdx===i?null:i;renderM();};
+  renderM();
+}
+function openEstrategias(){
+  const scores=STATE.neuro;
+  if(!scores){renderNeuroMenu_();return;}
+  const ESTRAT={
+    fe:[{tec:"Método Pomodoro",icon:"⏱️",desc:"25 min de foco total + 5 min de descanso. Entrena la atención sostenida respetando el ritmo natural del cerebro."},
+        {tec:"Lista de una sola cosa",icon:"📌",desc:"Antes de estudiar escribe UNA sola tarea. Elimina la sobrecarga de la memoria de trabajo."},
+        {tec:"Entorno de estudio fijo",icon:"🪑",desc:"Estudia siempre en el mismo lugar y hora. El cerebro aprende a 'activarse' por contexto."}],
+    re:[{tec:"Anclaje emocional",icon:"💛",desc:"Antes de estudiar escribe en 2 líneas por qué ese tema importa en tu vida. Conectar contenido con emoción activa el aprendizaje profundo."},
+        {tec:"Diario de logros",icon:"📓",desc:"Al terminar cada sesión escribe 1 cosa que entendiste hoy. La dopamina del pequeño logro reemplaza la ansiedad."},
+        {tec:"Respiración 4-7-8",icon:"🌬️",desc:"4 seg inhala, 7 sostén, 8 exhala. Activa el nervio vago y reduce el cortisol antes de exámenes."}],
+    ar:[{tec:"Planificación semanal",icon:"📅",desc:"Cada domingo planifica 3 metas de estudio. Zimmerman demostró que solo escribirlas aumenta la probabilidad de cumplirlas en 60%."},
+        {tec:"Auto-testing",icon:"🔄",desc:"Después de cada sesión cierra el material y escribe todo lo que recuerdas. Lo que faltó es lo que debes repasar."},
+        {tec:"Revisión espaciada",icon:"🗓️",desc:"Repasa: el día que lo viste, 3 días después y 1 semana después. Combate la curva del olvido."}],
+    mi:[{tec:"Conecta con tu por qué",icon:"🔥",desc:"Escribe cómo cada tema se relaciona con la carrera o vida que quieres. El sentido personal activa la motivación intrínseca."},
+        {tec:"Enseña lo que aprendes",icon:"🗣️",desc:"Explícale a alguien lo que acabas de aprender. El efecto protégé activa el aprendizaje activo."},
+        {tec:"Gamifica tus metas",icon:"🎮",desc:"Convierte tus semanas de estudio en un reto personal con puntos y niveles."}],
+  };
+  const estrategias=[];
+  Object.entries(scores).forEach(([k,v])=>{if(v<70) ESTRAT[k]?.forEach(e=>estrategias.push({...e,dim:k}));});
+  const getCol=v=>v>=70?T.p2:v>=45?'#facc15':T.p3;
+  document.getElementById('screen').innerHTML=`<div class="screen-enter" style="padding:24px 20px">
+    ${backBtn('← Volver','renderNeuroMenu_()')}
+    <h3 style="font-family:'Clash Display',sans-serif;font-size:17px;font-weight:700;color:${T.text};margin:0 0 4px">🎯 Mis Estrategias Personalizadas</h3>
+    <p style="color:${T.muted};font-size:13px;margin-bottom:18px">Basadas en tu perfil neuroeducativo</p>
+    <div style="display:flex;flex-direction:column;gap:8px;margin-bottom:22px">
+      ${Object.entries(scores).map(([k,v])=>{const info=NEURO_DIMS[k];const col=getCol(v);return `<div style="background:${T.card};border:1px solid ${col}33;border-radius:12px;padding:11px 16px">
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px">
+          <span style="font-size:13px;font-weight:700;color:${T.text}">${info.icon} ${info.name}</span>
+          <span style="font-size:13px;font-weight:800;color:${col}">${v}%</span>
+        </div>
+        ${pbar(v,col)}
+        <div style="font-size:12px;color:${T.soft};margin-top:5px;line-height:1.5">${v>=70?info.alta:v>=45?info.media:info.baja}</div>
+      </div>`;}).join('')}
+    </div>
+    ${estrategias.length>0?`
+    <div style="font-size:13px;color:${T.p2};font-weight:700;margin-bottom:12px">Técnicas recomendadas (${estrategias.length})</div>
+    <div style="display:flex;flex-direction:column;gap:10px">
+      ${estrategias.map(e=>{const di=NEURO_DIMS[e.dim];return `<div style="background:${T.card};border:1px solid ${di.color}33;border-left:3px solid ${di.color};border-radius:12px;padding:14px 16px">
+        <div style="display:flex;align-items:center;gap:8px;margin-bottom:6px">
+          <span style="font-size:18px">${e.icon}</span>
+          <span style="font-size:14px;font-weight:700;color:${T.text}">${e.tec}</span>
+          <span style="font-size:10px;color:${di.color};background:${di.color}15;padding:2px 8px;border-radius:10px;font-weight:700;margin-left:auto">${di.name}</span>
+        </div>
+        <p style="font-size:13px;color:${T.soft};margin:0;line-height:1.6">${e.desc}</p>
+      </div>`;}).join('')}
+    </div>`:`<div style="background:${T.p2}12;border:1px solid ${T.p2}33;border-radius:14px;padding:20px;text-align:center">
+      <div style="font-size:32px;margin-bottom:8px">🌟</div>
+      <div style="font-size:14px;font-weight:700;color:${T.p2};margin-bottom:4px">¡Perfil muy sólido!</div>
+      <p style="font-size:13px;color:${T.soft};margin:0">Tus dimensiones están en nivel medio-alto. Explora los mecanismos para seguir potenciándote.</p>
+    </div>`}
+  </div>`;
+}
+
+/* ═══════════════════════════════════════════════════
+   CARRERAS
+═══════════════════════════════════════════════════ */
+let CAREERS_OPEN=null, CAREERS_FILTER='all';
+function renderCareers(){
+  const topTypes=STATE.tests?.riasec?Object.entries(STATE.tests.riasec).sort((a,b)=>b[1]-a[1]).slice(0,3).map(([t])=>t):[];
+  const shown=CAREERS_FILTER==='all'?CAREERS_DATA:CAREERS_DATA.filter(a=>a.types.some(t=>topTypes.includes(t)));
+  return `<div style="padding:24px 20px">
+    <button onclick="STATE.showCareers=false;render()" style="background:transparent;border:none;color:${T.muted};font-size:13px;margin-bottom:14px;font-family:inherit">← Inicio</button>
+    ${sectionHeader('🎓 Explorar Carreras','Programas disponibles en Bucaramanga y Santander')}
+    ${topTypes.length>0?`<div style="display:flex;gap:8px;margin-bottom:16px">
+      ${['all','recommended'].map(f=>`<button onclick="CAREERS_FILTER='${f}';render()" style="padding:7px 16px;border-radius:20px;border:none;background:${CAREERS_FILTER===f?T.p1:T.border+'88'};color:${CAREERS_FILTER===f?'#fff':T.muted};font-size:12px;font-weight:600;font-family:inherit;transition:all .2s">${f==='all'?'Todas':'✨ Recomendadas'}</button>`).join('')}
+    </div>`:''}
+    <div style="display:flex;flex-direction:column;gap:11px">
+      ${shown.map((area,i)=>`<div style="background:${T.card};border:1px solid ${CAREERS_OPEN===i?area.color+'55':T.border};border-radius:14px;overflow:hidden;transition:border-color .2s">
+        <button onclick="CAREERS_OPEN=${CAREERS_OPEN===i?'null':i};render()" style="width:100%;padding:15px 18px;display:flex;align-items:center;justify-content:space-between;border-left:4px solid ${area.color};background:transparent;font-family:inherit;text-align:left">
+          <div style="display:flex;align-items:center;gap:12px">
+            <span style="font-size:22px">${area.icon}</span>
+            <div>
+              <div style="font-weight:700;font-size:14px;color:${T.text}">${area.area}</div>
+              <div style="font-size:12px;color:${T.muted}">${area.careers.length} programas</div>
+            </div>
+          </div>
+          <span style="color:${T.muted};font-size:18px;display:block;transform:${CAREERS_OPEN===i?'rotate(90deg)':'none'};transition:transform .25s">›</span>
+        </button>
+        ${CAREERS_OPEN===i?`<div style="border-top:1px solid ${T.border}">
+          ${area.careers.map((c,j)=>`<div style="padding:13px 18px;${j<area.careers.length-1?'border-bottom:1px solid '+T.border:''}">
+            <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:5px">
+              <span style="font-weight:600;font-size:13px;color:${T.text}">${c.name}</span>
+              ${tag(c.demand,c.demand==='Muy Alta'?T.p2:c.demand==='Alta'?'#60a5fa':c.demand==='Media'?T.p3:T.muted)}
+            </div>
+            <div style="font-size:12px;color:${T.muted};margin-bottom:6px">💰 ${c.salary}</div>
+            <div style="display:flex;flex-wrap:wrap;gap:5px">${c.unis.map(u=>`<span style="font-size:11px;padding:2px 8px;border-radius:6px;background:${u==='UNICIENCIA'?T.p1+'22':T.border+'88'};color:${u==='UNICIENCIA'?T.p1:T.soft};border:${u==='UNICIENCIA'?'1px solid '+T.p1+'44':'none'};font-weight:${u==='UNICIENCIA'?700:400}">${u}</span>`).join('')}</div>
+          </div>`).join('')}
+        </div>`:''}
+      </div>`).join('')}
+    </div>
+  </div>`;
+}
+function bindCareers(){} // handled via onclick
+
+/* ═══════════════════════════════════════════════════
+   PERFIL COMPLETO
+═══════════════════════════════════════════════════ */
+function renderProfile(){
+  const {tests,self,future,neuro}=STATE;
+  if(!tests?.riasec) return `<div style="padding:24px 20px;text-align:center"><div style="font-size:48px;margin-bottom:12px">🔒</div><p style="color:${T.muted};font-size:14px">Completa al menos el Test RIASEC para desbloquear tu perfil.</p></div>`;
+  const riasecTop=Object.entries(tests.riasec).sort((a,b)=>b[1]-a[1]).slice(0,3).map(([t])=>t);
+  const chasideTop=tests.chaside?Object.entries(tests.chaside).sort((a,b)=>b[1]-a[1]).slice(0,2).map(([a])=>a):[];
+  const softTop=self?.soft?Object.entries(self.soft).sort((a,b)=>b[1]-a[1])[0]:null;
+  const cogTop=self?.cognitive?Object.entries(self.cognitive).sort((a,b)=>b[1]-a[1])[0]:null;
+  const myValues=self?.reflection?.valores||[];
+  const myStrengths=self?.reflection?.fortalezas||[];
+  const myFears=self?.reflection?.miedos?REFLECTIONS[3].fears.filter(f=>self.reflection.miedos[f.id]).map(f=>f.text):[];
+  const myPhrases=self?.reflection?.motivaciones||{};
+  const bienAlert=future?.bienestar?Object.entries(future.bienestar).filter(([,v])=>v<45).map(([k])=>BIENESTAR.find(d=>d.id===k)):[];
+  const proyecto=future?.proyecto||{};
+  const recommended=CAREERS_DATA.flatMap(a=>a.types.some(t=>riasecTop.includes(t))?a.careers.slice(0,2).map(c=>({...c,area:a.area,color:a.color})):[]).slice(0,6);
+
+  const sec=(title,content)=>`<div style="background:${T.card};border:1px solid ${T.border};border-radius:14px;padding:16px;margin-bottom:12px">
+    ${title?`<div style="font-size:11px;color:${T.muted};text-transform:uppercase;letter-spacing:1px;margin-bottom:10px">${title}</div>`:''}${content}</div>`;
+
+  return `<div style="padding:24px 20px">
+    ${sectionHeader('🌟 Mi Perfil Completo','Todo integrado en un solo lugar')}
+    ${sec('Perfil Vocacional RIASEC',`<div style="display:flex;gap:8px;flex-wrap:wrap">${riasecTop.map(t=>`<div style="background:${RI[t].color}18;border:1px solid ${RI[t].color}44;border-radius:10px;padding:8px 14px;display:flex;align-items:center;gap:6px"><span>${RI[t].icon}</span><span style="font-size:13px;font-weight:700;color:${RI[t].color}">${RI[t].name}</span></div>`).join('')}</div>`)}
+    ${chasideTop.length?sec('Áreas CHASIDE',`<div style="display:flex;gap:8px;flex-wrap:wrap">${chasideTop.map(a=>`<div style="background:${CI[a].color}18;border:1px solid ${CI[a].color}44;border-radius:10px;padding:8px 14px;display:flex;align-items:center;gap:6px"><span>${CI[a].icon}</span><span style="font-size:13px;font-weight:700;color:${CI[a].color}">${CI[a].name}</span></div>`).join('')}</div>`):''}
+    ${(softTop||cogTop)?`<div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:12px">
+      ${softTop?`<div style="background:${T.card};border:1px solid ${T.border};border-radius:14px;padding:14px"><div style="font-size:11px;color:${T.muted};margin-bottom:6px">Habilidad dominante</div><div style="font-size:20px;margin-bottom:4px">${SOFT_INFO[softTop[0]].icon}</div><div style="font-size:13px;font-weight:700;color:${SOFT_INFO[softTop[0]].color}">${SOFT_INFO[softTop[0]].name}</div><div style="font-size:11px;color:${T.muted};margin-top:3px;line-height:1.4">${SOFT_INFO[softTop[0]].desc}</div></div>`:''}
+      ${cogTop?`<div style="background:${T.card};border:1px solid ${T.border};border-radius:14px;padding:14px"><div style="font-size:11px;color:${T.muted};margin-bottom:6px">Capacidad dominante</div><div style="font-size:20px;margin-bottom:4px">${COG_INFO[cogTop[0]].icon}</div><div style="font-size:13px;font-weight:700;color:${COG_INFO[cogTop[0]].color}">${COG_INFO[cogTop[0]].name}</div><div style="font-size:11px;color:${T.muted};margin-top:3px;line-height:1.4">${COG_INFO[cogTop[0]].desc}</div></div>`:''}
+    </div>`:''}
+    ${myValues.length?sec('⭐ Mis valores',`<div style="display:flex;flex-wrap:wrap;gap:6px">${myValues.map(v=>tag(v,'#facc15')).join('')}</div>`):''}
+    ${myStrengths.length?sec('💪 Mis fortalezas',`<div style="display:flex;flex-wrap:wrap;gap:6px">${myStrengths.map(f=>tag(`${f.icon} ${f.label}`,T.p2)).join('')}</div>`):''}
+    ${(myPhrases.a||myPhrases.b||myPhrases.c)?sec('🔥 Lo que me mueve',REFLECTIONS[1].phrases.filter(p=>myPhrases[p.id]).map(p=>`<div style="margin-bottom:8px;padding-bottom:8px;border-bottom:1px solid ${T.border}"><div style="font-size:11px;color:${T.muted}">${p.prompt}</div><div style="font-size:13px;color:${T.text};margin-top:2px">${myPhrases[p.id]}</div></div>`).join('')):''}
+    ${neuro?sec('🧠 Perfil Neuroeducativo',`<div style="display:flex;flex-direction:column;gap:8px">${Object.entries(neuro).map(([k,v])=>{const info=NEURO_DIMS[k];const col=v>=70?T.p2:v>=45?'#facc15':T.p3;return `<div style="display:flex;justify-content:space-between;align-items:center"><span style="font-size:13px;color:${T.text}">${info.icon} ${info.name}</span><div style="display:flex;align-items:center;gap:8px"><div style="width:80px;height:4px;background:${T.border};border-radius:2px"><div style="height:100%;width:${v}%;background:${col};border-radius:2px"></div></div><span style="font-size:12px;font-weight:700;color:${col};min-width:32px">${v}%</span></div></div>`;}).join('')}</div>`):''}
+    ${bienAlert.length?sec('⚠️ Bienestar a fortalecer',`<div style="display:flex;flex-wrap:wrap;gap:6px;margin-bottom:8px">${bienAlert.map(d=>tag(`${d.icon} ${d.name}`,T.p3)).join('')}</div><p style="font-size:12px;color:${T.muted};margin:0;line-height:1.5">Considera hablar con tu orientador/a sobre estas áreas antes de tomar decisiones.</p>`):''}
+    ${(proyecto.mision||proyecto.vision)?sec('🌱 Mi Proyecto de Vida',[{id:"mision",icon:"🎯",label:"Misión"},{id:"vision",icon:"🔭",label:"Visión a 5 años"},{id:"opcion_a",icon:"⭐",label:"Opción A"},{id:"opcion_b",icon:"🔄",label:"Plan B"}].filter(s=>proyecto[s.id]).map((s,i,arr)=>`<div style="margin-bottom:${i<arr.length-1?10:0}px;padding-bottom:${i<arr.length-1?10:0}px;border-bottom:${i<arr.length-1?'1px solid '+T.border:'none'}"><div style="font-size:11px;color:${T.muted};margin-bottom:3px">${s.icon} ${s.label}</div><div style="font-size:13px;color:${T.text};line-height:1.5">${proyecto[s.id]}</div></div>`).join('')):''}
+    ${myFears.length?sec('🌑 Miedos reconocidos',myFears.map((f,i)=>`<div style="font-size:12px;color:${T.soft};padding:4px 0;${i<myFears.length-1?'border-bottom:1px solid '+T.border:''}">• ${f}</div>`).join('')):''}
+    ${sec('🎯 Carreras recomendadas para tu perfil',recommended.map((c,i)=>`<div style="display:flex;justify-content:space-between;align-items:center;padding:10px 0;${i<recommended.length-1?'border-bottom:1px solid '+T.border:''}"><div><div style="font-size:13px;font-weight:600;color:${T.text}">${c.name}</div><div style="font-size:11px;color:${T.muted}">${c.area} · ${c.salary}</div></div>${tag(c.demand,c.demand==='Muy Alta'?T.p2:c.demand==='Alta'?'#60a5fa':T.p3)}</div>`).join(''))}
+    ${!self?`<div style="background:${T.p3}12;border:1px solid ${T.p3}33;border-radius:14px;padding:16px;margin-top:4px"><div style="font-size:13px;color:${T.p3};font-weight:700;margin-bottom:4px">💡 Enriquece tu perfil</div><p style="font-size:13px;color:${T.soft};margin:0">Completa <strong style="color:${T.text}">Yo Me Conozco</strong> para agregar habilidades, valores y fortalezas.</p></div>`:''}
+  </div>`;
+}
+
+/* ═══════════════════════════════════════════════════
+   GIMNASIO COGNITIVO
+═══════════════════════════════════════════════════ */
+const GAMES_DATA=[
+  {id:"corsi",    name:"Bloques de Corsi",     icon:"🟦",color:"#a78bfa",fe:"Memoria Visoespacial",   desc:"Memoriza y repite la secuencia de bloques iluminados."},
+  {id:"digitos",  name:"Span de Dígitos",      icon:"🔢",color:"#22d3ee",fe:"Memoria Verbal",         desc:"Recuerda la secuencia de dígitos directo e inverso."},
+  {id:"palabras", name:"Span de Palabras",     icon:"🔤",color:"#f472b6",fe:"Memoria Semántica",      desc:"Memoriza palabras y reconstruye la lista."},
+  {id:"gonogo",   name:"Go / No-Go",           icon:"🚫",color:"#4ade80",fe:"Inhibición",             desc:"Presiona solo cuando aparezca el estímulo objetivo."},
+  {id:"regla",    name:"Cambio de Regla",      icon:"🔄",color:"#fbbf24",fe:"Flexibilidad Cognitiva", desc:"Clasifica según la regla activa — ¡cambia sin aviso!"},
+  {id:"vigilancia",name:"Vigilancia",          icon:"👁️",color:"#22d3ee",fe:"Atención Sostenida",    desc:"Detecta el intruso en el flujo de estímulos."},
+  {id:"decision", name:"Decisión Rápida",      icon:"⚡",color:"#fbbf24",fe:"Vel. de Procesamiento", desc:"Responde correctamente en el menor tiempo posible."},
+];
+const WORDS_POOL=["casa","luna","perro","libro","árbol","mesa","río","cielo","piedra","flor","agua","fuego","mano","viento","silla","nube","pez","sol","carta","llave","puerta","coche","roca","campo","jardín","pan","copa","luz","hoja","mar"];
+const rand=(a,b)=>Math.floor(Math.random()*(b-a+1))+a;
+const sleep=ms=>new Promise(r=>setTimeout(r,ms));
+const shuffle=a=>[...a].sort(()=>Math.random()-.5);
+
+let GYM_STATE={view:'menu',gameId:null,score:0,level:1,errors:0,phase:'idle',data:{}};
+
+function renderGym(){
+  document.getElementById('nav').style.display='none';
+  return renderGymMenu();
+}
+function renderGymMenu(){
+  document.getElementById('nav').style.display='none';
+  const total=Object.values(STATE.gameRecords).reduce((s,v)=>s+v,0);
+  return `<div style="padding:20px 20px 28px;background:#0d0d1a;min-height:100vh">
+    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:20px">
+      <button onclick="exitGym()" style="background:rgba(13,13,26,.9);border:1px solid #1e1e3f;border-radius:10px;color:#8b8db8;font-size:12px;font-weight:700;padding:8px 14px;font-family:inherit">← App</button>
+      <div style="text-align:right">
+        <div style="font-size:11px;color:#4b5070">Puntaje total</div>
+        <div style="font-size:16px;font-weight:800;color:#fbbf24">⭐ ${total}</div>
+      </div>
+    </div>
+    <div style="text-align:center;margin-bottom:24px">
+      <div style="font-size:48px;margin-bottom:8px;filter:drop-shadow(0 0 20px #a78bfa);animation:floatY 3s ease-in-out infinite">🧠</div>
+      <h1 style="font-family:'Clash Display',sans-serif;font-size:22px;font-weight:700;background:linear-gradient(120deg,#a78bfa,#22d3ee);-webkit-background-clip:text;-webkit-text-fill-color:transparent;margin:0 0 4px">Gimnasio Cognitivo</h1>
+      <p style="color:#8b8db8;font-size:13px;margin:0">Entrena tus funciones ejecutivas · 7 juegos</p>
+    </div>
+    <div style="display:flex;flex-direction:column;gap:10px;margin-bottom:20px">
+      ${GAMES_DATA.map(g=>`<button onclick="launchGame('${g.id}')" style="background:#13132a;border:1px solid ${g.color}55;box-shadow:0 0 12px ${g.color}22;border-radius:16px;padding:14px 18px;display:flex;align-items:center;gap:14px;width:100%;text-align:left;font-family:inherit;transition:transform .15s" onmousedown="this.style.transform='scale(.98)'" onmouseup="this.style.transform='scale(1)'">
+        <div style="width:46px;height:46px;border-radius:12px;background:${g.color}20;display:flex;align-items:center;justify-content:center;font-size:22px;flex-shrink:0;box-shadow:0 0 10px ${g.color}33">${g.icon}</div>
+        <div style="flex:1">
+          <div style="font-weight:800;font-size:14px;color:#f1f5f9">${g.name}</div>
+          <div style="font-size:11px;color:${g.color};font-weight:600">${g.fe}</div>
+          <div style="font-size:11px;color:#4b5070;margin-top:2px">${g.desc}</div>
+        </div>
+        <div style="text-align:right;flex-shrink:0">${STATE.gameRecords[g.id]?`<div style="font-size:13px;font-weight:800;color:#fbbf24">🏅 ${STATE.gameRecords[g.id]}</div>`:`<div style="font-size:11px;color:#4b5070">Sin récord</div>`}</div>
+      </button>`).join('')}
+    </div>
+    <div style="background:#13132a;border:1px solid #1e1e3f;border-radius:14px;padding:16px;font-size:12px;color:#8b8db8;line-height:1.7">
+      <strong style="color:#a78bfa">¿Por qué entrenar?</strong> Las funciones ejecutivas predicen el rendimiento académico más que el CI en muchos estudios (Diamond, 2013). Practicarlas 10 min/día durante 4 semanas produce cambios medibles en la corteza prefrontal.
+    </div>
+  </div>`;
+}
+function exitGym(){document.getElementById('nav').style.display='flex';goTab(0);}
+
+function launchGame(id){
+  GYM_STATE={view:'game',gameId:id,score:0,level:3,errors:0,phase:'idle',data:{}};
+  if(id==='corsi') runCorsi();
+  else if(id==='digitos') runDigitos();
+  else if(id==='palabras') runPalabras();
+  else if(id==='gonogo') runGoNogo();
+  else if(id==='regla') runRegla();
+  else if(id==='vigilancia') runVigilancia();
+  else if(id==='decision') runDecision();
+}
+function finishGame(score){
+  const g=GAMES_DATA.find(x=>x.id===GYM_STATE.gameId);
+  const prev=STATE.gameRecords[GYM_STATE.gameId]||0;
+  const isRec=score>=prev;
+  if(isRec||score>0) STATE.gameRecords[GYM_STATE.gameId]=Math.max(prev,score);
+  saveRecords();
+  document.getElementById('screen').innerHTML=`<div style="padding:32px 20px;text-align:center;background:#0d0d1a;min-height:100vh">
+    <div style="font-size:${isRec?56:44}px;margin-bottom:12px;filter:drop-shadow(0 0 20px ${g.color});animation:floatY 2s ease-in-out infinite">${isRec?'🏆':'🎮'}</div>
+    <h2 style="font-family:'Clash Display',sans-serif;font-size:20px;font-weight:900;color:#f1f5f9;margin:0 0 4px">${isRec?'¡Nuevo récord!':'Ronda completada'}</h2>
+    <p style="color:#8b8db8;font-size:13px;margin-bottom:20px">${g.name}</p>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:24px;max-width:300px;margin-left:auto;margin-right:auto">
+      ${[['Puntaje',score,g.color],['Récord',Math.max(score,prev),'#fbbf24']].map(([l,v,col])=>`<div style="background:${col}18;border:1px solid ${col}33;border-radius:14px;padding:14px 10px">
+        <div style="font-size:26px;font-weight:900;color:${col};font-family:'Clash Display',sans-serif">${v}</div>
+        <div style="font-size:11px;color:#8b8db8">${l}</div>
+      </div>`).join('')}
+    </div>
+    <div style="background:#13132a;border:1px solid #1e1e3f;border-radius:14px;padding:16px;margin-bottom:16px;text-align:left;font-size:12px;color:#8b8db8;line-height:1.6;font-style:italic" id="share-text">🧠 Gimnasio Cognitivo — OrientaSantander\n🎮 ${g.name}\n⭐ Puntaje: ${score}${isRec?' 🏆 ¡Nuevo récord!':''}\n\n¡Entrena tus funciones ejecutivas!</div>
+    <div style="display:flex;flex-direction:column;gap:10px;max-width:300px;margin:0 auto">
+      <button onclick="copyShare()" style="width:100%;padding:13px;border-radius:12px;border:none;background:linear-gradient(135deg,#22d3eecc,#22d3ee88);color:#fff;font-weight:800;font-size:15px;font-family:inherit;box-shadow:0 0 20px #22d3ee33" id="copy-btn">📋 Copiar para compartir</button>
+      <button onclick="document.getElementById('screen').innerHTML='<div class=screen-enter>'+renderGymMenu()+'</div>'" style="width:100%;padding:13px;border-radius:12px;border:1px solid ${g.color}44;background:${g.color}15;color:${g.color};font-weight:800;font-size:15px;font-family:inherit">Volver al Gimnasio</button>
+    </div>
+  </div>`;
+  window.copyShare=()=>{
+    const text=`🧠 Gimnasio Cognitivo — OrientaSantander\n🎮 ${g.name}\n⭐ Puntaje: ${score}${isRec?' 🏆 ¡Nuevo récord!':''}\n\n¡Entrena tus funciones ejecutivas!`;
+    navigator.clipboard?.writeText(text).then(()=>{document.getElementById('copy-btn').textContent='✅ Copiado';setTimeout(()=>{if(document.getElementById('copy-btn'))document.getElementById('copy-btn').textContent='📋 Copiar para compartir';},2000);}).catch(()=>{});
+  };
+}
+
+function gymShell(title,color,score,errors,maxErr,level,sub,content){
+  const dots=maxErr<99?Array.from({length:maxErr},(_,i)=>`<div style="width:10px;height:10px;border-radius:50%;background:${i<errors?'#f87171':T.border};box-shadow:${i<errors?'0 0 6px #f87171':'none'};transition:all .3s"></div>`).join(''):`<div style="font-size:11px;color:#4b5070">∞</div>`;
+  return `<div style="padding:20px 20px 28px;background:#0d0d1a;min-height:100vh">
+    <div style="display:flex;align-items:center;gap:10px;margin-bottom:16px">
+      <button onclick="finishGame(${score});/* skip */" style="background:transparent;border:none;color:#4b5070;cursor:pointer;font-size:13px;font-family:inherit">← Salir</button>
+      <div style="flex:1">
+        <div style="font-family:'Clash Display',sans-serif;font-weight:800;font-size:15px;color:#f1f5f9">${title}</div>
+        ${sub?`<div style="font-size:11px;color:${color};font-weight:700">${sub}</div>`:''}
+      </div>
+      <div style="background:${color}22;border:1px solid ${color}44;border-radius:10px;padding:6px 14px;font-size:13px;font-weight:800;color:${color}">⭐ ${score}</div>
+    </div>
+    <div style="display:flex;justify-content:space-between;align-items:center;background:#13132a;border:1px solid #1e1e3f;border-radius:10px;padding:8px 14px;margin-bottom:16px">
+      <div style="font-size:12px;color:#8b8db8">Nivel <strong style="color:${color}">${level}</strong></div>
+      <div style="display:flex;gap:5px;align-items:center">${dots}</div>
+    </div>
+    <div style="border:1px solid ${color}55;box-shadow:0 0 12px ${color}22,inset 0 0 12px ${color}08;border-radius:16px;padding:24px 16px;min-height:200px;display:flex;flex-direction:column;justify-content:center;background:#13132a">
+      ${content}
+    </div>
+  </div>`;
+}
+
+/* ── CORSI ── */
+function runCorsi(){
+  const lvl=GYM_STATE.level;
+  const seq=Array.from({length:lvl},()=>rand(0,11));
+  GYM_STATE.data={seq,input:[],lit:-1};
+  showCorsi(seq);
+}
+async function showCorsi(seq){
+  GYM_STATE.phase='showing';
+  renderCorsiBoard();
+  await sleep(500);
+  for(let i=0;i<seq.length;i++){
+    GYM_STATE.data.lit=seq[i];renderCorsiBoard();await sleep(600);
+    GYM_STATE.data.lit=-1;renderCorsiBoard();await sleep(300);
+  }
+  GYM_STATE.phase='input';GYM_STATE.data.input=[];renderCorsiBoard();
+}
+function renderCorsiBoard(){
+  const {seq,lit,input}=GYM_STATE.data;const {phase,score,errors,level}=GYM_STATE;
+  const g=GAMES_DATA[0];
+  const blocks=Array.from({length:12},(_,i)=>`<button onclick="tapCorsi(${i})" style="width:100%;padding-top:100%;position:relative;border-radius:10px;border:2px solid ${lit===i?g.color:T.border};background:${lit===i?g.color:input.includes(i)?g.color+'44':'#0d0d1a'};box-shadow:${lit===i?'0 0 20px '+g.color:'none'};transition:all .15s;cursor:${phase==='input'?'pointer':'default'}"></button>`).join('');
+  document.getElementById('screen').innerHTML=gymShell(g.name,g.color,score,errors,3,level,
+    phase==='showing'?'Memoriza la secuencia...':phase==='input'?`Repite: ${input.length}/${seq.length}`:'',
+    `<div style="text-align:center;margin-bottom:12px"><span style="font-size:12px;color:${g.color};font-weight:700">${phase==='showing'?'👀 Observa':'👆 Toca los bloques en orden'}</span></div>
+    <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:8px;max-width:280px;margin:0 auto">${blocks}</div>`
+  );
+}
+function tapCorsi(i){
+  if(GYM_STATE.phase!=='input')return;
+  const {seq,input}=GYM_STATE.data;
+  const newInput=[...input,i];GYM_STATE.data.input=newInput;
+  const pos=newInput.length-1;
+  if(newInput[pos]!==seq[pos]){
+    GYM_STATE.errors++;
+    if(GYM_STATE.errors>=3){finishGame(GYM_STATE.score);return;}
+    GYM_STATE.level=Math.max(3,GYM_STATE.level-1);
+    setTimeout(()=>runCorsi(),800);
+  } else if(newInput.length===seq.length){
+    GYM_STATE.score+=GYM_STATE.level*10;GYM_STATE.level++;
+    setTimeout(()=>runCorsi(),600);
+  }
+  renderCorsiBoard();
+}
+
+/* ── DÍGITOS ── */
+function runDigitos(){
+  GYM_STATE.data={seq:[],shown:-1,mode:GYM_STATE.data.mode||'forward',typed:''};
+  const lvl=GYM_STATE.level;
+  const seq=Array.from({length:lvl},()=>rand(0,9));
+  GYM_STATE.data.seq=seq;GYM_STATE.phase='showing';
+  renderDigitos();
+  (async()=>{
+    await sleep(600);
+    for(const d of seq){GYM_STATE.data.shown=d;renderDigitos();await sleep(700);GYM_STATE.data.shown=-1;renderDigitos();await sleep(300);}
+    GYM_STATE.phase='input';GYM_STATE.data.typed='';renderDigitos();
+  })();
+}
+function renderDigitos(){
+  const {shown,mode,typed}=GYM_STATE.data;const {phase,score,errors,level}=GYM_STATE;const g=GAMES_DATA[1];
+  const display=phase==='showing'?(shown>=0?`<div style="font-size:72px;font-weight:900;color:${g.color};font-family:'Clash Display',sans-serif;text-shadow:0 0 30px ${g.color};animation:popIn .2s">${shown}</div>`:`<div style="font-size:72px;color:#1e1e3f">·</div>`)
+    :`<div style="text-align:center">
+      <div style="font-size:13px;color:${g.color};margin-bottom:12px">${mode==='forward'?'Escribe los dígitos en orden':'Escribe los dígitos en ORDEN INVERSO'}</div>
+      <input id="dig_input" value="${typed}" oninput="GYM_STATE.data.typed=this.value.replace(/\\D/g,'')" onkeydown="if(event.key==='Enter')submitDigitos()" maxlength="${level}" style="font-size:28px;font-weight:800;letter-spacing:8px;text-align:center;width:160px;padding:10px 16px;border-radius:12px;background:#0d0d1a;border:2px solid ${g.color};color:${g.color};outline:none;font-family:'Clash Display',sans-serif" autofocus/>
+      <br/>
+      <button onclick="submitDigitos()" style="margin-top:12px;padding:12px 28px;border-radius:12px;border:1px solid ${g.color};background:linear-gradient(135deg,${g.color}cc,${g.color}88);color:#fff;font-weight:800;font-size:15px;font-family:inherit;box-shadow:0 0 20px ${g.color}44">Confirmar</button>
+    </div>`;
+  document.getElementById('screen').innerHTML=gymShell(g.name,g.color,score,errors,3,level,mode==='backward'?'Modo inverso 🔄':undefined,
+    `<div style="text-align:center;min-height:80px;display:flex;align-items:center;justify-content:center">${display}</div>`);
+  if(phase==='input') setTimeout(()=>document.getElementById('dig_input')?.focus(),50);
+}
+function submitDigitos(){
+  const {seq,mode,typed}=GYM_STATE.data;const g=GYM_STATE;
+  const target=mode==='forward'?seq.join(''):[...seq].reverse().join('');
+  if(typed===target){
+    GYM_STATE.score+=(mode==='forward'?g.level:g.level*2)*10;
+    if(mode==='forward'&&g.level>=5){GYM_STATE.data.mode='backward';GYM_STATE.level=3;}else GYM_STATE.level++;
+    setTimeout(()=>runDigitos(),500);
+  } else {
+    GYM_STATE.errors++;
+    if(GYM_STATE.errors>=3){finishGame(GYM_STATE.score);return;}
+    GYM_STATE.level=Math.max(3,GYM_STATE.level-1);
+    setTimeout(()=>runDigitos(),500);
+  }
+}
+
+/* ── PALABRAS ── */
+function runPalabras(){
+  const lvl=GYM_STATE.level;
+  const words=shuffle(WORDS_POOL).slice(0,lvl);
+  GYM_STATE.data={words,shown:'',opts:[],sel:[],phase:'showing'};
+  GYM_STATE.phase='showing';
+  renderPalabras();
+  (async()=>{
+    for(const w of words){GYM_STATE.data.shown=w;renderPalabras();await sleep(900);GYM_STATE.data.shown='';renderPalabras();await sleep(300);}
+    const dist=shuffle(WORDS_POOL.filter(x=>!words.includes(x))).slice(0,lvl);
+    GYM_STATE.data.opts=shuffle([...words,...dist]);GYM_STATE.phase='input';renderPalabras();
+  })();
+}
+function renderPalabras(){
+  const {words,shown,opts,sel}=GYM_STATE.data;const {phase,score,errors,level}=GYM_STATE;const g=GAMES_DATA[2];
+  const content=phase==='showing'
+    ?`<div style="text-align:center;min-height:70px;display:flex;align-items:center;justify-content:center"><div style="font-size:32px;font-weight:800;color:${g.color};text-shadow:0 0 20px ${g.color};font-family:'Clash Display',sans-serif;animation:popIn .2s">${shown||'·'}</div></div>`
+    :`<div style="text-align:center">
+      <div style="font-size:12px;color:${g.color};margin-bottom:10px">Selecciona las ${words.length} palabras que viste</div>
+      <div style="display:flex;flex-wrap:wrap;gap:8px;justify-content:center;margin-bottom:14px">${opts.map(w=>`<button onclick="toggleWord('${w}')" style="padding:8px 14px;border-radius:20px;border:1px solid ${sel.includes(w)?g.color:T.border};background:${sel.includes(w)?g.color+'33':'#0d0d1a'};color:${sel.includes(w)?g.color:'#8b8db8'};font-weight:${sel.includes(w)?800:400};font-size:13px;font-family:inherit;transition:all .15s">${w}</button>`).join('')}</div>
+      <button onclick="submitPalabras()" ${sel.length!==words.length?'disabled':''} style="padding:12px 28px;border-radius:12px;border:none;background:${sel.length===words.length?`linear-gradient(135deg,${g.color}cc,${g.color}88)`:'#1e1e3f'};color:${sel.length===words.length?'#fff':'#4b5070'};font-weight:800;font-size:15px;font-family:inherit;box-shadow:${sel.length===words.length?'0 0 20px '+g.color+'44':'none'}">Confirmar</button>
+    </div>`;
+  document.getElementById('screen').innerHTML=gymShell(g.name,g.color,score,errors,3,level,undefined,content);
+}
+function toggleWord(w){
+  const s=GYM_STATE.data.sel;
+  GYM_STATE.data.sel=s.includes(w)?s.filter(x=>x!==w):[...s,w];renderPalabras();
+}
+function submitPalabras(){
+  const {words,sel}=GYM_STATE.data;
+  const ok=words.every(w=>sel.includes(w))&&sel.length===words.length;
+  if(ok){GYM_STATE.score+=GYM_STATE.level*15;GYM_STATE.level++;setTimeout(()=>runPalabras(),500);}
+  else{GYM_STATE.errors++;if(GYM_STATE.errors>=3){finishGame(GYM_STATE.score);return;}GYM_STATE.level=Math.max(3,GYM_STATE.level-1);setTimeout(()=>runPalabras(),500);}
+}
+
+/* ── GO/NOGO ── */
+const GO_DECOYS=["🔴","🟡","🟠","⭕"];
+function runGoNogo(){
+  GYM_STATE.data={trial:0,hits:0,fas:0,misses:0,stim:'',isGo:false,running:false,fb:''};
+  GYM_STATE.score=0;GYM_STATE.phase='ready';renderGoNogo();
+}
+function renderGoNogo(){
+  const {trial,hits,fas,stim,running,fb}=GYM_STATE.data;const g=GAMES_DATA[3];const TOTAL=20;
+  const stimEl=running?`<button onclick="tapGoNogo()" style="width:160px;height:160px;border-radius:50%;border:3px solid ${stim?g.color:T.border};background:${stim?g.color+'22':'#0d0d1a'};display:flex;align-items:center;justify-content:center;font-size:72px;box-shadow:${stim?'0 0 40px '+g.color+'44':'none'};transition:all .1s;cursor:pointer">${stim||'<span style="font-size:20px;color:#1e1e3f">·</span>'}</button>`
+    :`<div><p style="color:#8b8db8;font-size:13px;margin-bottom:8px;text-align:center">Presiona <strong style="color:${g.color}">RÁPIDO</strong> cuando veas 🟢<br/><strong style="color:#f87171">NO presiones</strong> con otros símbolos.</p><button onclick="startGoNogo()" style="padding:14px 28px;border-radius:12px;border:1px solid ${g.color};background:linear-gradient(135deg,${g.color}cc,${g.color}88);color:#fff;font-weight:800;font-size:15px;font-family:inherit;box-shadow:0 0 20px ${g.color}44">¡Comenzar!</button></div>`;
+  document.getElementById('screen').innerHTML=gymShell(g.name,g.color,GYM_STATE.score,fas,99,trial,undefined,
+    `<div style="text-align:center">${stimEl}${fb?`<div style="font-size:22px;margin-top:12px">${fb}</div>`:''}
+    <div style="font-size:11px;color:#4b5070;margin-top:10px">${trial}/${TOTAL} estímulos · Aciertos: ${hits} · FA: ${fas}</div></div>`);
+}
+function startGoNogo(){GYM_STATE.data.running=true;GYM_STATE.data.trial=0;goNoGoTrial();}
+async function goNoGoTrial(){
+  const TOTAL=20;if(GYM_STATE.data.trial>=TOTAL){showGoNogoResult();return;}
+  const isGo=Math.random()<0.7;
+  const sym=isGo?'🟢':GO_DECOYS[rand(0,GO_DECOYS.length-1)];
+  GYM_STATE.data={...GYM_STATE.data,isGo,stim:sym,fb:'',responded:false};
+  renderGoNogo();await sleep(800);
+  if(isGo&&!GYM_STATE.data.responded){GYM_STATE.data.misses++;GYM_STATE.data.fb='⏱️';}
+  GYM_STATE.data.stim='';renderGoNogo();await sleep(400);
+  GYM_STATE.data.trial++;goNoGoTrial();
+}
+function tapGoNogo(){
+  if(!GYM_STATE.data.stim)return;
+  GYM_STATE.data.responded=true;
+  if(GYM_STATE.data.isGo){GYM_STATE.data.hits++;GYM_STATE.score+=10;GYM_STATE.data.fb='✅';}
+  else{GYM_STATE.data.fas++;GYM_STATE.score=Math.max(0,GYM_STATE.score-5);GYM_STATE.data.fb='❌';}
+  renderGoNogo();
+}
+function showGoNogoResult(){
+  const {hits,fas,misses}=GYM_STATE.data;const g=GAMES_DATA[3];
+  const acc=Math.round((hits/(hits+misses+fas||1))*100);
+  document.getElementById('screen').innerHTML=gymShell(g.name,g.color,GYM_STATE.score,fas,99,1,undefined,
+    `<div style="text-align:center;padding:16px 0">
+      <div style="font-size:36px;margin-bottom:10px">🏁</div>
+      <div style="font-size:18px;font-weight:800;color:#f1f5f9;margin-bottom:16px">Ronda completada</div>
+      <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:20px">
+        ${[['Aciertos',hits,'#4ade80'],['Errores',fas,'#f87171'],['Precisión',acc+'%','#22d3ee']].map(([l,v,col])=>`<div style="background:${col}18;border:1px solid ${col}33;border-radius:12px;padding:12px"><div style="font-size:20px;font-weight:800;color:${col}">${v}</div><div style="font-size:11px;color:#8b8db8">${l}</div></div>`).join('')}
+      </div>
+      <button onclick="finishGame(${GYM_STATE.score})" style="padding:14px 28px;border-radius:12px;border:1px solid ${g.color};background:linear-gradient(135deg,${g.color}cc,${g.color}88);color:#fff;font-weight:800;font-size:15px;font-family:inherit">Ver resultado</button>
+    </div>`);
+}
+
+/* ── CAMBIO DE REGLA ── */
+const RC_CARDS=[{sym:"🔴",cat:{color:"left",shape:"right",size:"left"}},{sym:"🟡",cat:{color:"left",shape:"right",size:"left"}},{sym:"🔵",cat:{color:"right",shape:"right",size:"left"}},{sym:"⬛",cat:{color:"right",shape:"left",size:"left"}},{sym:"🔷",cat:{color:"right",shape:"right",size:"right"}},{sym:"⭐",cat:{color:"left",shape:"left",size:"right"}}];
+const RC_RULES=[{id:"color",label:"Color",inst:"Izq=rojo/amarillo · Der=azul/negro"},{id:"shape",label:"Forma",inst:"Izq=cuadrado/estrella · Der=círculo/diamante"},{id:"size",label:"Tipo",inst:"Izq=figuras sólidas · Der=figuras vacías"}];
+function runRegla(){GYM_STATE.data={rule:0,streak:0,trial:0,card:null,showRule:true,fb:''};GYM_STATE.score=0;GYM_STATE.errors=0;nextReglaCard();}
+function nextReglaCard(){GYM_STATE.data.card=RC_CARDS[rand(0,RC_CARDS.length-1)];renderRegla();}
+function renderRegla(){
+  const {rule,streak,trial,card,showRule,fb}=GYM_STATE.data;const {score,errors}=GYM_STATE;const g=GAMES_DATA[4];const r=RC_RULES[rule];const TOTAL=24;
+  const content=showRule
+    ?`<div style="background:${g.color}18;border:1px solid ${g.color}44;border-radius:12px;padding:12px 16px;margin-bottom:14px;text-align:center">
+      <div style="font-size:12px;color:${g.color};font-weight:700;margin-bottom:4px">🔄 Regla: ${r.label}</div>
+      <div style="font-size:12px;color:#8b8db8">${r.inst}</div>
+      <button onclick="GYM_STATE.data.showRule=false;renderRegla()" style="margin-top:10px;padding:8px 20px;border-radius:10px;border:1px solid ${g.color};background:linear-gradient(135deg,${g.color}cc,${g.color}88);color:#fff;font-weight:700;font-size:13px;font-family:inherit">¡Entendido!</button>
+    </div>`
+    :`<div style="text-align:center">
+      <div style="font-size:80px;margin-bottom:20px;filter:drop-shadow(0 0 16px ${g.color});animation:popIn .2s">${card?.sym||''}</div>
+      <div style="display:flex;gap:12px;justify-content:center">
+        <button onclick="chooseRegla('left')" style="flex:1;max-width:120px;padding:14px;border-radius:12px;border:1px solid #a78bfa;background:linear-gradient(135deg,#a78bfacc,#a78bfa88);color:#fff;font-weight:800;font-size:14px;font-family:inherit">← Izquierda</button>
+        <button onclick="chooseRegla('right')" style="flex:1;max-width:120px;padding:14px;border-radius:12px;border:1px solid #22d3ee;background:linear-gradient(135deg,#22d3eecc,#22d3ee88);color:#fff;font-weight:800;font-size:14px;font-family:inherit">Derecha →</button>
+      </div>
+      <div style="font-size:11px;color:#4b5070;margin-top:10px">${trial}/${TOTAL} · racha: ${streak}</div>
+    </div>`;
+  document.getElementById('screen').innerHTML=gymShell(g.name,g.color,score,errors,5,rule+1,`Regla: ${r.label}`,content+`${fb?`<div style="text-align:center;font-size:28px;margin-top:8px">${fb}</div>`:''}`);
+}
+function chooseRegla(side){
+  const {card,rule,streak,trial}=GYM_STATE.data;
+  const ok=card.cat[RC_RULES[rule].id]===side;
+  if(ok){
+    const ns=streak+1;GYM_STATE.score+=10+(ns>3?5:0);GYM_STATE.data.streak=ns;GYM_STATE.data.fb='✅';
+    if(ns>0&&ns%6===0){const nr=(rule+1)%RC_RULES.length;GYM_STATE.data.rule=nr;GYM_STATE.data.streak=0;GYM_STATE.data.showRule=true;}
+  } else {GYM_STATE.errors++;GYM_STATE.data.streak=0;GYM_STATE.data.fb='❌';}
+  const t=trial+1;GYM_STATE.data.trial=t;
+  renderRegla();
+  setTimeout(()=>{
+    GYM_STATE.data.fb='';
+    if(t>=24||GYM_STATE.errors>=5){finishGame(GYM_STATE.score);return;}
+    GYM_STATE.data.showRule=false;nextReglaCard();
+  },500);
+}
+
+/* ── VIGILANCIA ── */
+const VIG_POOL=["🐶","🐱","🐰","🦊","🐻","🐼","🐨","🐯","🦁","🐸"];const VIG_TARGET="🐸";
+function runVigilancia(){GYM_STATE.data={trial:0,hits:0,fas:0,stim:'',fb:'',running:false};GYM_STATE.score=0;GYM_STATE.phase='ready';renderVigilancia();}
+function renderVigilancia(){
+  const {trial,hits,fas,stim,running,fb}=GYM_STATE.data;const g=GAMES_DATA[5];const TOTAL=30;
+  document.getElementById('screen').innerHTML=gymShell(g.name,g.color,GYM_STATE.score,fas,99,trial,undefined,
+    `<div style="text-align:center">${running
+      ?`<button onclick="tapVigilancia()" style="width:150px;height:150px;border-radius:50%;border:3px solid ${stim?g.color:T.border};background:${stim?g.color+'15':'#0d0d1a'};display:flex;align-items:center;justify-content:center;font-size:72px;box-shadow:${stim===VIG_TARGET?'0 0 40px '+g.color+'55':'none'};transition:all .1s;cursor:pointer;margin:0 auto">${stim||'<span style="font-size:20px;color:#1e1e3f">·</span>'}</button>`
+      :`<div><p style="color:#8b8db8;font-size:13px;margin-bottom:8px">Presiona cuando veas 🐸<br/><strong style="color:#f87171">Ignora</strong> todos los demás animales.</p><button onclick="startVigilancia()" style="padding:14px 28px;border-radius:12px;border:1px solid ${g.color};background:linear-gradient(135deg,${g.color}cc,${g.color}88);color:#fff;font-weight:800;font-size:15px;font-family:inherit">¡Comenzar!</button></div>`}
+    ${fb?`<div style="font-size:22px;margin-top:10px">${fb}</div>`:''}
+    <div style="font-size:11px;color:#4b5070;margin-top:8px">${trial}/${TOTAL} · Detectados: ${hits}</div></div>`);
+}
+function startVigilancia(){GYM_STATE.data.running=true;vigTrial();}
+async function vigTrial(){
+  const TOTAL=30;if(GYM_STATE.data.trial>=TOTAL){finishGame(GYM_STATE.score);return;}
+  const isTarget=Math.random()<0.25;
+  const sym=isTarget?VIG_TARGET:VIG_POOL.filter(x=>x!==VIG_TARGET)[rand(0,8)];
+  GYM_STATE.data={...GYM_STATE.data,stim:sym,fb:'',responded:false};
+  renderVigilancia();await sleep(700);
+  if(isTarget&&!GYM_STATE.data.responded)GYM_STATE.data.fb='⏱️';
+  GYM_STATE.data.stim='';renderVigilancia();await sleep(500);
+  GYM_STATE.data.trial++;vigTrial();
+}
+function tapVigilancia(){
+  if(!GYM_STATE.data.stim)return;GYM_STATE.data.responded=true;
+  if(GYM_STATE.data.stim===VIG_TARGET){GYM_STATE.data.hits++;GYM_STATE.score+=15;GYM_STATE.data.fb='✅';}
+  else{GYM_STATE.data.fas++;GYM_STATE.score=Math.max(0,GYM_STATE.score-8);GYM_STATE.data.fb='❌';}
+  renderVigilancia();
+}
+
+/* ── DECISIÓN RÁPIDA ── */
+const DEC_ITEMS=[
+  {q:"¿Cuál es mayor?",a:"7",b:"4",correct:"a"},{q:"¿Cuál es mayor?",a:"3",b:"9",correct:"b"},{q:"¿Cuál es mayor?",a:"8",b:"5",correct:"a"},
+  {q:"¿Es par?",a:"6",b:"",correct:"yes",type:"bool"},{q:"¿Es par?",a:"7",b:"",correct:"no",type:"bool"},{q:"¿Es par?",a:"12",b:"",correct:"yes",type:"bool"},
+  {q:"¿Cuál es animal?",a:"Rosa",b:"Gato",correct:"b"},{q:"¿Cuál es animal?",a:"Perro",b:"Mesa",correct:"a"},
+  {q:"¿Cuál es fruta?",a:"Silla",b:"Mango",correct:"b"},{q:"¿Cuál es fruta?",a:"Pera",b:"Libro",correct:"a"},
+  {q:"¿Cuál es color?",a:"Azul",b:"Correr",correct:"a"},{q:"¿Cuál es número?",a:"Once",b:"Verde",correct:"a"},
+  {q:"¿Es vocal?",a:"E",b:"",correct:"yes",type:"bool"},{q:"¿Es vocal?",a:"K",b:"",correct:"no",type:"bool"},
+  {q:"¿Cuál es mayor?",a:"15",b:"9",correct:"a"},{q:"¿Cuál es mayor?",a:"2",b:"11",correct:"b"},
+];
+function runDecision(){
+  GYM_STATE.data={items:shuffle(DEC_ITEMS),idx:0,start:Date.now(),fb:''};
+  GYM_STATE.score=0;GYM_STATE.errors=0;renderDecision();
+}
+function renderDecision(){
+  const {items,idx,fb}=GYM_STATE.data;const {score,errors}=GYM_STATE;const g=GAMES_DATA[6];
+  if(idx>=items.length){finishGame(score);return;}
+  const item=items[idx];
+  const btns=item.type==='bool'
+    ?`<div style="font-size:36px;margin-bottom:20px;color:#f1f5f9;font-weight:900;font-family:'Clash Display',sans-serif">${item.a}</div>
+      <div style="display:flex;gap:12px;justify-content:center">
+        <button onclick="answerDec('yes')" style="flex:1;max-width:120px;padding:20px 12px;border-radius:12px;border:1px solid #4ade80;background:linear-gradient(135deg,#4ade80cc,#4ade8088);color:#fff;font-weight:800;font-size:16px;font-family:inherit">✅ Sí</button>
+        <button onclick="answerDec('no')" style="flex:1;max-width:120px;padding:20px 12px;border-radius:12px;border:1px solid #f87171;background:linear-gradient(135deg,#f87171cc,#f8717188);color:#fff;font-weight:800;font-size:16px;font-family:inherit">❌ No</button>
+      </div>`
+    :`<div style="display:flex;gap:12px;justify-content:center">
+      <button onclick="answerDec('a')" style="flex:1;max-width:130px;padding:20px 12px;border-radius:12px;border:1px solid #a78bfa;background:linear-gradient(135deg,#a78bfacc,#a78bfa88);color:#fff;font-weight:800;font-size:18px;font-family:inherit">${item.a}</button>
+      <button onclick="answerDec('b')" style="flex:1;max-width:130px;padding:20px 12px;border-radius:12px;border:1px solid #22d3ee;background:linear-gradient(135deg,#22d3eecc,#22d3ee88);color:#fff;font-weight:800;font-size:18px;font-family:inherit">${item.b}</button>
+    </div>`;
+  document.getElementById('screen').innerHTML=gymShell(g.name,g.color,score,errors,5,idx+1,undefined,
+    `<div style="text-align:center">
+      <div style="font-size:14px;color:${g.color};font-weight:700;margin-bottom:16px">${item.q}</div>
+      ${btns}
+      ${fb?`<div style="font-size:28px;margin-top:12px">${fb}</div>`:''}
+    </div>`);
+  GYM_STATE.data.start=Date.now();
+}
+function answerDec(ans){
+  const {items,idx,start}=GYM_STATE.data;
+  const elapsed=Date.now()-start;
+  const item=items[idx];
+  const ok=item.type==='bool'?(item.correct==='yes')===(ans==='yes'):ans===item.correct;
+  if(ok){const pts=Math.max(5,30-Math.floor(elapsed/100));GYM_STATE.score+=pts;GYM_STATE.data.fb='✅';}
+  else{GYM_STATE.errors++;GYM_STATE.data.fb='❌';}
+  GYM_STATE.data.idx=idx+1;
+  renderDecision();
+  if(GYM_STATE.errors>=5){setTimeout(()=>finishGame(GYM_STATE.score),600);return;}
+  setTimeout(()=>{GYM_STATE.data.fb='';renderDecision();},600);
+}
+
+/* ═══════════════════════════════════════════════════
+   BIND SCREEN
+═══════════════════════════════════════════════════ */
+function bindScreen(tab){
+  // inputs focus styling handled inline
+}
+
+/* ═══════════════════════════════════════════════════
+   PWA — SERVICE WORKER
+═══════════════════════════════════════════════════ */
+if('serviceWorker' in navigator){
+  window.addEventListener('load',()=>{
+    navigator.serviceWorker.register('./sw.js').then(r=>console.log('SW registered')).catch(e=>console.log('SW error',e));
+  });
+}
+
+/* ═══════════════════════════════════════════════════
+   INIT
+═══════════════════════════════════════════════════ */
+window.addEventListener('DOMContentLoaded',()=>{
+  // Splash → app
+  setTimeout(()=>{
+    document.getElementById('splash').classList.add('hidden');
+    setTimeout(()=>{document.getElementById('splash').remove();},600);
+    render();
+  },2500);
+});
+</script>
+</body>
+</html>
