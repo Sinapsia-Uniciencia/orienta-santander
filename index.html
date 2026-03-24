@@ -3,11 +3,11 @@
 <head>
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no"/>
-<meta name="theme-color" content="#07080f"/>
+<meta name="theme-color" content="#f0f4ff"/>
 <meta name="description" content="Estrategia Unificada 11 — Orientación Vocacional · Gobernación de Santander"/>
 <meta name="mobile-web-app-capable" content="yes"/>
 <meta name="apple-mobile-web-app-capable" content="yes"/>
-<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"/>
+<meta name="apple-mobile-web-app-status-bar-style" content="default"/>
 <meta name="apple-mobile-web-app-title" content="OrientaSantander"/>
 <link rel="manifest" href="./manifest.json"/>
 <link rel="apple-touch-icon" href="./icons/icon-192.png"/>
@@ -17,78 +17,73 @@
 <style>
 *{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
 html,body{height:100%;overflow:hidden}
-body{background:#07080f;font-family:'Nunito',sans-serif;color:#eef0f8;overscroll-behavior:none}
+body{background:#f0f4ff;font-family:'Nunito',sans-serif;color:#1e2340;overscroll-behavior:none;font-size:16px}
 ::-webkit-scrollbar{width:3px}
-::-webkit-scrollbar-thumb{background:#1b1c2d;border-radius:2px}
-input,textarea,button{font-family:'Nunito',sans-serif}
+::-webkit-scrollbar-thumb{background:#c7d0f0;border-radius:2px}
+input,textarea,button{font-family:'Nunito',sans-serif;font-size:15px}
 button{cursor:pointer;border:none;background:none;color:inherit}
 textarea{resize:vertical}
 @keyframes floatY{0%,100%{transform:translateY(0)}50%{transform:translateY(-8px)}}
 @keyframes popIn{0%{transform:scale(.4);opacity:0}100%{transform:scale(1);opacity:1}}
 @keyframes slideUp{0%{transform:translateY(20px);opacity:0}100%{transform:translateY(0);opacity:1}}
-@keyframes pulse{0%,100%{box-shadow:0 0 0 0 rgba(129,140,248,.4)}50%{box-shadow:0 0 0 8px rgba(129,140,248,0)}}
+@keyframes pulse{0%,100%{box-shadow:0 0 0 0 rgba(99,102,241,.3)}50%{box-shadow:0 0 0 8px rgba(99,102,241,0)}}
 @keyframes spin{to{transform:rotate(360deg)}}
+@keyframes splashLoad{0%{width:0%}100%{width:100%}}
 #app{max-width:480px;margin:0 auto;height:100vh;height:100dvh;display:flex;flex-direction:column;position:relative;overflow:hidden}
 #screen{flex:1;overflow-y:auto;overflow-x:hidden;padding-bottom:80px}
 #screen::-webkit-scrollbar{width:3px}
 .screen-enter{animation:slideUp .3s ease}
-/* Nav */
+/* Nav — modo día */
 #nav{position:fixed;bottom:0;left:50%;transform:translateX(-50%);width:100%;max-width:480px;
-  background:rgba(7,8,15,.97);backdrop-filter:blur(16px);border-top:1px solid #1b1c2d;
+  background:rgba(255,255,255,.97);backdrop-filter:blur(16px);
+  border-top:1px solid #dde3f8;box-shadow:0 -2px 16px rgba(99,102,241,.08);
   display:flex;z-index:200;padding-bottom:env(safe-area-inset-bottom)}
-.nav-btn{flex:1;border:none;background:transparent;padding:9px 2px 7px;
-  display:flex;flex-direction:column;align-items:center;gap:2px;
+.nav-btn{flex:1;border:none;background:transparent;padding:10px 2px 8px;
+  display:flex;flex-direction:column;align-items:center;gap:3px;
   border-top:2px solid transparent;transition:all .2s;font-family:inherit}
-.nav-btn.active{border-top-color:#818cf8}
-.nav-btn .nav-icon{font-size:17px}
-.nav-btn .nav-label{font-size:9px;color:#565870;font-weight:400;transition:color .2s}
-.nav-btn.active .nav-label{color:#818cf8;font-weight:700}
+.nav-btn.active{border-top-color:#6366f1;background:rgba(99,102,241,.04)}
+.nav-btn .nav-icon{font-size:18px}
+.nav-btn .nav-label{font-size:10px;color:#9ca3d4;font-weight:600;transition:color .2s}
+.nav-btn.active .nav-label{color:#6366f1;font-weight:800}
 .nav-btn:disabled{opacity:.3;cursor:not-allowed}
 /* Cards */
-.card{background:#12131d;border:1px solid #1b1c2d;border-radius:14px;padding:16px}
-.card-glow{box-shadow:0 0 20px rgba(129,140,248,.1)}
+.card{background:#fff;border:1px solid #dde3f8;border-radius:14px;padding:18px;
+  box-shadow:0 1px 6px rgba(99,102,241,.06)}
 /* Buttons */
-.btn-primary{width:100%;padding:14px;border-radius:12px;font-weight:700;font-size:15px;
+.btn-primary{width:100%;padding:15px;border-radius:13px;font-weight:800;font-size:16px;
   transition:all .2s;border:none}
-.btn-secondary{padding:10px 20px;border-radius:10px;font-weight:600;font-size:13px;
-  background:rgba(255,255,255,.05);border:1px solid #1b1c2d;color:#8e90a8;transition:all .2s}
-.btn-secondary:active{background:rgba(255,255,255,.1)}
+.btn-secondary{padding:11px 22px;border-radius:11px;font-weight:700;font-size:14px;
+  background:#f3f4ff;border:1px solid #dde3f8;color:#6b7280;transition:all .2s}
+.btn-secondary:active{background:#e8eaff}
 /* Progress bar */
-.pbar{height:5px;background:#1b1c2d;border-radius:3px;overflow:hidden}
-.pbar-fill{height:100%;border-radius:3px;transition:width 1s cubic-bezier(.16,1,.3,1)}
+.pbar{height:6px;background:#e8eaff;border-radius:3px;overflow:hidden}
+.pbar-fill{height:100%;border-radius:3px;transition:width .8s cubic-bezier(.16,1,.3,1)}
 /* Scale buttons */
 .scale-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:8px}
-.scale-btn{background:#12131d;border:1px solid #1b1c2d;border-radius:12px;
-  padding:12px 4px;display:flex;flex-direction:column;align-items:center;gap:4px;transition:all .15s}
-.scale-btn:active{transform:scale(.95)}
-.scale-btn .se{font-size:20px}
-.scale-btn .sl{font-size:10px;color:#565870}
+.scale-btn{background:#fff;border:1.5px solid #dde3f8;border-radius:14px;
+  padding:14px 4px;display:flex;flex-direction:column;align-items:center;gap:5px;
+  transition:all .15s;box-shadow:0 1px 4px rgba(0,0,0,.04)}
+.scale-btn:active{transform:scale(.94);background:#f0f4ff}
+.scale-btn .se{font-size:22px}
+.scale-btn .sl{font-size:11px;color:#9ca3d4;font-weight:700}
 /* Tags */
-.tag{font-size:11px;font-weight:700;padding:3px 10px;border-radius:20px;white-space:nowrap;display:inline-block}
-/* Arcade */
-.neon-border{border-radius:16px}
-.arcade-btn{border-radius:12px;padding:14px 28px;font-weight:800;font-size:15px;
-  transition:all .2s;border:1px solid transparent}
-.arcade-btn:active{transform:scale(.96)}
-.score-badge{border-radius:10px;padding:6px 14px;font-size:13px;font-weight:800;
-  display:inline-flex;align-items:center;gap:6px}
+.tag{font-size:12px;font-weight:700;padding:4px 12px;border-radius:20px;white-space:nowrap;display:inline-block}
 /* Splash */
-#splash{position:fixed;inset:0;background:#07080f;display:flex;flex-direction:column;
-  align-items:center;justify-content:center;gap:20px;z-index:1000;
-  transition:opacity .5s ease}
+#splash{position:fixed;inset:0;background:linear-gradient(160deg,#f0f4ff 0%,#e8eeff 100%);
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  gap:20px;z-index:1000;transition:opacity .5s ease}
 #splash.hidden{opacity:0;pointer-events:none}
 .splash-logo{font-size:72px;animation:floatY 3s ease-in-out infinite;
-  filter:drop-shadow(0 0 30px rgba(129,140,248,.6))}
+  filter:drop-shadow(0 4px 24px rgba(99,102,241,.35))}
 .splash-title{font-family:'Clash Display',sans-serif;font-size:28px;font-weight:700;
-  background:linear-gradient(120deg,#818cf8,#34d399);
+  background:linear-gradient(120deg,#6366f1,#10b981);
   -webkit-background-clip:text;-webkit-text-fill-color:transparent;text-align:center}
-.splash-sub{color:#8e90a8;font-size:14px;text-align:center;line-height:1.5;max-width:280px}
-.splash-gov{color:#565870;font-size:12px;text-align:center;margin-top:8px;
-  border-top:1px solid #1b1c2d;padding-top:16px;width:260px;line-height:1.8}
-.splash-bar{width:200px;height:3px;background:#1b1c2d;border-radius:2px;overflow:hidden;margin-top:8px}
-.splash-bar-fill{height:100%;background:linear-gradient(90deg,#818cf8,#34d399);
-  border-radius:2px;animation:splashLoad 2s ease forwards}
-@keyframes splashLoad{0%{width:0%}100%{width:100%}}
+.splash-sub{color:#6b7280;font-size:15px;text-align:center;line-height:1.6;max-width:280px}
+.splash-gov{color:#9ca3af;font-size:13px;text-align:center;margin-top:8px;
+  border-top:1px solid #dde3f8;padding-top:16px;width:260px;line-height:1.9}
+.splash-bar{width:200px;height:4px;background:#dde3f8;border-radius:2px;overflow:hidden;margin-top:8px}
+.splash-bar-fill{height:100%;background:linear-gradient(90deg,#6366f1,#10b981);
+  border-radius:2px;animation:splashLoad 2.2s ease forwards}
 </style>
 </head>
 <body>
@@ -183,33 +178,44 @@ function render(){
 /* ═══════════════════════════════════════════════════
    HELPERS
 ═══════════════════════════════════════════════════ */
-const T={bg:"#07080f",card:"#12131d",border:"#1b1c2d",
-  p1:"#818cf8",p2:"#34d399",p3:"#fb923c",p4:"#f472b6",p5:"#facc15",
-  text:"#eef0f8",muted:"#565870",soft:"#8e90a8"};
+const T={
+  bg:"#f0f4ff",
+  card:"#ffffff",
+  border:"#dde3f8",
+  p1:"#6366f1",  // indigo
+  p2:"#10b981",  // emerald
+  p3:"#f59e0b",  // amber
+  p4:"#ec4899",  // pink
+  p5:"#f59e0b",
+  text:"#1e2340",
+  muted:"#9ca3d4",
+  soft:"#4b5280",
+};
 
 function pbar(val,color){
   return `<div class="pbar"><div class="pbar-fill" style="width:${val}%;background:${color}"></div></div>`;
 }
 function tag(label,color){
-  return `<span class="tag" style="background:${color}22;color:${color};border:1px solid ${color}44">${label}</span>`;
+  return `<span class="tag" style="background:${color}20;color:${color};border:1px solid ${color}40">${label}</span>`;
 }
 function btn(label,color,onclick,extra=''){
-  return `<button class="btn-primary" style="background:linear-gradient(135deg,${color}cc,${color}88);
-    color:#fff;box-shadow:0 0 20px ${color}33" onclick="${onclick}" ${extra}>${label}</button>`;
+  return `<button class="btn-primary" style="background:linear-gradient(135deg,${color},${color}cc);
+    color:#fff;box-shadow:0 4px 14px ${color}33" onclick="${onclick}" ${extra}>${label}</button>`;
 }
 function moduleCard(icon,color,title,desc,onclick,done=false,locked=false){
   return `<button onclick="${locked?'':onclick}" style="background:${T.card};
-    border:1px solid ${done?color+'55':T.border};border-left:4px solid ${done?color:T.border};
-    border-radius:14px;padding:15px 18px;display:flex;align-items:center;gap:14px;
-    width:100%;text-align:left;opacity:${locked?.35:1};transition:transform .2s"
+    border:1.5px solid ${done?color+'66':T.border};border-left:4px solid ${done?color:T.border};
+    border-radius:14px;padding:16px 18px;display:flex;align-items:center;gap:14px;
+    width:100%;text-align:left;opacity:${locked?.35:1};transition:all .2s;
+    box-shadow:0 1px 6px rgba(99,102,241,.06)"
     ${locked?'disabled':''}>
-    <div style="width:44px;height:44px;border-radius:12px;background:${color}18;
-      display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0">${icon}</div>
+    <div style="width:46px;height:46px;border-radius:13px;background:${color}15;
+      display:flex;align-items:center;justify-content:center;font-size:22px;flex-shrink:0">${icon}</div>
     <div style="flex:1">
-      <div style="font-weight:700;font-size:14px;color:${T.text};margin-bottom:2px">${title}</div>
-      <div style="font-size:12px;color:${T.muted}">${desc}</div>
+      <div style="font-weight:800;font-size:15px;color:${T.text};margin-bottom:2px">${title}</div>
+      <div style="font-size:13px;color:${T.muted}">${desc}</div>
     </div>
-    <span style="font-size:${done?13:16}px;color:${done?color:T.muted}">${done?'✓':locked?'🔒':'›'}</span>
+    <span style="font-size:${done?14:18}px;color:${done?color:T.muted};font-weight:800">${done?'✓':locked?'🔒':'›'}</span>
   </button>`;
 }
 function scaleButtons(onpick_fn){
@@ -220,21 +226,24 @@ function scaleButtons(onpick_fn){
     </button>`).join('')}</div>`;
 }
 function questionCard(text){
-  return `<div style="background:${T.card};border:1px solid ${T.border};border-radius:18px;
-    padding:26px 20px;margin-bottom:20px;min-height:90px;display:flex;align-items:center">
-    <p style="font-size:16px;color:${T.text};line-height:1.65;margin:0;font-weight:600;
+  return `<div style="background:linear-gradient(135deg,#f8f9ff,#f0f4ff);
+    border:1.5px solid ${T.border};border-radius:18px;
+    padding:26px 22px;margin-bottom:22px;min-height:90px;
+    display:flex;align-items:center;box-shadow:0 2px 10px rgba(99,102,241,.07)">
+    <p style="font-size:17px;color:${T.text};line-height:1.65;margin:0;font-weight:600;
       font-family:'Clash Display',sans-serif">${text}</p>
   </div>`;
 }
 function backBtn(label='← Volver',onclick='goBack()'){
   return `<button onclick="${onclick}" style="background:transparent;border:none;
-    color:${T.muted};font-size:13px;margin-bottom:16px;padding:4px 0;font-family:inherit">${label}</button>`;
+    color:${T.muted};font-size:14px;margin-bottom:16px;padding:4px 0;
+    font-family:inherit;font-weight:700">${label}</button>`;
 }
 function sectionHeader(title,sub=''){
-  return `<div style="margin-bottom:20px">
-    <h2 style="font-family:'Clash Display',sans-serif;font-size:20px;font-weight:700;
-      color:${T.text};margin:0 0 4px">${title}</h2>
-    ${sub?`<p style="color:${T.muted};font-size:13px;margin:0">${sub}</p>`:''}
+  return `<div style="margin-bottom:22px">
+    <h2 style="font-family:'Clash Display',sans-serif;font-size:22px;font-weight:700;
+      color:${T.text};margin:0 0 5px">${title}</h2>
+    ${sub?`<p style="color:${T.muted};font-size:14px;margin:0">${sub}</p>`:''}
   </div>`;
 }
 
@@ -480,21 +489,21 @@ function startTest(questions,skillKey,color,title,icon,onDone){
 
 function renderTest(){
   const {q,cur,color,title,icon}=TEST_STATE;
-  const pct=Math.round((cur/q.length)*100);
+  const pct=Math.round(((cur+1)/q.length)*100);
   document.getElementById('screen').innerHTML=`<div class="screen-enter" style="padding:24px 20px">
     ${backBtn('← Volver','goBack()')}
-    <h3 style="font-family:'Clash Display',sans-serif;font-size:17px;font-weight:700;color:${T.text};margin:0 0 16px">${icon} ${title}</h3>
-    <div style="margin-bottom:20px">
-      <div style="display:flex;justify-content:space-between;margin-bottom:4px">
-        <span style="font-size:12px;color:${T.muted}">${cur+1}/${q.length}</span>
-        <span style="font-size:12px;color:${color};font-weight:700">${pct}%</span>
+    <h3 style="font-family:'Clash Display',sans-serif;font-size:18px;font-weight:700;color:${T.text};margin:0 0 18px">${icon} ${title}</h3>
+    <div style="margin-bottom:22px">
+      <div style="display:flex;justify-content:space-between;margin-bottom:6px">
+        <span style="font-size:13px;color:${T.muted};font-weight:700">Pregunta ${cur+1} de ${q.length}</span>
+        <span style="font-size:13px;color:${color};font-weight:800">${pct}%</span>
       </div>
       ${pbar(pct,color)}
     </div>
     ${questionCard(q[cur].text)}
-    <p style="font-size:12px;color:${T.muted};text-align:center;margin-bottom:12px">¿Qué tanto te describe?</p>
+    <p style="font-size:14px;color:${T.muted};text-align:center;margin-bottom:14px;font-weight:600">¿Qué tanto te describe?</p>
     ${scaleButtons('pickTest')}
-    ${cur>0?`<button onclick="prevTest()" style="background:transparent;border:none;color:${T.muted};font-size:13px;margin-top:14px;font-family:inherit">← Anterior</button>`:''}
+    ${cur>0?`<button onclick="prevTest()" style="background:transparent;border:none;color:${T.muted};font-size:14px;margin-top:16px;font-family:inherit;font-weight:700">← Pregunta anterior</button>`:''}
   </div>`;
 }
 
@@ -558,26 +567,35 @@ function renderHome(){
   const modules=[
     {icon:"🧪",color:T.p1,title:"Tests Vocacionales",desc:"RIASEC + CHASIDE — conoce tus intereses y aptitudes",onclick:"goTab(1)",done:done.tests},
     {icon:"🪞",color:T.p3,title:"Yo Me Conozco",desc:"Habilidades, capacidades y autoconocimiento",onclick:"goTab(2)",done:done.self},
-    {icon:"🧠",color:"#a78bfa",title:"Cómo Aprendo",desc:"Neuroeducación, funciones ejecutivas y estrategias",onclick:"goTab(5)",done:done.neuro},
+    {icon:"🧠",color:"#8b5cf6",title:"Cómo Aprendo",desc:"Neuroeducación, funciones ejecutivas y estrategias",onclick:"goTab(5)",done:done.neuro},
     {icon:"🌱",color:T.p2,title:"Mi Futuro",desc:"Bienestar, proyecto de vida y carta al yo del futuro",onclick:"goTab(3)",done:done.future},
-    {icon:"🎮",color:"#22d3ee",title:"Gimnasio Cognitivo",desc:"7 juegos de funciones ejecutivas — campeonato",onclick:"goTab(6)",done:false},
-    {icon:"🎓",color:"#a78bfa",title:"Explorar Carreras",desc:"Programas y universidades en Santander",onclick:"openCareers()",done:false},
+    {icon:"🎮",color:"#06b6d4",title:"Gimnasio Cognitivo",desc:"9 juegos de funciones ejecutivas — campeonato",onclick:"goTab(6)",done:false},
+    {icon:"🎓",color:"#8b5cf6",title:"Explorar Carreras",desc:"Programas y universidades en Santander",onclick:"openCareers()",done:false},
     {icon:"🌟",color:T.p5,title:"Mi Perfil Completo",desc:"Integra todo para ver tus carreras ideales",onclick:"goTab(4)",done:false,locked:!done.tests},
   ];
+  const progress=Object.values(done).filter(Boolean).length;
   return `<div style="padding:28px 20px 20px">
     <div style="text-align:center;margin-bottom:28px">
-      <div style="font-size:52px;margin-bottom:10px;filter:drop-shadow(0 0 24px rgba(129,140,248,.4));animation:floatY 4s ease-in-out infinite">🧭</div>
-      <h1 style="font-family:'Clash Display',sans-serif;font-size:25px;font-weight:700;
-        background:linear-gradient(120deg,#818cf8,#34d399);-webkit-background-clip:text;-webkit-text-fill-color:transparent;margin:0 0 6px">OrientaSantander</h1>
-      <p style="color:${T.soft};font-size:13px;line-height:1.6;margin:0">Estrategia Unificada 11 · Gobernación de Santander</p>
+      <div style="font-size:56px;margin-bottom:10px;filter:drop-shadow(0 4px 20px rgba(99,102,241,.25));animation:floatY 4s ease-in-out infinite">🧭</div>
+      <h1 style="font-family:'Clash Display',sans-serif;font-size:26px;font-weight:700;
+        background:linear-gradient(120deg,#6366f1,#10b981);-webkit-background-clip:text;
+        -webkit-text-fill-color:transparent;margin:0 0 6px">OrientaSantander</h1>
+      <p style="color:${T.muted};font-size:14px;line-height:1.6;margin:0 0 16px">Estrategia Unificada 11 · Gobernación de Santander</p>
+      <div style="background:#fff;border:1.5px solid ${T.border};border-radius:12px;padding:10px 16px;display:inline-flex;align-items:center;gap:10px;box-shadow:0 2px 8px rgba(99,102,241,.08)">
+        <span style="font-size:13px;color:${T.muted};font-weight:700">Progreso</span>
+        <div style="width:100px;height:5px;background:#e8eaff;border-radius:3px;overflow:hidden">
+          <div style="height:100%;width:${Math.round((progress/4)*100)}%;background:linear-gradient(90deg,#6366f1,#10b981);border-radius:3px;transition:width 1s"></div>
+        </div>
+        <span style="font-size:13px;color:#6366f1;font-weight:800">${progress}/4</span>
+      </div>
     </div>
     <div style="display:flex;flex-direction:column;gap:10px">
       ${modules.map(m=>moduleCard(m.icon,m.color,m.title,m.desc,m.onclick,m.done,m.locked)).join('')}
     </div>
-    <div style="margin-top:20px;background:${T.card};border:1px solid ${T.border};border-radius:14px;padding:13px 16px">
-      <div style="font-size:11px;color:${T.muted};text-transform:uppercase;letter-spacing:1px;margin-bottom:8px">Universidades en Santander</div>
+    <div style="margin-top:20px;background:#fff;border:1.5px solid ${T.border};border-radius:14px;padding:14px 16px;box-shadow:0 1px 6px rgba(99,102,241,.06)">
+      <div style="font-size:12px;color:${T.muted};text-transform:uppercase;letter-spacing:1px;font-weight:800;margin-bottom:10px">🏛️ Universidades en Santander</div>
       ${["UIS — Universidad Industrial de Santander","UNAB — Autónoma de Bucaramanga","UDES — Universidad de Santander","UNICIENCIA — Ciencias Aplicadas y Ambientales","UTS — Unidades Tecnológicas de Santander","SENA — Regional Santander"]
-        .map((u,i,arr)=>`<div style="font-size:12px;color:${T.soft};padding:4px 0;${i<arr.length-1?'border-bottom:1px solid '+T.border:''}">${u}</div>`).join('')}
+        .map((u,i,arr)=>`<div style="font-size:13px;color:${T.soft};padding:5px 0;font-weight:600;${i<arr.length-1?'border-bottom:1px solid '+T.border:''}">${u}</div>`).join('')}
     </div>
   </div>`;
 }
@@ -1134,7 +1152,13 @@ function bindCareers(){} // handled via onclick
 ═══════════════════════════════════════════════════ */
 function renderProfile(){
   const {tests,self,future,neuro}=STATE;
-  if(!tests?.riasec) return `<div style="padding:24px 20px;text-align:center"><div style="font-size:48px;margin-bottom:12px">🔒</div><p style="color:${T.muted};font-size:14px">Completa al menos el Test RIASEC para desbloquear tu perfil.</p></div>`;
+  if(!tests?.riasec) return `<div style="padding:32px 20px;text-align:center">
+    <div style="font-size:56px;margin-bottom:14px">🔒</div>
+    <h3 style="font-family:'Clash Display',sans-serif;font-size:18px;color:${T.text};margin:0 0 8px">Perfil bloqueado</h3>
+    <p style="color:${T.muted};font-size:15px;margin:0 0 20px">Completa el Test RIASEC para desbloquear tu perfil.</p>
+    ${btn('Ir a Tests →',T.p1,'goTab(1)')}
+  </div>`;
+
   const riasecTop=Object.entries(tests.riasec).sort((a,b)=>b[1]-a[1]).slice(0,3).map(([t])=>t);
   const chasideTop=tests.chaside?Object.entries(tests.chaside).sort((a,b)=>b[1]-a[1]).slice(0,2).map(([a])=>a):[];
   const softTop=self?.soft?Object.entries(self.soft).sort((a,b)=>b[1]-a[1])[0]:null;
@@ -1143,30 +1167,119 @@ function renderProfile(){
   const myStrengths=self?.reflection?.fortalezas||[];
   const myFears=self?.reflection?.miedos?REFLECTIONS[3].fears.filter(f=>self.reflection.miedos[f.id]).map(f=>f.text):[];
   const myPhrases=self?.reflection?.motivaciones||{};
-  const bienAlert=future?.bienestar?Object.entries(future.bienestar).filter(([,v])=>v<45).map(([k])=>BIENESTAR.find(d=>d.id===k)):[];
+  const bienAlert=future?.bienestar?Object.entries(future.bienestar).filter(([,v])=>v<45).map(([k])=>BIENESTAR.find(d=>d.id===k)).filter(Boolean):[];
   const proyecto=future?.proyecto||{};
   const recommended=CAREERS_DATA.flatMap(a=>a.types.some(t=>riasecTop.includes(t))?a.careers.slice(0,2).map(c=>({...c,area:a.area,color:a.color})):[]).slice(0,6);
 
-  const sec=(title,content)=>`<div style="background:${T.card};border:1px solid ${T.border};border-radius:14px;padding:16px;margin-bottom:12px">
-    ${title?`<div style="font-size:11px;color:${T.muted};text-transform:uppercase;letter-spacing:1px;margin-bottom:10px">${title}</div>`:''}${content}</div>`;
+  const sec=(title,content,color=T.border)=>`<div style="background:#fff;border:1.5px solid ${color==='border'?T.border:color};
+    border-radius:16px;padding:18px;margin-bottom:12px;
+    box-shadow:0 1px 6px rgba(99,102,241,.06)">
+    ${title?`<div style="font-size:12px;color:${T.muted};text-transform:uppercase;letter-spacing:1px;font-weight:800;margin-bottom:12px">${title}</div>`:''}
+    ${content}
+  </div>`;
 
-  return `<div style="padding:24px 20px">
+  const pending=[];
+  if(!tests.chaside) pending.push('Test CHASIDE');
+  if(!self?.soft) pending.push('Habilidades Blandas');
+  if(!self?.cognitive) pending.push('Capacidades Cognitivas');
+  if(!self?.reflection) pending.push('Autoconocimiento');
+  if(!neuro) pending.push('Perfil Neuroeducativo');
+  if(!future?.bienestar) pending.push('Mapa de Bienestar');
+  if(!future?.proyecto) pending.push('Proyecto de Vida');
+
+  return `<div style="padding:24px 20px 32px">
     ${sectionHeader('🌟 Mi Perfil Completo','Todo integrado en un solo lugar')}
-    ${sec('Perfil Vocacional RIASEC',`<div style="display:flex;gap:8px;flex-wrap:wrap">${riasecTop.map(t=>`<div style="background:${RI[t].color}18;border:1px solid ${RI[t].color}44;border-radius:10px;padding:8px 14px;display:flex;align-items:center;gap:6px"><span>${RI[t].icon}</span><span style="font-size:13px;font-weight:700;color:${RI[t].color}">${RI[t].name}</span></div>`).join('')}</div>`)}
-    ${chasideTop.length?sec('Áreas CHASIDE',`<div style="display:flex;gap:8px;flex-wrap:wrap">${chasideTop.map(a=>`<div style="background:${CI[a].color}18;border:1px solid ${CI[a].color}44;border-radius:10px;padding:8px 14px;display:flex;align-items:center;gap:6px"><span>${CI[a].icon}</span><span style="font-size:13px;font-weight:700;color:${CI[a].color}">${CI[a].name}</span></div>`).join('')}</div>`):''}
+
+    ${sec('🧪 Perfil Vocacional RIASEC',
+      `<div style="display:flex;gap:8px;flex-wrap:wrap">${riasecTop.map(t=>
+        `<div style="background:${RI[t].color}18;border:1.5px solid ${RI[t].color}44;border-radius:12px;padding:10px 16px;display:flex;align-items:center;gap:8px;flex:1;min-width:90px">
+          <span style="font-size:22px">${RI[t].icon}</span>
+          <div><div style="font-size:14px;font-weight:800;color:${RI[t].color}">${RI[t].name}</div>
+          <div style="font-size:11px;color:${T.muted}">${RI[t].desc.split('.')[0]}</div></div>
+        </div>`).join('')}</div>`
+    )}
+
+    ${chasideTop.length?sec('🗺️ Áreas CHASIDE',
+      `<div style="display:flex;gap:8px;flex-wrap:wrap">${chasideTop.map(a=>
+        `<div style="background:${CI[a].color}15;border:1.5px solid ${CI[a].color}44;border-radius:12px;padding:10px 16px;display:flex;align-items:center;gap:8px;flex:1">
+          <span style="font-size:22px">${CI[a].icon}</span>
+          <div><div style="font-size:14px;font-weight:800;color:${CI[a].color}">${CI[a].name}</div>
+          <div style="font-size:11px;color:${T.muted}">${CI[a].desc}</div></div>
+        </div>`).join('')}</div>`
+    ):''}
+
     ${(softTop||cogTop)?`<div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:12px">
-      ${softTop?`<div style="background:${T.card};border:1px solid ${T.border};border-radius:14px;padding:14px"><div style="font-size:11px;color:${T.muted};margin-bottom:6px">Habilidad dominante</div><div style="font-size:20px;margin-bottom:4px">${SOFT_INFO[softTop[0]].icon}</div><div style="font-size:13px;font-weight:700;color:${SOFT_INFO[softTop[0]].color}">${SOFT_INFO[softTop[0]].name}</div><div style="font-size:11px;color:${T.muted};margin-top:3px;line-height:1.4">${SOFT_INFO[softTop[0]].desc}</div></div>`:''}
-      ${cogTop?`<div style="background:${T.card};border:1px solid ${T.border};border-radius:14px;padding:14px"><div style="font-size:11px;color:${T.muted};margin-bottom:6px">Capacidad dominante</div><div style="font-size:20px;margin-bottom:4px">${COG_INFO[cogTop[0]].icon}</div><div style="font-size:13px;font-weight:700;color:${COG_INFO[cogTop[0]].color}">${COG_INFO[cogTop[0]].name}</div><div style="font-size:11px;color:${T.muted};margin-top:3px;line-height:1.4">${COG_INFO[cogTop[0]].desc}</div></div>`:''}
+      ${softTop&&SOFT_INFO[softTop[0]]?`<div style="background:#fff;border:1.5px solid ${T.border};border-radius:16px;padding:16px;box-shadow:0 1px 6px rgba(99,102,241,.06)">
+        <div style="font-size:11px;color:${T.muted};font-weight:800;text-transform:uppercase;letter-spacing:1px;margin-bottom:8px">Habilidad top</div>
+        <div style="font-size:28px;margin-bottom:6px">${SOFT_INFO[softTop[0]].icon}</div>
+        <div style="font-size:15px;font-weight:800;color:${SOFT_INFO[softTop[0]].color}">${SOFT_INFO[softTop[0]].name}</div>
+        <div style="font-size:12px;color:${T.muted};margin-top:3px;line-height:1.4">${SOFT_INFO[softTop[0]].desc}</div>
+      </div>`:''}
+      ${cogTop&&COG_INFO[cogTop[0]]?`<div style="background:#fff;border:1.5px solid ${T.border};border-radius:16px;padding:16px;box-shadow:0 1px 6px rgba(99,102,241,.06)">
+        <div style="font-size:11px;color:${T.muted};font-weight:800;text-transform:uppercase;letter-spacing:1px;margin-bottom:8px">Capacidad top</div>
+        <div style="font-size:28px;margin-bottom:6px">${COG_INFO[cogTop[0]].icon}</div>
+        <div style="font-size:15px;font-weight:800;color:${COG_INFO[cogTop[0]].color}">${COG_INFO[cogTop[0]].name}</div>
+        <div style="font-size:12px;color:${T.muted};margin-top:3px;line-height:1.4">${COG_INFO[cogTop[0]].desc}</div>
+      </div>`:''}
     </div>`:''}
-    ${myValues.length?sec('⭐ Mis valores',`<div style="display:flex;flex-wrap:wrap;gap:6px">${myValues.map(v=>tag(v,'#facc15')).join('')}</div>`):''}
-    ${myStrengths.length?sec('💪 Mis fortalezas',`<div style="display:flex;flex-wrap:wrap;gap:6px">${myStrengths.map(f=>tag(`${f.icon} ${f.label}`,T.p2)).join('')}</div>`):''}
-    ${(myPhrases.a||myPhrases.b||myPhrases.c)?sec('🔥 Lo que me mueve',REFLECTIONS[1].phrases.filter(p=>myPhrases[p.id]).map(p=>`<div style="margin-bottom:8px;padding-bottom:8px;border-bottom:1px solid ${T.border}"><div style="font-size:11px;color:${T.muted}">${p.prompt}</div><div style="font-size:13px;color:${T.text};margin-top:2px">${myPhrases[p.id]}</div></div>`).join('')):''}
-    ${neuro?sec('🧠 Perfil Neuroeducativo',`<div style="display:flex;flex-direction:column;gap:8px">${Object.entries(neuro).map(([k,v])=>{const info=NEURO_DIMS[k];const col=v>=70?T.p2:v>=45?'#facc15':T.p3;return `<div style="display:flex;justify-content:space-between;align-items:center"><span style="font-size:13px;color:${T.text}">${info.icon} ${info.name}</span><div style="display:flex;align-items:center;gap:8px"><div style="width:80px;height:4px;background:${T.border};border-radius:2px"><div style="height:100%;width:${v}%;background:${col};border-radius:2px"></div></div><span style="font-size:12px;font-weight:700;color:${col};min-width:32px">${v}%</span></div></div>`;}).join('')}</div>`):''}
-    ${bienAlert.length?sec('⚠️ Bienestar a fortalecer',`<div style="display:flex;flex-wrap:wrap;gap:6px;margin-bottom:8px">${bienAlert.map(d=>tag(`${d.icon} ${d.name}`,T.p3)).join('')}</div><p style="font-size:12px;color:${T.muted};margin:0;line-height:1.5">Considera hablar con tu orientador/a sobre estas áreas antes de tomar decisiones.</p>`):''}
-    ${(proyecto.mision||proyecto.vision)?sec('🌱 Mi Proyecto de Vida',[{id:"mision",icon:"🎯",label:"Misión"},{id:"vision",icon:"🔭",label:"Visión a 5 años"},{id:"opcion_a",icon:"⭐",label:"Opción A"},{id:"opcion_b",icon:"🔄",label:"Plan B"}].filter(s=>proyecto[s.id]).map((s,i,arr)=>`<div style="margin-bottom:${i<arr.length-1?10:0}px;padding-bottom:${i<arr.length-1?10:0}px;border-bottom:${i<arr.length-1?'1px solid '+T.border:'none'}"><div style="font-size:11px;color:${T.muted};margin-bottom:3px">${s.icon} ${s.label}</div><div style="font-size:13px;color:${T.text};line-height:1.5">${proyecto[s.id]}</div></div>`).join('')):''}
-    ${myFears.length?sec('🌑 Miedos reconocidos',myFears.map((f,i)=>`<div style="font-size:12px;color:${T.soft};padding:4px 0;${i<myFears.length-1?'border-bottom:1px solid '+T.border:''}">• ${f}</div>`).join('')):''}
-    ${sec('🎯 Carreras recomendadas para tu perfil',recommended.map((c,i)=>`<div style="display:flex;justify-content:space-between;align-items:center;padding:10px 0;${i<recommended.length-1?'border-bottom:1px solid '+T.border:''}"><div><div style="font-size:13px;font-weight:600;color:${T.text}">${c.name}</div><div style="font-size:11px;color:${T.muted}">${c.area} · ${c.salary}</div></div>${tag(c.demand,c.demand==='Muy Alta'?T.p2:c.demand==='Alta'?'#60a5fa':T.p3)}</div>`).join(''))}
-    ${!self?`<div style="background:${T.p3}12;border:1px solid ${T.p3}33;border-radius:14px;padding:16px;margin-top:4px"><div style="font-size:13px;color:${T.p3};font-weight:700;margin-bottom:4px">💡 Enriquece tu perfil</div><p style="font-size:13px;color:${T.soft};margin:0">Completa <strong style="color:${T.text}">Yo Me Conozco</strong> para agregar habilidades, valores y fortalezas.</p></div>`:''}
+
+    ${myValues.length?sec('⭐ Mis valores',
+      `<div style="display:flex;flex-wrap:wrap;gap:8px">${myValues.map(v=>tag(v,'#f59e0b')).join('')}</div>`):''}
+
+    ${myStrengths.length?sec('💪 Mis fortalezas',
+      `<div style="display:flex;flex-wrap:wrap;gap:8px">${myStrengths.map(f=>tag(`${f.icon} ${f.label}`,T.p2)).join('')}</div>`):''}
+
+    ${(myPhrases.a||myPhrases.b||myPhrases.c)?sec('🔥 Lo que me mueve',
+      REFLECTIONS[1].phrases.filter(p=>myPhrases[p.id]).map((p,i,arr)=>
+        `<div style="padding:${i>0?'12px 0 0':'0 0 12px'};${i<arr.length-1&&i>0?'border-bottom:1px solid '+T.border:''}${i===0&&arr.length>1?'border-bottom:1px solid '+T.border:''}">
+          <div style="font-size:12px;color:${T.muted};font-weight:700;margin-bottom:3px">${p.prompt}</div>
+          <div style="font-size:15px;color:${T.text};font-weight:600;line-height:1.5">${myPhrases[p.id]}</div>
+        </div>`).join('')):''}
+
+    ${neuro?sec('🧠 Perfil Neuroeducativo',
+      `<div style="display:flex;flex-direction:column;gap:10px">
+        ${Object.entries(neuro).map(([k,v])=>{
+          const info=NEURO_DIMS[k];
+          const col=v>=70?T.p2:v>=45?'#f59e0b':T.p3;
+          return `<div>
+            <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:5px">
+              <span style="font-size:14px;color:${T.text};font-weight:700">${info.icon} ${info.name}</span>
+              <span style="font-size:14px;font-weight:800;color:${col}">${v}%</span>
+            </div>
+            ${pbar(v,col)}
+          </div>`;
+        }).join('')}
+      </div>`):''}
+
+    ${bienAlert.length?sec('⚠️ Bienestar a fortalecer',
+      `<div style="display:flex;flex-wrap:wrap;gap:8px;margin-bottom:10px">${bienAlert.map(d=>tag(`${d.icon} ${d.name}`,T.p3)).join('')}</div>
+      <p style="font-size:14px;color:${T.muted};margin:0;line-height:1.6">Considera hablar con tu orientador/a sobre estas áreas antes de tomar decisiones.</p>`):''}
+
+    ${(proyecto.mision||proyecto.vision)?sec('🌱 Mi Proyecto de Vida',
+      [{id:"mision",icon:"🎯",label:"Misión"},{id:"vision",icon:"🔭",label:"Visión a 5 años"},
+       {id:"opcion_a",icon:"⭐",label:"Opción A"},{id:"opcion_b",icon:"🔄",label:"Plan B"}]
+      .filter(s=>proyecto[s.id])
+      .map((s,i,arr)=>`<div style="padding:${i>0?'12px 0 0':'0 0 12px'};${i<arr.length-1?'border-bottom:1px solid '+T.border:''}">
+        <div style="font-size:12px;color:${T.muted};font-weight:700;margin-bottom:4px">${s.icon} ${s.label}</div>
+        <div style="font-size:15px;color:${T.text};line-height:1.6;font-weight:600">${proyecto[s.id]}</div>
+      </div>`).join('')):''}
+
+    ${myFears.length?sec('🌑 Miedos reconocidos',
+      myFears.map((f,i)=>`<div style="font-size:14px;color:${T.soft};padding:5px 0;font-weight:600;${i<myFears.length-1?'border-bottom:1px solid '+T.border:''}">• ${f}</div>`).join('')):''}
+
+    ${sec('🎯 Carreras recomendadas',
+      recommended.map((c,i)=>`<div style="display:flex;justify-content:space-between;align-items:center;padding:11px 0;${i<recommended.length-1?'border-bottom:1px solid '+T.border:''}">
+        <div>
+          <div style="font-size:15px;font-weight:700;color:${T.text}">${c.name}</div>
+          <div style="font-size:13px;color:${T.muted}">${c.area} · ${c.salary}</div>
+        </div>
+        ${tag(c.demand,c.demand==='Muy Alta'?T.p2:c.demand==='Alta'?T.p1:T.p3)}
+      </div>`).join(''))}
+
+    ${pending.length?`<div style="background:#f0f4ff;border:1.5px solid ${T.border};border-radius:14px;padding:16px">
+      <div style="font-size:13px;color:T.p1;font-weight:800;margin-bottom:8px;color:${T.p1}">💡 Para enriquecer tu perfil completa:</div>
+      <div style="display:flex;flex-wrap:wrap;gap:6px">${pending.map(p=>tag(p,T.muted)).join('')}</div>
+    </div>`:''}
   </div>`;
 }
 
@@ -1174,13 +1287,15 @@ function renderProfile(){
    GIMNASIO COGNITIVO
 ═══════════════════════════════════════════════════ */
 const GAMES_DATA=[
-  {id:"corsi",    name:"Bloques de Corsi",     icon:"🟦",color:"#a78bfa",fe:"Memoria Visoespacial",   desc:"Memoriza y repite la secuencia de bloques iluminados."},
-  {id:"digitos",  name:"Span de Dígitos",      icon:"🔢",color:"#22d3ee",fe:"Memoria Verbal",         desc:"Recuerda la secuencia de dígitos directo e inverso."},
-  {id:"palabras", name:"Span de Palabras",     icon:"🔤",color:"#f472b6",fe:"Memoria Semántica",      desc:"Memoriza palabras y reconstruye la lista."},
-  {id:"gonogo",   name:"Go / No-Go",           icon:"🚫",color:"#4ade80",fe:"Inhibición",             desc:"Presiona solo cuando aparezca el estímulo objetivo."},
-  {id:"regla",    name:"Cambio de Regla",      icon:"🔄",color:"#fbbf24",fe:"Flexibilidad Cognitiva", desc:"Clasifica según la regla activa — ¡cambia sin aviso!"},
-  {id:"vigilancia",name:"Vigilancia",          icon:"👁️",color:"#22d3ee",fe:"Atención Sostenida",    desc:"Detecta el intruso en el flujo de estímulos."},
-  {id:"decision", name:"Decisión Rápida",      icon:"⚡",color:"#fbbf24",fe:"Vel. de Procesamiento", desc:"Responde correctamente en el menor tiempo posible."},
+  {id:"corsi",     name:"Bloques de Corsi",      icon:"🟦",color:"#a78bfa",fe:"Memoria Visoespacial",    desc:"Memoriza y repite la secuencia de bloques iluminados."},
+  {id:"digitos",   name:"Span de Dígitos",       icon:"🔢",color:"#22d3ee",fe:"Memoria Verbal",          desc:"Recuerda la secuencia de dígitos directo e inverso."},
+  {id:"palabras",  name:"Span de Palabras",      icon:"🔤",color:"#f472b6",fe:"Memoria Semántica",       desc:"Memoriza palabras y reconstruye la lista."},
+  {id:"matrices_r",name:"Matrices de Raven",     icon:"🧩",color:"#4ade80",fe:"Razonamiento Fluido",     desc:"Completa el patrón lógico que falta en la matriz."},
+  {id:"matrices_v",name:"Matrices Visoespaciales",icon:"🎨",color:"#fb923c",fe:"Memoria Visual",         desc:"Memoriza el patrón de colores y reprodúcelo."},
+  {id:"gonogo",    name:"Go / No-Go",            icon:"🚫",color:"#4ade80",fe:"Inhibición",              desc:"Presiona solo cuando aparezca el estímulo objetivo."},
+  {id:"regla",     name:"Cambio de Regla",       icon:"🔄",color:"#fbbf24",fe:"Flexibilidad Cognitiva",  desc:"Clasifica según la regla activa — ¡cambia sin aviso!"},
+  {id:"vigilancia",name:"Vigilancia",            icon:"👁️",color:"#22d3ee",fe:"Atención Sostenida",     desc:"Detecta el intruso en el flujo de estímulos."},
+  {id:"decision",  name:"Decisión Rápida",       icon:"⚡",color:"#fbbf24",fe:"Vel. de Procesamiento",  desc:"Responde correctamente en el menor tiempo posible."},
 ];
 const WORDS_POOL=["casa","luna","perro","libro","árbol","mesa","río","cielo","piedra","flor","agua","fuego","mano","viento","silla","nube","pez","sol","carta","llave","puerta","coche","roca","campo","jardín","pan","copa","luz","hoja","mar"];
 const rand=(a,b)=>Math.floor(Math.random()*(b-a+1))+a;
@@ -1228,14 +1343,16 @@ function renderGymMenu(){
 function exitGym(){document.getElementById('nav').style.display='flex';goTab(0);}
 
 function launchGame(id){
-  GYM_STATE={view:'game',gameId:id,score:0,level:3,errors:0,phase:'idle',data:{}};
-  if(id==='corsi') runCorsi();
-  else if(id==='digitos') runDigitos();
-  else if(id==='palabras') runPalabras();
-  else if(id==='gonogo') runGoNogo();
-  else if(id==='regla') runRegla();
+  GYM_STATE={view:'game',gameId:id,score:0,level:2,errors:0,phase:'idle',data:{}};
+  if(id==='corsi')      runCorsi();
+  else if(id==='digitos')    runDigitos();
+  else if(id==='palabras')   runPalabras();
+  else if(id==='matrices_r') runMatricesRaven();
+  else if(id==='matrices_v') runMatricesViso();
+  else if(id==='gonogo')     runGoNogo();
+  else if(id==='regla')      runRegla();
   else if(id==='vigilancia') runVigilancia();
-  else if(id==='decision') runDecision();
+  else if(id==='decision')   runDecision();
 }
 function finishGame(score){
   const g=GAMES_DATA.find(x=>x.id===GYM_STATE.gameId);
@@ -1266,71 +1383,86 @@ function finishGame(score){
 }
 
 function gymShell(title,color,score,errors,maxErr,level,sub,content){
-  const dots=maxErr<99?Array.from({length:maxErr},(_,i)=>`<div style="width:10px;height:10px;border-radius:50%;background:${i<errors?'#f87171':T.border};box-shadow:${i<errors?'0 0 6px #f87171':'none'};transition:all .3s"></div>`).join(''):`<div style="font-size:11px;color:#4b5070">∞</div>`;
-  return `<div style="padding:20px 20px 28px;background:#0d0d1a;min-height:100vh">
-    <div style="display:flex;align-items:center;gap:10px;margin-bottom:16px">
-      <button onclick="finishGame(${score});/* skip */" style="background:transparent;border:none;color:#4b5070;cursor:pointer;font-size:13px;font-family:inherit">← Salir</button>
+  const dots=maxErr<99?Array.from({length:Math.min(maxErr,5)},(_,i)=>`<div style="width:12px;height:12px;border-radius:50%;background:${i<errors?'#f87171':'#1e1e3f'};box-shadow:${i<errors?'0 0 6px #f87171':'none'};transition:all .3s"></div>`).join(''):`<div style="font-size:11px;color:#4b5070">Reacciones: ∞</div>`;
+  return `<div style="padding:16px 16px 28px;background:#0d0d1a;min-height:100vh">
+    <div style="display:flex;align-items:center;gap:10px;margin-bottom:12px">
+      <button onclick="finishGame(${score})" style="background:rgba(30,30,63,.8);border:1px solid #1e1e3f;border-radius:8px;color:#8b8db8;font-size:12px;font-weight:700;padding:7px 12px;font-family:inherit">← Salir</button>
       <div style="flex:1">
-        <div style="font-family:'Clash Display',sans-serif;font-weight:800;font-size:15px;color:#f1f5f9">${title}</div>
+        <div style="font-family:'Clash Display',sans-serif;font-weight:800;font-size:14px;color:#f1f5f9">${title}</div>
         ${sub?`<div style="font-size:11px;color:${color};font-weight:700">${sub}</div>`:''}
       </div>
-      <div style="background:${color}22;border:1px solid ${color}44;border-radius:10px;padding:6px 14px;font-size:13px;font-weight:800;color:${color}">⭐ ${score}</div>
+      <div style="background:${color}22;border:1px solid ${color}44;border-radius:8px;padding:5px 12px;font-size:13px;font-weight:800;color:${color}">⭐ ${score}</div>
     </div>
-    <div style="display:flex;justify-content:space-between;align-items:center;background:#13132a;border:1px solid #1e1e3f;border-radius:10px;padding:8px 14px;margin-bottom:16px">
+    <div style="display:flex;justify-content:space-between;align-items:center;background:#13132a;border:1px solid #1e1e3f;border-radius:10px;padding:7px 14px;margin-bottom:14px">
       <div style="font-size:12px;color:#8b8db8">Nivel <strong style="color:${color}">${level}</strong></div>
       <div style="display:flex;gap:5px;align-items:center">${dots}</div>
     </div>
-    <div style="border:1px solid ${color}55;box-shadow:0 0 12px ${color}22,inset 0 0 12px ${color}08;border-radius:16px;padding:24px 16px;min-height:200px;display:flex;flex-direction:column;justify-content:center;background:#13132a">
+    <div style="border:1px solid ${color}55;box-shadow:0 0 16px ${color}22;border-radius:16px;padding:20px 14px;background:#13132a;min-height:280px;display:flex;flex-direction:column;justify-content:center">
       ${content}
     </div>
   </div>`;
 }
 
-/* ── CORSI ── */
+/* ── CORSI ── versión móvil optimizada */
 function runCorsi(){
   const lvl=GYM_STATE.level;
-  const seq=Array.from({length:lvl},()=>rand(0,11));
+  const seq=Array.from({length:lvl},()=>rand(0,8)); // grilla 3x3
   GYM_STATE.data={seq,input:[],lit:-1};
   showCorsi(seq);
 }
 async function showCorsi(seq){
-  GYM_STATE.phase='showing';
-  renderCorsiBoard();
-  await sleep(500);
+  GYM_STATE.phase='showing';renderCorsiBoard();
+  await sleep(600);
   for(let i=0;i<seq.length;i++){
-    GYM_STATE.data.lit=seq[i];renderCorsiBoard();await sleep(600);
-    GYM_STATE.data.lit=-1;renderCorsiBoard();await sleep(300);
+    GYM_STATE.data.lit=seq[i];renderCorsiBoard();await sleep(700);
+    GYM_STATE.data.lit=-1;renderCorsiBoard();await sleep(400);
   }
   GYM_STATE.phase='input';GYM_STATE.data.input=[];renderCorsiBoard();
 }
 function renderCorsiBoard(){
-  const {seq,lit,input}=GYM_STATE.data;const {phase,score,errors,level}=GYM_STATE;
+  const {seq,lit,input}=GYM_STATE.data;
+  const {phase,score,errors,level}=GYM_STATE;
   const g=GAMES_DATA[0];
-  const blocks=Array.from({length:12},(_,i)=>`<button onclick="tapCorsi(${i})" style="width:100%;padding-top:100%;position:relative;border-radius:10px;border:2px solid ${lit===i?g.color:T.border};background:${lit===i?g.color:input.includes(i)?g.color+'44':'#0d0d1a'};box-shadow:${lit===i?'0 0 20px '+g.color:'none'};transition:all .15s;cursor:${phase==='input'?'pointer':'default'}"></button>`).join('');
-  document.getElementById('screen').innerHTML=gymShell(g.name,g.color,score,errors,3,level,
-    phase==='showing'?'Memoriza la secuencia...':phase==='input'?`Repite: ${input.length}/${seq.length}`:'',
-    `<div style="text-align:center;margin-bottom:12px"><span style="font-size:12px;color:${g.color};font-weight:700">${phase==='showing'?'👀 Observa':'👆 Toca los bloques en orden'}</span></div>
-    <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:8px;max-width:280px;margin:0 auto">${blocks}</div>`
-  );
+  // 3x3 grid — bloques grandes para móvil
+  const blocks=Array.from({length:9},(_,i)=>{
+    const isLit=lit===i;
+    const isSel=input.includes(i);
+    return `<button onclick="tapCorsi(${i})"
+      style="aspect-ratio:1;width:100%;border-radius:14px;
+      border:3px solid ${isLit?g.color:isSel?g.color+'99':'#2a2a4a'};
+      background:${isLit?g.color:isSel?g.color+'33':'#1a1a35'};
+      box-shadow:${isLit?'0 0 28px '+g.color+', 0 0 8px '+g.color+'88':'none'};
+      transition:all .15s;cursor:${phase==='input'?'pointer':'default'};
+      font-size:0"></button>`;
+  }).join('');
+  const status=phase==='showing'?`<div style="text-align:center;margin-bottom:14px"><span style="font-size:13px;color:${g.color};font-weight:700;background:${g.color}18;padding:6px 16px;border-radius:20px">👀 Memoriza la secuencia</span></div>`
+    :phase==='input'?`<div style="text-align:center;margin-bottom:14px"><span style="font-size:13px;color:#f1f5f9;font-weight:700;background:#1e1e3f;padding:6px 16px;border-radius:20px">👆 Toca en orden: ${input.length}/${seq.length}</span></div>`:'';
+  document.getElementById('screen').innerHTML=gymShell(g.name,g.color,score,errors,3,level,`Secuencia: ${level} bloques`,
+    `${status}<div style="display:grid;grid-template-columns:repeat(3,1fr);gap:12px;max-width:300px;margin:0 auto;padding:8px">${blocks}</div>`);
 }
 function tapCorsi(i){
   if(GYM_STATE.phase!=='input')return;
   const {seq,input}=GYM_STATE.data;
-  const newInput=[...input,i];GYM_STATE.data.input=newInput;
+  const newInput=[...input,i];
+  GYM_STATE.data.input=newInput;
   const pos=newInput.length-1;
   if(newInput[pos]!==seq[pos]){
     GYM_STATE.errors++;
-    if(GYM_STATE.errors>=3){finishGame(GYM_STATE.score);return;}
-    GYM_STATE.level=Math.max(3,GYM_STATE.level-1);
-    setTimeout(()=>runCorsi(),800);
+    renderCorsiBoard();
+    if(GYM_STATE.errors>=3){setTimeout(()=>finishGame(GYM_STATE.score),800);return;}
+    GYM_STATE.level=Math.max(2,GYM_STATE.level-1);
+    setTimeout(()=>runCorsi(),1000);
   } else if(newInput.length===seq.length){
-    GYM_STATE.score+=GYM_STATE.level*10;GYM_STATE.level++;
-    setTimeout(()=>runCorsi(),600);
+    GYM_STATE.score+=GYM_STATE.level*10;
+    GYM_STATE.level++;
+    renderCorsiBoard();
+    setTimeout(()=>runCorsi(),700);
+  } else {
+    renderCorsiBoard();
   }
-  renderCorsiBoard();
 }
 
-/* ── DÍGITOS ── */
+/* ── DÍGITOS ── versión móvil grande */
 function runDigitos(){
   GYM_STATE.data={seq:[],shown:-1,mode:GYM_STATE.data.mode||'forward',typed:''};
   const lvl=GYM_STATE.level;
@@ -1338,40 +1470,247 @@ function runDigitos(){
   GYM_STATE.data.seq=seq;GYM_STATE.phase='showing';
   renderDigitos();
   (async()=>{
-    await sleep(600);
-    for(const d of seq){GYM_STATE.data.shown=d;renderDigitos();await sleep(700);GYM_STATE.data.shown=-1;renderDigitos();await sleep(300);}
+    await sleep(700);
+    for(const d of seq){
+      GYM_STATE.data.shown=d;renderDigitos();await sleep(800);
+      GYM_STATE.data.shown=-1;renderDigitos();await sleep(400);
+    }
     GYM_STATE.phase='input';GYM_STATE.data.typed='';renderDigitos();
   })();
 }
 function renderDigitos(){
-  const {shown,mode,typed}=GYM_STATE.data;const {phase,score,errors,level}=GYM_STATE;const g=GAMES_DATA[1];
-  const display=phase==='showing'?(shown>=0?`<div style="font-size:72px;font-weight:900;color:${g.color};font-family:'Clash Display',sans-serif;text-shadow:0 0 30px ${g.color};animation:popIn .2s">${shown}</div>`:`<div style="font-size:72px;color:#1e1e3f">·</div>`)
-    :`<div style="text-align:center">
-      <div style="font-size:13px;color:${g.color};margin-bottom:12px">${mode==='forward'?'Escribe los dígitos en orden':'Escribe los dígitos en ORDEN INVERSO'}</div>
-      <input id="dig_input" value="${typed}" oninput="GYM_STATE.data.typed=this.value.replace(/\\D/g,'')" onkeydown="if(event.key==='Enter')submitDigitos()" maxlength="${level}" style="font-size:28px;font-weight:800;letter-spacing:8px;text-align:center;width:160px;padding:10px 16px;border-radius:12px;background:#0d0d1a;border:2px solid ${g.color};color:${g.color};outline:none;font-family:'Clash Display',sans-serif" autofocus/>
-      <br/>
-      <button onclick="submitDigitos()" style="margin-top:12px;padding:12px 28px;border-radius:12px;border:1px solid ${g.color};background:linear-gradient(135deg,${g.color}cc,${g.color}88);color:#fff;font-weight:800;font-size:15px;font-family:inherit;box-shadow:0 0 20px ${g.color}44">Confirmar</button>
+  const {shown,mode,typed}=GYM_STATE.data;
+  const {phase,score,errors,level}=GYM_STATE;
+  const g=GAMES_DATA[1];
+  const display=phase==='showing'
+    ?(shown>=0
+      ?`<div style="font-size:110px;font-weight:900;color:${g.color};font-family:'Clash Display',sans-serif;text-shadow:0 0 40px ${g.color},0 0 80px ${g.color}44;animation:popIn .15s;line-height:1">${shown}</div>`
+      :`<div style="font-size:80px;color:#1e1e3f;line-height:1">·</div>`)
+    :`<div style="text-align:center;width:100%">
+      <div style="font-size:13px;color:${g.color};margin-bottom:16px;font-weight:700;background:${g.color}18;padding:8px 16px;border-radius:20px;display:inline-block">
+        ${mode==='forward'?'Escribe en orden →':'Escribe en ORDEN INVERSO ←'}
+      </div>
+      <div style="margin-bottom:16px">
+        <input id="dig_input" value="${typed}" oninput="GYM_STATE.data.typed=this.value.replace(/\\D/g,'')" onkeydown="if(event.key==='Enter')submitDigitos()" maxlength="${level}"
+          style="font-size:36px;font-weight:900;letter-spacing:10px;text-align:center;width:90%;max-width:280px;padding:16px;border-radius:14px;background:#0d0d1a;border:2px solid ${g.color};color:${g.color};outline:none;font-family:'Clash Display',sans-serif;display:block;margin:0 auto" autofocus/>
+      </div>
+      <button onclick="submitDigitos()" style="padding:14px 40px;border-radius:12px;border:1px solid ${g.color};background:linear-gradient(135deg,${g.color}cc,${g.color}88);color:#fff;font-weight:800;font-size:16px;font-family:inherit;box-shadow:0 0 20px ${g.color}44">Confirmar ✓</button>
     </div>`;
-  document.getElementById('screen').innerHTML=gymShell(g.name,g.color,score,errors,3,level,mode==='backward'?'Modo inverso 🔄':undefined,
-    `<div style="text-align:center;min-height:80px;display:flex;align-items:center;justify-content:center">${display}</div>`);
-  if(phase==='input') setTimeout(()=>document.getElementById('dig_input')?.focus(),50);
+  document.getElementById('screen').innerHTML=gymShell(g.name,g.color,score,errors,3,level,
+    mode==='backward'?'Modo inverso 🔄':`${level} dígitos`,
+    `<div style="text-align:center;min-height:160px;display:flex;align-items:center;justify-content:center">${display}</div>`);
+  if(phase==='input') setTimeout(()=>document.getElementById('dig_input')?.focus(),80);
 }
 function submitDigitos(){
-  const {seq,mode,typed}=GYM_STATE.data;const g=GYM_STATE;
+  const {seq,mode,typed}=GYM_STATE.data;
   const target=mode==='forward'?seq.join(''):[...seq].reverse().join('');
   if(typed===target){
-    GYM_STATE.score+=(mode==='forward'?g.level:g.level*2)*10;
-    if(mode==='forward'&&g.level>=5){GYM_STATE.data.mode='backward';GYM_STATE.level=3;}else GYM_STATE.level++;
+    GYM_STATE.score+=(mode==='forward'?GYM_STATE.level:GYM_STATE.level*2)*10;
+    if(mode==='forward'&&GYM_STATE.level>=5){GYM_STATE.data.mode='backward';GYM_STATE.level=2;}
+    else GYM_STATE.level++;
     setTimeout(()=>runDigitos(),500);
   } else {
     GYM_STATE.errors++;
     if(GYM_STATE.errors>=3){finishGame(GYM_STATE.score);return;}
-    GYM_STATE.level=Math.max(3,GYM_STATE.level-1);
+    GYM_STATE.level=Math.max(2,GYM_STATE.level-1);
     setTimeout(()=>runDigitos(),500);
   }
 }
 
-/* ── PALABRAS ── */
+/* ── MATRICES DE RAVEN ── Razonamiento fluido */
+// Generamos matrices 2x2→3x3 con patrones de símbolos, colores y rotaciones
+const RAVEN_SYMBOLS=['●','■','▲','★','◆','✦','⬟','⬡'];
+const RAVEN_COLORS=['#a78bfa','#22d3ee','#f472b6','#4ade80','#fbbf24','#fb923c'];
+
+function makeRavenPuzzle(size){
+  // Patrón: cada fila incrementa el símbolo, cada columna incrementa el color
+  const syms=shuffle([...RAVEN_SYMBOLS]).slice(0,size);
+  const cols=shuffle([...RAVEN_COLORS]).slice(0,size);
+  const grid=[];
+  for(let r=0;r<size;r++){
+    for(let c=0;c<size;c++){
+      grid.push({sym:syms[r],col:cols[c]});
+    }
+  }
+  return {grid,size,answerIdx:grid.length-1,answer:grid[grid.length-1]};
+}
+
+function makeRavenOptions(correct,size){
+  const wrong=[];
+  const syms=shuffle([...RAVEN_SYMBOLS]).filter(s=>s!==correct.sym);
+  const cols=shuffle([...RAVEN_COLORS]).filter(c=>c!==correct.col);
+  // 3 distractores
+  wrong.push({sym:syms[0],col:correct.col}); // mismo color, distinto símbolo
+  wrong.push({sym:correct.sym,col:cols[0]}); // mismo símbolo, distinto color
+  wrong.push({sym:syms[1],col:cols[1]});     // ambos distintos
+  return shuffle([correct,...wrong]);
+}
+
+function runMatricesRaven(){
+  const size=GYM_STATE.level<=3?2:3;
+  const puzzle=makeRavenPuzzle(size);
+  const opts=makeRavenOptions(puzzle.answer,size);
+  GYM_STATE.data={puzzle,opts,answered:false};
+  renderMatricesRaven();
+}
+
+function renderMatricesRaven(){
+  const {puzzle,opts,answered}=GYM_STATE.data;
+  const {score,errors,level}=GYM_STATE;
+  const g=GAMES_DATA.find(x=>x.id==='matrices_r');
+  const {grid,size,answerIdx}=puzzle;
+  const cellSize=size===2?'120px':'80px';
+  const fontSize=size===2?'42px':'28px';
+
+  const cells=grid.map((cell,i)=>{
+    const isEmpty=i===answerIdx;
+    return `<div style="width:${cellSize};height:${cellSize};border-radius:12px;
+      background:${isEmpty?'#0d0d1a':'#1a1a35'};
+      border:2px solid ${isEmpty?g.color+'88':'#2a2a4a'};
+      display:flex;align-items:center;justify-content:center;
+      font-size:${fontSize};color:${isEmpty?g.color:cell.col};
+      box-shadow:${isEmpty?'0 0 12px '+g.color+'44 ,inset 0 0 20px '+g.color+'22':''}"
+    >${isEmpty?'?':cell.sym}</div>`;
+  }).join('');
+
+  const optBtns=opts.map((opt,i)=>`
+    <button onclick="answerRaven(${i})" style="width:70px;height:70px;border-radius:12px;
+      background:#1a1a35;border:2px solid #2a2a4a;
+      display:flex;align-items:center;justify-content:center;
+      font-size:28px;color:${opt.col};transition:all .15s;
+      cursor:pointer" onmousedown="this.style.transform='scale(.93)'" onmouseup="this.style.transform='scale(1)'"
+    >${opt.sym}</button>`).join('');
+
+  document.getElementById('screen').innerHTML=gymShell(g.name,g.color,score,errors,3,level,
+    `Nivel ${level} · Tamaño ${size}×${size}`,
+    `<div style="text-align:center">
+      <p style="font-size:12px;color:#8b8db8;margin-bottom:14px">¿Qué símbolo completa la matriz?</p>
+      <div style="display:grid;grid-template-columns:repeat(${size},${cellSize});gap:10px;justify-content:center;margin-bottom:20px">
+        ${cells}
+      </div>
+      <p style="font-size:11px;color:#4b5070;margin-bottom:12px">Elige la respuesta correcta:</p>
+      <div style="display:flex;gap:10px;justify-content:center;flex-wrap:wrap">
+        ${optBtns}
+      </div>
+    </div>`);
+}
+
+function answerRaven(optIdx){
+  const {puzzle,opts}=GYM_STATE.data;
+  const chosen=opts[optIdx];
+  const correct=puzzle.answer;
+  const ok=chosen.sym===correct.sym&&chosen.col===correct.col;
+  if(ok){
+    GYM_STATE.score+=GYM_STATE.level*12;
+    GYM_STATE.level++;
+    GYM_STATE.data.answered=true;
+    showFbAndNext('✅',()=>runMatricesRaven());
+  } else {
+    GYM_STATE.errors++;
+    GYM_STATE.data.answered=true;
+    if(GYM_STATE.errors>=3){showFbAndNext('❌',()=>finishGame(GYM_STATE.score));return;}
+    showFbAndNext('❌',()=>runMatricesRaven());
+  }
+}
+
+/* ── MATRICES VISOESPACIALES ── Memoriza y reproduce */
+const VISO_COLORS=['#a78bfa','#22d3ee','#f472b6','#4ade80','#fbbf24'];
+
+function runMatricesViso(){
+  const size=GYM_STATE.level<=2?2:GYM_STATE.level<=4?3:4;
+  const total=size*size;
+  // Generar patrón: algunas celdas coloreadas
+  const filled=Math.ceil(total*0.5);
+  const pattern=Array(total).fill(null);
+  const positions=shuffle([...Array(total).keys()]).slice(0,filled);
+  positions.forEach(p=>{pattern[p]=VISO_COLORS[rand(0,VISO_COLORS.length-1)];});
+  GYM_STATE.data={pattern,size,phase:'show',userGrid:Array(total).fill(null),activeColor:VISO_COLORS[0]};
+  renderMatricesViso();
+  // Mostrar 2.5 segundos luego esconder
+  setTimeout(()=>{
+    GYM_STATE.data.phase='input';
+    GYM_STATE.data.userGrid=Array(total).fill(null);
+    renderMatricesViso();
+  }, 2500);
+}
+
+function renderMatricesViso(){
+  const {pattern,size,phase,userGrid,activeColor}=GYM_STATE.data;
+  const {score,errors,level}=GYM_STATE;
+  const g=GAMES_DATA.find(x=>x.id==='matrices_v');
+  const cellPx=size===2?'110px':size===3?'82px':'60px';
+  const isShow=phase==='show';
+
+  const cells=(isShow?pattern:userGrid).map((col,i)=>`
+    <button onclick="${isShow?'':('paintCell('+i+')')}"
+      style="width:${cellPx};height:${cellPx};border-radius:10px;
+      background:${col||'#1a1a35'};
+      border:2px solid ${col?'transparent':'#2a2a4a'};
+      transition:all .2s;cursor:${isShow?'default':'pointer'}"
+      onmousedown="${isShow?'':'this.style.transform=\'scale(.93)\''}"
+      onmouseup="${isShow?'':'this.style.transform=\'scale(1)\''}"
+    ></button>`).join('');
+
+  const palette=isShow?'':`
+    <div style="margin-top:16px">
+      <p style="font-size:12px;color:#8b8db8;margin-bottom:10px">Color activo → toca las celdas</p>
+      <div style="display:flex;gap:8px;justify-content:center;flex-wrap:wrap;margin-bottom:12px">
+        ${VISO_COLORS.map(c=>`<button onclick="GYM_STATE.data.activeColor='${c}';renderMatricesViso()"
+          style="width:36px;height:36px;border-radius:50%;background:${c};
+          border:3px solid ${activeColor===c?'#fff':'transparent'};
+          box-shadow:${activeColor===c?'0 0 10px '+c:'none'};transition:all .15s"></button>`).join('')}
+        <button onclick="GYM_STATE.data.activeColor=null;renderMatricesViso()"
+          style="width:36px;height:36px;border-radius:50%;background:#1a1a35;
+          border:3px solid ${!activeColor?'#fff':'#2a2a4a'};font-size:16px;color:#8b8db8">✕</button>
+      </div>
+      <button onclick="submitViso()" style="padding:12px 32px;border-radius:12px;border:none;
+        background:linear-gradient(135deg,${g.color}cc,${g.color}88);color:#fff;
+        font-weight:800;font-size:15px;font-family:inherit;box-shadow:0 0 20px ${g.color}44">Confirmar ✓</button>
+    </div>`;
+
+  document.getElementById('screen').innerHTML=gymShell(g.name,g.color,score,errors,3,level,
+    isShow?'👀 Memoriza el patrón...':'🎨 Reproduce el patrón',
+    `<div style="text-align:center">
+      <div style="display:grid;grid-template-columns:repeat(${size},${cellPx});gap:8px;justify-content:center;margin-bottom:4px">
+        ${cells}
+      </div>
+      ${palette}
+    </div>`);
+}
+
+function paintCell(i){
+  GYM_STATE.data.userGrid[i]=GYM_STATE.data.activeColor;
+  renderMatricesViso();
+}
+
+function submitViso(){
+  const {pattern,userGrid}=GYM_STATE.data;
+  let hits=0;
+  pattern.forEach((col,i)=>{if(col===userGrid[i])hits++;});
+  const pct=Math.round((hits/pattern.length)*100);
+  const ok=pct>=70;
+  if(ok){
+    GYM_STATE.score+=GYM_STATE.level*15+Math.round(pct/10);
+    GYM_STATE.level++;
+    showFbAndNext(`✅ ${pct}% correcto`,()=>runMatricesViso());
+  } else {
+    GYM_STATE.errors++;
+    if(GYM_STATE.errors>=3){showFbAndNext(`❌ ${pct}% correcto`,()=>finishGame(GYM_STATE.score));return;}
+    showFbAndNext(`❌ Solo ${pct}% — inténtalo de nuevo`,()=>runMatricesViso());
+  }
+}
+
+/* ── Feedback helper compartido ── */
+function showFbAndNext(msg,next){
+  const scr=document.getElementById('screen');
+  const div=document.createElement('div');
+  div.style.cssText='position:fixed;inset:0;display:flex;align-items:center;justify-content:center;background:rgba(0,0,0,.6);z-index:999;font-size:40px;animation:popIn .2s';
+  div.textContent=msg;
+  document.body.appendChild(div);
+  setTimeout(()=>{div.remove();next();},900);
+}
+
+/* ── PALABRAS ── versión mejorada */
 function runPalabras(){
   const lvl=GYM_STATE.level;
   const words=shuffle(WORDS_POOL).slice(0,lvl);
@@ -1379,21 +1718,44 @@ function runPalabras(){
   GYM_STATE.phase='showing';
   renderPalabras();
   (async()=>{
-    for(const w of words){GYM_STATE.data.shown=w;renderPalabras();await sleep(900);GYM_STATE.data.shown='';renderPalabras();await sleep(300);}
-    const dist=shuffle(WORDS_POOL.filter(x=>!words.includes(x))).slice(0,lvl);
-    GYM_STATE.data.opts=shuffle([...words,...dist]);GYM_STATE.phase='input';renderPalabras();
+    for(const w of words){
+      GYM_STATE.data.shown=w;renderPalabras();await sleep(1000);
+      GYM_STATE.data.shown='';renderPalabras();await sleep(400);
+    }
+    const dist=shuffle(WORDS_POOL.filter(x=>!words.includes(x))).slice(0,Math.min(lvl+2,8));
+    GYM_STATE.data.opts=shuffle([...words,...dist]);
+    GYM_STATE.phase='input';renderPalabras();
   })();
 }
 function renderPalabras(){
-  const {words,shown,opts,sel}=GYM_STATE.data;const {phase,score,errors,level}=GYM_STATE;const g=GAMES_DATA[2];
+  const {words,shown,opts,sel}=GYM_STATE.data;
+  const {phase,score,errors,level}=GYM_STATE;
+  const g=GAMES_DATA[2];
   const content=phase==='showing'
-    ?`<div style="text-align:center;min-height:70px;display:flex;align-items:center;justify-content:center"><div style="font-size:32px;font-weight:800;color:${g.color};text-shadow:0 0 20px ${g.color};font-family:'Clash Display',sans-serif;animation:popIn .2s">${shown||'·'}</div></div>`
+    ?`<div style="text-align:center;min-height:120px;display:flex;flex-direction:column;align-items:center;justify-content:center">
+        <div style="font-size:42px;font-weight:800;color:${g.color};text-shadow:0 0 24px ${g.color};font-family:'Clash Display',sans-serif;animation:popIn .2s;min-height:60px">${shown||''}</div>
+        <div style="font-size:12px;color:#4b5070;margin-top:8px">${shown?'Memoriza esta palabra...':'...'}</div>
+      </div>`
     :`<div style="text-align:center">
-      <div style="font-size:12px;color:${g.color};margin-bottom:10px">Selecciona las ${words.length} palabras que viste</div>
-      <div style="display:flex;flex-wrap:wrap;gap:8px;justify-content:center;margin-bottom:14px">${opts.map(w=>`<button onclick="toggleWord('${w}')" style="padding:8px 14px;border-radius:20px;border:1px solid ${sel.includes(w)?g.color:T.border};background:${sel.includes(w)?g.color+'33':'#0d0d1a'};color:${sel.includes(w)?g.color:'#8b8db8'};font-weight:${sel.includes(w)?800:400};font-size:13px;font-family:inherit;transition:all .15s">${w}</button>`).join('')}</div>
-      <button onclick="submitPalabras()" ${sel.length!==words.length?'disabled':''} style="padding:12px 28px;border-radius:12px;border:none;background:${sel.length===words.length?`linear-gradient(135deg,${g.color}cc,${g.color}88)`:'#1e1e3f'};color:${sel.length===words.length?'#fff':'#4b5070'};font-weight:800;font-size:15px;font-family:inherit;box-shadow:${sel.length===words.length?'0 0 20px '+g.color+'44':'none'}">Confirmar</button>
-    </div>`;
-  document.getElementById('screen').innerHTML=gymShell(g.name,g.color,score,errors,3,level,undefined,content);
+        <div style="font-size:13px;color:${g.color};margin-bottom:12px;font-weight:700">Selecciona las <strong>${words.length}</strong> palabras que viste</div>
+        <div style="display:flex;flex-wrap:wrap;gap:8px;justify-content:center;margin-bottom:16px">
+          ${opts.map(w=>`<button onclick="toggleWord('${w}')"
+            style="padding:10px 18px;border-radius:20px;font-size:14px;
+            border:1px solid ${sel.includes(w)?g.color:T.border};
+            background:${sel.includes(w)?g.color+'33':'#1a1a35'};
+            color:${sel.includes(w)?g.color:'#8b8db8'};
+            font-weight:${sel.includes(w)?800:400};font-family:inherit;
+            transition:all .15s">${w}</button>`).join('')}
+        </div>
+        <div style="font-size:12px;color:#4b5070;margin-bottom:12px">${sel.length}/${words.length} seleccionadas</div>
+        <button onclick="submitPalabras()" ${sel.length!==words.length?'disabled':''}
+          style="padding:13px 36px;border-radius:12px;border:none;
+          background:${sel.length===words.length?`linear-gradient(135deg,${g.color}cc,${g.color}88)`:'#1e1e3f'};
+          color:${sel.length===words.length?'#fff':'#4b5070'};
+          font-weight:800;font-size:15px;font-family:inherit;
+          box-shadow:${sel.length===words.length?'0 0 20px '+g.color+'44':'none'}">Confirmar ✓</button>
+      </div>`;
+  document.getElementById('screen').innerHTML=gymShell(g.name,g.color,score,errors,3,level,`${level} palabras`,content);
 }
 function toggleWord(w){
   const s=GYM_STATE.data.sel;
@@ -1406,19 +1768,34 @@ function submitPalabras(){
   else{GYM_STATE.errors++;if(GYM_STATE.errors>=3){finishGame(GYM_STATE.score);return;}GYM_STATE.level=Math.max(3,GYM_STATE.level-1);setTimeout(()=>runPalabras(),500);}
 }
 
-/* ── GO/NOGO ── */
+/* ── GO/NOGO ── botón grande móvil */
 const GO_DECOYS=["🔴","🟡","🟠","⭕"];
 function runGoNogo(){
   GYM_STATE.data={trial:0,hits:0,fas:0,misses:0,stim:'',isGo:false,running:false,fb:''};
   GYM_STATE.score=0;GYM_STATE.phase='ready';renderGoNogo();
 }
 function renderGoNogo(){
-  const {trial,hits,fas,stim,running,fb}=GYM_STATE.data;const g=GAMES_DATA[3];const TOTAL=20;
-  const stimEl=running?`<button onclick="tapGoNogo()" style="width:160px;height:160px;border-radius:50%;border:3px solid ${stim?g.color:T.border};background:${stim?g.color+'22':'#0d0d1a'};display:flex;align-items:center;justify-content:center;font-size:72px;box-shadow:${stim?'0 0 40px '+g.color+'44':'none'};transition:all .1s;cursor:pointer">${stim||'<span style="font-size:20px;color:#1e1e3f">·</span>'}</button>`
-    :`<div><p style="color:#8b8db8;font-size:13px;margin-bottom:8px;text-align:center">Presiona <strong style="color:${g.color}">RÁPIDO</strong> cuando veas 🟢<br/><strong style="color:#f87171">NO presiones</strong> con otros símbolos.</p><button onclick="startGoNogo()" style="padding:14px 28px;border-radius:12px;border:1px solid ${g.color};background:linear-gradient(135deg,${g.color}cc,${g.color}88);color:#fff;font-weight:800;font-size:15px;font-family:inherit;box-shadow:0 0 20px ${g.color}44">¡Comenzar!</button></div>`;
+  const {trial,hits,fas,stim,running,fb}=GYM_STATE.data;
+  const g=GAMES_DATA.find(x=>x.id==='gonogo');const TOTAL=20;
+  const stimEl=running
+    ?`<button onclick="tapGoNogo()"
+        style="width:200px;height:200px;border-radius:50%;
+        border:4px solid ${stim?g.color:'#1e1e3f'};
+        background:${stim?g.color+'22':'#0d0d1a'};
+        display:flex;align-items:center;justify-content:center;
+        font-size:90px;margin:0 auto;
+        box-shadow:${stim?'0 0 50px '+g.color+'55':'none'};
+        transition:all .1s;cursor:pointer">
+        ${stim||'<span style="font-size:24px;color:#1e1e3f">·</span>'}
+      </button>`
+    :`<div style="text-align:center">
+        <p style="color:#8b8db8;font-size:14px;margin-bottom:16px;line-height:1.7">Presiona el círculo cuando veas 🟢<br/><strong style="color:#f87171">NO presiones</strong> con otros símbolos.</p>
+        <button onclick="startGoNogo()" style="padding:16px 40px;border-radius:14px;border:1px solid ${g.color};background:linear-gradient(135deg,${g.color}cc,${g.color}88);color:#fff;font-weight:800;font-size:16px;font-family:inherit;box-shadow:0 0 20px ${g.color}44">¡Comenzar!</button>
+      </div>`;
   document.getElementById('screen').innerHTML=gymShell(g.name,g.color,GYM_STATE.score,fas,99,trial,undefined,
-    `<div style="text-align:center">${stimEl}${fb?`<div style="font-size:22px;margin-top:12px">${fb}</div>`:''}
-    <div style="font-size:11px;color:#4b5070;margin-top:10px">${trial}/${TOTAL} estímulos · Aciertos: ${hits} · FA: ${fas}</div></div>`);
+    `<div style="text-align:center">${stimEl}
+    ${fb?`<div style="font-size:28px;margin-top:14px">${fb}</div>`:''}
+    <div style="font-size:12px;color:#4b5070;margin-top:12px">${trial}/${TOTAL} · ✅${hits} · ❌${fas}</div></div>`);
 }
 function startGoNogo(){GYM_STATE.data.running=true;GYM_STATE.data.trial=0;goNoGoTrial();}
 async function goNoGoTrial(){
@@ -1491,17 +1868,30 @@ function chooseRegla(side){
   },500);
 }
 
-/* ── VIGILANCIA ── */
+/* ── VIGILANCIA ── botón grande móvil */
 const VIG_POOL=["🐶","🐱","🐰","🦊","🐻","🐼","🐨","🐯","🦁","🐸"];const VIG_TARGET="🐸";
 function runVigilancia(){GYM_STATE.data={trial:0,hits:0,fas:0,stim:'',fb:'',running:false};GYM_STATE.score=0;GYM_STATE.phase='ready';renderVigilancia();}
 function renderVigilancia(){
-  const {trial,hits,fas,stim,running,fb}=GYM_STATE.data;const g=GAMES_DATA[5];const TOTAL=30;
+  const {trial,hits,fas,stim,running,fb}=GYM_STATE.data;
+  const g=GAMES_DATA.find(x=>x.id==='vigilancia');const TOTAL=30;
   document.getElementById('screen').innerHTML=gymShell(g.name,g.color,GYM_STATE.score,fas,99,trial,undefined,
     `<div style="text-align:center">${running
-      ?`<button onclick="tapVigilancia()" style="width:150px;height:150px;border-radius:50%;border:3px solid ${stim?g.color:T.border};background:${stim?g.color+'15':'#0d0d1a'};display:flex;align-items:center;justify-content:center;font-size:72px;box-shadow:${stim===VIG_TARGET?'0 0 40px '+g.color+'55':'none'};transition:all .1s;cursor:pointer;margin:0 auto">${stim||'<span style="font-size:20px;color:#1e1e3f">·</span>'}</button>`
-      :`<div><p style="color:#8b8db8;font-size:13px;margin-bottom:8px">Presiona cuando veas 🐸<br/><strong style="color:#f87171">Ignora</strong> todos los demás animales.</p><button onclick="startVigilancia()" style="padding:14px 28px;border-radius:12px;border:1px solid ${g.color};background:linear-gradient(135deg,${g.color}cc,${g.color}88);color:#fff;font-weight:800;font-size:15px;font-family:inherit">¡Comenzar!</button></div>`}
-    ${fb?`<div style="font-size:22px;margin-top:10px">${fb}</div>`:''}
-    <div style="font-size:11px;color:#4b5070;margin-top:8px">${trial}/${TOTAL} · Detectados: ${hits}</div></div>`);
+      ?`<button onclick="tapVigilancia()"
+          style="width:190px;height:190px;border-radius:50%;
+          border:4px solid ${stim?g.color:'#1e1e3f'};
+          background:${stim?g.color+'15':'#0d0d1a'};
+          display:flex;align-items:center;justify-content:center;
+          font-size:90px;margin:0 auto;
+          box-shadow:${stim===VIG_TARGET?'0 0 50px '+g.color+'55':'none'};
+          transition:all .1s;cursor:pointer">
+          ${stim||'<span style="font-size:24px;color:#1e1e3f">·</span>'}
+        </button>`
+      :`<div>
+          <p style="color:#8b8db8;font-size:14px;margin-bottom:16px;line-height:1.7">Presiona cuando veas 🐸<br/><strong style="color:#f87171">Ignora</strong> todos los demás animales.</p>
+          <button onclick="startVigilancia()" style="padding:16px 40px;border-radius:14px;border:1px solid ${g.color};background:linear-gradient(135deg,${g.color}cc,${g.color}88);color:#fff;font-weight:800;font-size:16px;font-family:inherit">¡Comenzar!</button>
+        </div>`}
+    ${fb?`<div style="font-size:28px;margin-top:14px">${fb}</div>`:''}
+    <div style="font-size:12px;color:#4b5070;margin-top:12px">${trial}/${TOTAL} · 🐸 detectadas: ${hits}</div></div>`);
 }
 function startVigilancia(){GYM_STATE.data.running=true;vigTrial();}
 async function vigTrial(){
@@ -1521,7 +1911,7 @@ function tapVigilancia(){
   renderVigilancia();
 }
 
-/* ── DECISIÓN RÁPIDA ── */
+/* ── DECISIÓN RÁPIDA ── botones grandes móvil */
 const DEC_ITEMS=[
   {q:"¿Cuál es mayor?",a:"7",b:"4",correct:"a"},{q:"¿Cuál es mayor?",a:"3",b:"9",correct:"b"},{q:"¿Cuál es mayor?",a:"8",b:"5",correct:"a"},
   {q:"¿Es par?",a:"6",b:"",correct:"yes",type:"bool"},{q:"¿Es par?",a:"7",b:"",correct:"no",type:"bool"},{q:"¿Es par?",a:"12",b:"",correct:"yes",type:"bool"},
@@ -1536,24 +1926,25 @@ function runDecision(){
   GYM_STATE.score=0;GYM_STATE.errors=0;renderDecision();
 }
 function renderDecision(){
-  const {items,idx,fb}=GYM_STATE.data;const {score,errors}=GYM_STATE;const g=GAMES_DATA[6];
+  const {items,idx,fb}=GYM_STATE.data;const {score,errors}=GYM_STATE;
+  const g=GAMES_DATA.find(x=>x.id==='decision');
   if(idx>=items.length){finishGame(score);return;}
   const item=items[idx];
   const btns=item.type==='bool'
-    ?`<div style="font-size:36px;margin-bottom:20px;color:#f1f5f9;font-weight:900;font-family:'Clash Display',sans-serif">${item.a}</div>
-      <div style="display:flex;gap:12px;justify-content:center">
-        <button onclick="answerDec('yes')" style="flex:1;max-width:120px;padding:20px 12px;border-radius:12px;border:1px solid #4ade80;background:linear-gradient(135deg,#4ade80cc,#4ade8088);color:#fff;font-weight:800;font-size:16px;font-family:inherit">✅ Sí</button>
-        <button onclick="answerDec('no')" style="flex:1;max-width:120px;padding:20px 12px;border-radius:12px;border:1px solid #f87171;background:linear-gradient(135deg,#f87171cc,#f8717188);color:#fff;font-weight:800;font-size:16px;font-family:inherit">❌ No</button>
+    ?`<div style="font-size:52px;margin-bottom:24px;color:#f1f5f9;font-weight:900;font-family:'Clash Display',sans-serif">${item.a}</div>
+      <div style="display:flex;gap:14px;justify-content:center">
+        <button onclick="answerDec('yes')" style="flex:1;max-width:140px;padding:22px 12px;border-radius:14px;border:1px solid #4ade80;background:linear-gradient(135deg,#4ade80cc,#4ade8088);color:#fff;font-weight:800;font-size:18px;font-family:inherit;box-shadow:0 0 20px #4ade8044">✅ Sí</button>
+        <button onclick="answerDec('no')"  style="flex:1;max-width:140px;padding:22px 12px;border-radius:14px;border:1px solid #f87171;background:linear-gradient(135deg,#f87171cc,#f8717188);color:#fff;font-weight:800;font-size:18px;font-family:inherit;box-shadow:0 0 20px #f8717144">❌ No</button>
       </div>`
-    :`<div style="display:flex;gap:12px;justify-content:center">
-      <button onclick="answerDec('a')" style="flex:1;max-width:130px;padding:20px 12px;border-radius:12px;border:1px solid #a78bfa;background:linear-gradient(135deg,#a78bfacc,#a78bfa88);color:#fff;font-weight:800;font-size:18px;font-family:inherit">${item.a}</button>
-      <button onclick="answerDec('b')" style="flex:1;max-width:130px;padding:20px 12px;border-radius:12px;border:1px solid #22d3ee;background:linear-gradient(135deg,#22d3eecc,#22d3ee88);color:#fff;font-weight:800;font-size:18px;font-family:inherit">${item.b}</button>
+    :`<div style="display:flex;gap:14px;justify-content:center">
+      <button onclick="answerDec('a')" style="flex:1;max-width:150px;padding:26px 12px;border-radius:14px;border:1px solid #a78bfa;background:linear-gradient(135deg,#a78bfacc,#a78bfa88);color:#fff;font-weight:900;font-size:24px;font-family:'Clash Display',sans-serif;box-shadow:0 0 20px #a78bfa44">${item.a}</button>
+      <button onclick="answerDec('b')" style="flex:1;max-width:150px;padding:26px 12px;border-radius:14px;border:1px solid #22d3ee;background:linear-gradient(135deg,#22d3eecc,#22d3ee88);color:#fff;font-weight:900;font-size:24px;font-family:'Clash Display',sans-serif;box-shadow:0 0 20px #22d3ee44">${item.b}</button>
     </div>`;
   document.getElementById('screen').innerHTML=gymShell(g.name,g.color,score,errors,5,idx+1,undefined,
     `<div style="text-align:center">
-      <div style="font-size:14px;color:${g.color};font-weight:700;margin-bottom:16px">${item.q}</div>
+      <div style="font-size:16px;color:${g.color};font-weight:700;margin-bottom:20px;background:${g.color}18;padding:10px 20px;border-radius:20px;display:inline-block">${item.q}</div>
       ${btns}
-      ${fb?`<div style="font-size:28px;margin-top:12px">${fb}</div>`:''}
+      ${fb?`<div style="font-size:32px;margin-top:16px">${fb}</div>`:''}
     </div>`);
   GYM_STATE.data.start=Date.now();
 }
