@@ -29,6 +29,9 @@ textarea{resize:vertical}
 @keyframes pulse{0%,100%{box-shadow:0 0 0 0 rgba(99,102,241,.3)}50%{box-shadow:0 0 0 8px rgba(99,102,241,0)}}
 @keyframes spin{to{transform:rotate(360deg)}}
 @keyframes splashLoad{0%{width:0%}100%{width:100%}}
+@keyframes shimmer{0%{background-position:0%}100%{background-position:200%}}
+@keyframes blink{0%{opacity:.4;transform:scale(.85)}100%{opacity:1;transform:scale(1)}}
+@keyframes scanroll{0%{transform:translateY(0)}100%{transform:translateY(4px)}}
 #app{max-width:480px;margin:0 auto;height:100vh;height:100dvh;display:flex;flex-direction:column;position:relative;overflow:hidden}
 #screen{flex:1;overflow-y:auto;overflow-x:hidden;padding-bottom:80px}
 #screen::-webkit-scrollbar{width:3px}
@@ -1311,32 +1314,75 @@ function renderGym(){
 function renderGymMenu(){
   document.getElementById('nav').style.display='none';
   const total=Object.values(STATE.gameRecords).reduce((s,v)=>s+v,0);
-  return `<div style="padding:20px 20px 28px;background:#0d0d1a;min-height:100vh">
-    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:20px">
-      <button onclick="exitGym()" style="background:rgba(13,13,26,.9);border:1px solid #1e1e3f;border-radius:10px;color:#8b8db8;font-size:12px;font-weight:700;padding:8px 14px;font-family:inherit">← App</button>
-      <div style="text-align:right">
-        <div style="font-size:11px;color:#4b5070">Puntaje total</div>
-        <div style="font-size:16px;font-weight:800;color:#fbbf24">⭐ ${total}</div>
+  return `<div style="background:#05050f;min-height:100vh;padding:0 0 32px">
+    <!-- MARQUESINA ARCADE -->
+    <div style="background:linear-gradient(180deg,#1a0a2e,#0d0520);border-bottom:3px solid #a78bfa;
+      padding:14px 16px;position:relative;overflow:hidden">
+      <div style="position:absolute;inset:0;background:repeating-linear-gradient(90deg,transparent,transparent 2px,rgba(167,139,250,.04) 2px,rgba(167,139,250,.04) 4px)"></div>
+      <div style="display:flex;align-items:center;justify-content:space-between;position:relative">
+        <button onclick="exitGym()" style="background:rgba(167,139,250,.15);border:1px solid #a78bfa55;border-radius:8px;color:#a78bfa;font-size:12px;font-weight:800;padding:7px 14px;font-family:inherit;letter-spacing:.5px">◀ APP</button>
+        <div style="text-align:center">
+          <div style="font-family:'Clash Display',sans-serif;font-size:20px;font-weight:700;
+            background:linear-gradient(90deg,#a78bfa,#22d3ee,#f472b6,#a78bfa);
+            background-size:200%;-webkit-background-clip:text;-webkit-text-fill-color:transparent;
+            animation:shimmer 3s linear infinite;letter-spacing:2px">GIMNASIO COGNITIVO</div>
+          <div style="font-size:10px;color:#4b5070;letter-spacing:3px;text-transform:uppercase">INSERT BRAIN TO PLAY</div>
+        </div>
+        <div style="text-align:center;background:rgba(251,191,36,.1);border:1px solid #fbbf2444;border-radius:8px;padding:5px 10px">
+          <div style="font-size:10px;color:#4b5070;letter-spacing:1px">HI-SCORE</div>
+          <div style="font-size:15px;font-weight:900;color:#fbbf24;font-family:'Clash Display',sans-serif">${total}</div>
+        </div>
       </div>
     </div>
-    <div style="text-align:center;margin-bottom:24px">
-      <div style="font-size:48px;margin-bottom:8px;filter:drop-shadow(0 0 20px #a78bfa);animation:floatY 3s ease-in-out infinite">🧠</div>
-      <h1 style="font-family:'Clash Display',sans-serif;font-size:22px;font-weight:700;background:linear-gradient(120deg,#a78bfa,#22d3ee);-webkit-background-clip:text;-webkit-text-fill-color:transparent;margin:0 0 4px">Gimnasio Cognitivo</h1>
-      <p style="color:#8b8db8;font-size:13px;margin:0">Entrena tus funciones ejecutivas · 7 juegos</p>
-    </div>
-    <div style="display:flex;flex-direction:column;gap:10px;margin-bottom:20px">
-      ${GAMES_DATA.map(g=>`<button onclick="launchGame('${g.id}')" style="background:#13132a;border:1px solid ${g.color}55;box-shadow:0 0 12px ${g.color}22;border-radius:16px;padding:14px 18px;display:flex;align-items:center;gap:14px;width:100%;text-align:left;font-family:inherit;transition:transform .15s" onmousedown="this.style.transform='scale(.98)'" onmouseup="this.style.transform='scale(1)'">
-        <div style="width:46px;height:46px;border-radius:12px;background:${g.color}20;display:flex;align-items:center;justify-content:center;font-size:22px;flex-shrink:0;box-shadow:0 0 10px ${g.color}33">${g.icon}</div>
-        <div style="flex:1">
-          <div style="font-weight:800;font-size:14px;color:#f1f5f9">${g.name}</div>
-          <div style="font-size:11px;color:${g.color};font-weight:600">${g.fe}</div>
-          <div style="font-size:11px;color:#4b5070;margin-top:2px">${g.desc}</div>
-        </div>
-        <div style="text-align:right;flex-shrink:0">${STATE.gameRecords[g.id]?`<div style="font-size:13px;font-weight:800;color:#fbbf24">🏅 ${STATE.gameRecords[g.id]}</div>`:`<div style="font-size:11px;color:#4b5070">Sin récord</div>`}</div>
-      </button>`).join('')}
-    </div>
-    <div style="background:#13132a;border:1px solid #1e1e3f;border-radius:14px;padding:16px;font-size:12px;color:#8b8db8;line-height:1.7">
-      <strong style="color:#a78bfa">¿Por qué entrenar?</strong> Las funciones ejecutivas predicen el rendimiento académico más que el CI en muchos estudios (Diamond, 2013). Practicarlas 10 min/día durante 4 semanas produce cambios medibles en la corteza prefrontal.
+    <!-- CABINET BODY -->
+    <div style="padding:16px 14px">
+      <!-- Luces decorativas -->
+      <div style="display:flex;justify-content:center;gap:8px;margin-bottom:16px">
+        ${['#f472b6','#a78bfa','#22d3ee','#4ade80','#fbbf24','#f472b6','#a78bfa','#22d3ee'].map((c,i)=>
+          `<div style="width:8px;height:8px;border-radius:50%;background:${c};
+            box-shadow:0 0 6px ${c},0 0 12px ${c}44;
+            animation:blink ${.8+i*.15}s ease-in-out infinite alternate"></div>`).join('')}
+      </div>
+      <!-- Game cards -->
+      <div style="display:flex;flex-direction:column;gap:8px;margin-bottom:16px">
+        ${GAMES_DATA.map((g,i)=>`
+          <button onclick="launchGame('${g.id}')"
+            style="background:linear-gradient(135deg,#0d0520,#13132a);
+            border:1px solid ${g.color}66;
+            box-shadow:0 0 10px ${g.color}22,inset 0 1px 0 rgba(255,255,255,.05);
+            border-radius:12px;padding:12px 14px;
+            display:flex;align-items:center;gap:12px;
+            width:100%;text-align:left;font-family:inherit;
+            transition:all .12s;position:relative;overflow:hidden"
+            onmousedown="this.style.transform='scale(.97)';this.style.boxShadow='0 0 20px ${g.color}55,inset 0 1px 0 rgba(255,255,255,.05)'"
+            onmouseup="this.style.transform='scale(1)'" ontouchstart="this.style.transform='scale(.97)'" ontouchend="this.style.transform='scale(1)'">
+            <!-- Scanline overlay -->
+            <div style="position:absolute;inset:0;background:repeating-linear-gradient(0deg,transparent,transparent 3px,rgba(0,0,0,.15) 3px,rgba(0,0,0,.15) 4px);pointer-events:none;border-radius:12px"></div>
+            <!-- Número -->
+            <div style="width:28px;height:28px;border-radius:50%;background:${g.color}20;border:1px solid ${g.color}55;
+              display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:900;
+              color:${g.color};flex-shrink:0;font-family:'Clash Display',sans-serif">${i+1}</div>
+            <!-- Icono -->
+            <div style="font-size:24px;flex-shrink:0;filter:drop-shadow(0 0 6px ${g.color})">${g.icon}</div>
+            <div style="flex:1;min-width:0">
+              <div style="font-weight:800;font-size:14px;color:#f1f5f9;letter-spacing:.3px">${g.name}</div>
+              <div style="font-size:11px;color:${g.color};font-weight:700;letter-spacing:.5px;text-transform:uppercase">${g.fe}</div>
+            </div>
+            <div style="text-align:right;flex-shrink:0">
+              ${STATE.gameRecords[g.id]
+                ?`<div style="font-size:12px;font-weight:900;color:#fbbf24;font-family:'Clash Display',sans-serif">🏅${STATE.gameRecords[g.id]}</div>`
+                :`<div style="font-size:18px;color:${g.color}44">▶</div>`}
+            </div>
+          </button>`).join('')}
+      </div>
+      <!-- Footer -->
+      <div style="background:#0d0520;border:1px solid #1e1e3f;border-radius:12px;padding:14px;
+        font-size:12px;color:#4b5070;line-height:1.7;text-align:center;
+        border-top:2px solid #a78bfa44">
+        <span style="color:#a78bfa;font-weight:700">🧠 ¿Por qué entrenar?</span><br/>
+        Las FE predicen el rendimiento académico más que el CI · Diamond (2013)<br/>
+        10 min/día · 4 semanas · cambios en corteza prefrontal
+      </div>
     </div>
   </div>`;
 }
@@ -1360,7 +1406,7 @@ function finishGame(score){
   const isRec=score>=prev;
   if(isRec||score>0) STATE.gameRecords[GYM_STATE.gameId]=Math.max(prev,score);
   saveRecords();
-  document.getElementById('screen').innerHTML=`<div style="padding:32px 20px;text-align:center;background:#0d0d1a;min-height:100vh">
+  document.getElementById('screen').innerHTML=`<div style="padding:32px 20px;text-align:center;background:#05050f;min-height:100vh;background-image:repeating-linear-gradient(0deg,transparent,transparent 3px,rgba(0,0,0,.15) 3px,rgba(0,0,0,.15) 4px)">
     <div style="font-size:${isRec?56:44}px;margin-bottom:12px;filter:drop-shadow(0 0 20px ${g.color});animation:floatY 2s ease-in-out infinite">${isRec?'🏆':'🎮'}</div>
     <h2 style="font-family:'Clash Display',sans-serif;font-size:20px;font-weight:900;color:#f1f5f9;margin:0 0 4px">${isRec?'¡Nuevo récord!':'Ronda completada'}</h2>
     <p style="color:#8b8db8;font-size:13px;margin-bottom:20px">${g.name}</p>
@@ -1383,22 +1429,69 @@ function finishGame(score){
 }
 
 function gymShell(title,color,score,errors,maxErr,level,sub,content){
-  const dots=maxErr<99?Array.from({length:Math.min(maxErr,5)},(_,i)=>`<div style="width:12px;height:12px;border-radius:50%;background:${i<errors?'#f87171':'#1e1e3f'};box-shadow:${i<errors?'0 0 6px #f87171':'none'};transition:all .3s"></div>`).join(''):`<div style="font-size:11px;color:#4b5070">Reacciones: ∞</div>`;
-  return `<div style="padding:16px 16px 28px;background:#0d0d1a;min-height:100vh">
-    <div style="display:flex;align-items:center;gap:10px;margin-bottom:12px">
-      <button onclick="finishGame(${score})" style="background:rgba(30,30,63,.8);border:1px solid #1e1e3f;border-radius:8px;color:#8b8db8;font-size:12px;font-weight:700;padding:7px 12px;font-family:inherit">← Salir</button>
-      <div style="flex:1">
-        <div style="font-family:'Clash Display',sans-serif;font-weight:800;font-size:14px;color:#f1f5f9">${title}</div>
-        ${sub?`<div style="font-size:11px;color:${color};font-weight:700">${sub}</div>`:''}
+  const dots=maxErr<99
+    ?Array.from({length:Math.min(maxErr,5)},(_,i)=>
+      `<div style="width:14px;height:14px;border-radius:50%;
+        background:${i<errors?'#f87171':color+'33'};
+        border:1px solid ${i<errors?'#f87171':color+'55'};
+        box-shadow:${i<errors?'0 0 8px #f87171':'none'};
+        transition:all .3s"></div>`).join('')
+    :`<span style="font-size:11px;color:#4b5070;letter-spacing:1px">FREE PLAY</span>`;
+  return `<div style="background:#05050f;min-height:100vh;display:flex;flex-direction:column">
+    <!-- HUD Superior -->
+    <div style="background:linear-gradient(180deg,#1a0a2e,#0d0520);border-bottom:2px solid ${color}88;padding:10px 14px;flex-shrink:0">
+      <div style="display:flex;align-items:center;gap:10px">
+        <button onclick="finishGame(${score})"
+          style="background:rgba(255,255,255,.05);border:1px solid #ffffff22;border-radius:8px;
+          color:#8b8db8;font-size:11px;font-weight:800;padding:6px 12px;font-family:inherit;
+          letter-spacing:.5px;flex-shrink:0">◀ EXIT</button>
+        <div style="flex:1;text-align:center">
+          <div style="font-family:'Clash Display',sans-serif;font-weight:800;font-size:15px;
+            color:${color};text-shadow:0 0 10px ${color}88;letter-spacing:1px">${title}</div>
+          ${sub?`<div style="font-size:10px;color:${color}88;font-weight:700;letter-spacing:2px;text-transform:uppercase">${sub}</div>`:''}
+        </div>
+        <div style="background:${color}22;border:1px solid ${color}55;border-radius:8px;
+          padding:4px 12px;text-align:center;flex-shrink:0">
+          <div style="font-size:9px;color:#4b5070;letter-spacing:1px">SCORE</div>
+          <div style="font-size:16px;font-weight:900;color:${color};font-family:'Clash Display',sans-serif;
+            text-shadow:0 0 8px ${color}">${score}</div>
+        </div>
       </div>
-      <div style="background:${color}22;border:1px solid ${color}44;border-radius:8px;padding:5px 12px;font-size:13px;font-weight:800;color:${color}">⭐ ${score}</div>
     </div>
-    <div style="display:flex;justify-content:space-between;align-items:center;background:#13132a;border:1px solid #1e1e3f;border-radius:10px;padding:7px 14px;margin-bottom:14px">
-      <div style="font-size:12px;color:#8b8db8">Nivel <strong style="color:${color}">${level}</strong></div>
-      <div style="display:flex;gap:5px;align-items:center">${dots}</div>
+    <!-- STATUS BAR -->
+    <div style="background:#0a0a1a;border-bottom:1px solid #1e1e3f;padding:7px 14px;
+      display:flex;justify-content:space-between;align-items:center;flex-shrink:0">
+      <div style="display:flex;align-items:center;gap:6px">
+        <span style="font-size:10px;color:#4b5070;letter-spacing:1px;text-transform:uppercase">LVL</span>
+        <span style="font-size:16px;font-weight:900;color:${color};font-family:'Clash Display',sans-serif;
+          text-shadow:0 0 6px ${color}88">${level}</span>
+      </div>
+      <div style="display:flex;gap:6px;align-items:center">${dots}</div>
+      <div style="font-size:10px;color:#4b5070;letter-spacing:1px">${maxErr<99?'VIDAS':'REACCIÓN'}</div>
     </div>
-    <div style="border:1px solid ${color}55;box-shadow:0 0 16px ${color}22;border-radius:16px;padding:20px 14px;background:#13132a;min-height:280px;display:flex;flex-direction:column;justify-content:center">
-      ${content}
+    <!-- PANTALLA ARCADE — bisel + scanlines -->
+    <div style="flex:1;padding:12px;display:flex;flex-direction:column">
+      <div style="flex:1;position:relative;border-radius:16px;overflow:hidden;
+        background:#13132a;
+        border:3px solid ${color}44;
+        box-shadow:0 0 30px ${color}33,0 0 60px ${color}11,
+          inset 0 0 30px rgba(0,0,0,.5),
+          inset 0 2px 0 rgba(255,255,255,.05);
+        display:flex;flex-direction:column;justify-content:center;
+        min-height:320px">
+        <!-- Scanlines -->
+        <div style="position:absolute;inset:0;background:repeating-linear-gradient(
+          0deg,transparent,transparent 3px,rgba(0,0,0,.2) 3px,rgba(0,0,0,.2) 4px);
+          pointer-events:none;z-index:1;border-radius:14px"></div>
+        <!-- Brillo de esquina -->
+        <div style="position:absolute;top:0;left:0;width:60px;height:60px;
+          background:radial-gradient(circle at top left,rgba(255,255,255,.06),transparent);
+          pointer-events:none;z-index:1"></div>
+        <!-- Contenido del juego -->
+        <div style="position:relative;z-index:2;padding:16px 12px">
+          ${content}
+        </div>
+      </div>
     </div>
   </div>`;
 }
@@ -1423,22 +1516,28 @@ function renderCorsiBoard(){
   const {seq,lit,input}=GYM_STATE.data;
   const {phase,score,errors,level}=GYM_STATE;
   const g=GAMES_DATA[0];
-  // 3x3 grid — bloques grandes para móvil
+  // Tamaño fijo en px calculado según ancho real de pantalla
+  const vw=Math.min(window.innerWidth,480);
+  const bSize=Math.floor((vw-80)/3);
   const blocks=Array.from({length:9},(_,i)=>{
     const isLit=lit===i;
     const isSel=input.includes(i);
     return `<button onclick="tapCorsi(${i})"
-      style="aspect-ratio:1;width:100%;border-radius:14px;
-      border:3px solid ${isLit?g.color:isSel?g.color+'99':'#2a2a4a'};
+      style="width:${bSize}px;height:${bSize}px;border-radius:16px;
+      border:4px solid ${isLit?g.color:isSel?g.color+'99':'#2a2a4a'};
       background:${isLit?g.color:isSel?g.color+'33':'#1a1a35'};
-      box-shadow:${isLit?'0 0 28px '+g.color+', 0 0 8px '+g.color+'88':'none'};
+      box-shadow:${isLit?'0 0 32px '+g.color+', 0 0 12px '+g.color+'88':'none'};
       transition:all .15s;cursor:${phase==='input'?'pointer':'default'};
-      font-size:0"></button>`;
+      display:block;padding:0;flex-shrink:0"></button>`;
   }).join('');
-  const status=phase==='showing'?`<div style="text-align:center;margin-bottom:14px"><span style="font-size:13px;color:${g.color};font-weight:700;background:${g.color}18;padding:6px 16px;border-radius:20px">👀 Memoriza la secuencia</span></div>`
-    :phase==='input'?`<div style="text-align:center;margin-bottom:14px"><span style="font-size:13px;color:#f1f5f9;font-weight:700;background:#1e1e3f;padding:6px 16px;border-radius:20px">👆 Toca en orden: ${input.length}/${seq.length}</span></div>`:'';
+  const gap=10;
+  const gridW=bSize*3+gap*2;
+  const status=phase==='showing'
+    ?`<div style="text-align:center;margin-bottom:16px"><span style="font-size:14px;color:${g.color};font-weight:700;background:${g.color}18;padding:8px 20px;border-radius:20px">👀 Memoriza la secuencia</span></div>`
+    :phase==='input'
+    ?`<div style="text-align:center;margin-bottom:16px"><span style="font-size:14px;color:#f1f5f9;font-weight:700;background:#1e1e3f;padding:8px 20px;border-radius:20px">👆 Toca en orden: ${input.length}/${seq.length}</span></div>`:'';
   document.getElementById('screen').innerHTML=gymShell(g.name,g.color,score,errors,3,level,`Secuencia: ${level} bloques`,
-    `${status}<div style="display:grid;grid-template-columns:repeat(3,1fr);gap:12px;max-width:300px;margin:0 auto;padding:8px">${blocks}</div>`);
+    `${status}<div style="display:flex;flex-wrap:wrap;gap:${gap}px;width:${gridW}px;margin:0 auto">${blocks}</div>`);
 }
 function tapCorsi(i){
   if(GYM_STATE.phase!=='input')return;
